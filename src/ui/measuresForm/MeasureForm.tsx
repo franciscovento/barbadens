@@ -1,7 +1,8 @@
 'use client';
 
+import { Measures } from '@/stores';
+import { useCustomShirt } from '@/stores/customShirt/customShirt.store';
 import { Button } from '@/ui/materialComponents';
-import { ShirtMeasure } from '@/utils/types/ShirtMeasure';
 import { valuesMeasuresMap } from '@/utils/valuesMeasuresMap';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -10,6 +11,9 @@ import { useForm } from 'react-hook-form';
 import StepTitle from '../stepTitle/StepTitle';
 
 const MeasureForm = () => {
+  const collar = useCustomShirt((state) => state.collar);
+  console.log(collar, 'collar');
+
   const router = useRouter();
   const params = useParams();
 
@@ -17,7 +21,7 @@ const MeasureForm = () => {
     register,
     handleSubmit,
     formState: { defaultValues, isValid },
-  } = useForm<ShirtMeasure>({
+  } = useForm<Measures>({
     defaultValues: {
       neck: undefined,
       chest: undefined,
@@ -31,7 +35,7 @@ const MeasureForm = () => {
     },
   });
 
-  const onSubmit = (data: ShirtMeasure) => {
+  const onSubmit = (data: Measures) => {
     console.log(data);
     router.push(`/create/${params.product_id}/checkout`);
   };
@@ -49,7 +53,7 @@ const MeasureForm = () => {
               <label key={value} className="flex justify-between">
                 <div className="flex flex-col">
                   <span className="capitalize">
-                    {valuesMeasuresMap[value as keyof ShirtMeasure]}
+                    {valuesMeasuresMap[value as keyof Measures]}
                   </span>
                   <span className="text-text text-sm hover:text-blue-600 cursor-pointer">
                     Ver tutorial
@@ -58,7 +62,7 @@ const MeasureForm = () => {
                 <div>
                   <input
                     className="border border-gray-500 rounded-xl w-20 h-8 px-2"
-                    {...register(value as keyof ShirtMeasure, {
+                    {...register(value as keyof Measures, {
                       required: true,
                     })}
                     type="number"
