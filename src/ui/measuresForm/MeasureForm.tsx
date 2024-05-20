@@ -1,44 +1,36 @@
 'use client';
 
-import { Measures } from '@/stores';
-import { useCustomShirt } from '@/stores/customShirt/customShirt.store';
+import { Measures, useMeasures } from '@/stores';
 import { Button } from '@/ui/materialComponents';
 import { valuesMeasuresMap } from '@/utils/valuesMeasuresMap';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import StepTitle from '../stepTitle/StepTitle';
 
-const MeasureForm = () => {
-  const collar = useCustomShirt((state) => state.collar);
-  console.log(collar, 'collar');
-
+const MeasureForm = ({ defaultValues }: { defaultValues: Measures }) => {
   const router = useRouter();
   const params = useParams();
-
+  const updateMeasures = useMeasures((state) => state.updateMeasures);
   const {
     register,
     handleSubmit,
-    formState: { defaultValues, isValid },
+    reset,
+    formState: { isValid },
   } = useForm<Measures>({
-    defaultValues: {
-      neck: undefined,
-      chest: undefined,
-      waist: undefined,
-      shoulder: undefined,
-      left_sleeve: undefined,
-      right_sleeve: undefined,
-      left_fist: undefined,
-      right_fist: undefined,
-      length: undefined,
-    },
+    defaultValues,
   });
 
   const onSubmit = (data: Measures) => {
-    console.log(data);
+    updateMeasures(data);
     router.push(`/create/${params.product_id}/checkout`);
   };
+
+  useEffect(() => {
+    reset(defaultValues);
+  }, [defaultValues, reset]);
 
   return (
     <form

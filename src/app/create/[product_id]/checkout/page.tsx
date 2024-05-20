@@ -1,5 +1,23 @@
+'use client';
+
+import useCustomShirtData from '@/hooks/useCustomShirtData';
+import useMeasuresStoreData from '@/hooks/useMeasuresStoreData';
+
 const Checkout = () => {
-  return <div>Checkout</div>;
+  const measures = useMeasuresStoreData();
+  const customShirt = useCustomShirtData();
+
+  console.log({
+    measures,
+    customShirt,
+  });
+
+  return (
+    <div>
+      <p>{JSON.stringify(measures)}</p>
+      {JSON.stringify(customShirt)}
+    </div>
+  );
 };
 
 export default Checkout;

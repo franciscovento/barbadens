@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { FC } from 'react';
 
 interface Props {
@@ -16,9 +17,12 @@ const FabricDetails: FC<Props> = ({ title, attributes }) => {
           return <Detail key={index} title={att.title} value={att.value} />;
         })}
       </div>
-      <button className="border border-black p-2 text-xs sm:text-sm">
+      <Link
+        href={'/'}
+        className="border border-black p-2 text-xs sm:text-sm text-center"
+      >
         Selecciona nueva tela
-      </button>
+      </Link>
     </div>
   );
 };

@@ -2,33 +2,37 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
 export type Measures = {
-  neck: number;
-  chest: number;
-  waist: number;
-  shoulder: number;
-  left_sleeve: number;
-  right_sleeve: number;
-  left_fist: number;
-  right_fist: number;
-  length: number;
+  neck: number | undefined;
+  chest: number | undefined;
+  waist: number | undefined;
+  shoulder: number | undefined;
+  left_sleeve: number | undefined;
+  right_sleeve: number | undefined;
+  left_fist: number | undefined;
+  right_fist: number | undefined;
+  length: number | undefined;
 };
 
 export type MeasuresActions = {
   updateMeasures: (_measures: Measures) => void;
 };
 
+const initialState: Measures = {
+  neck: undefined,
+  chest: undefined,
+  waist: undefined,
+  shoulder: undefined,
+  left_sleeve: undefined,
+  right_sleeve: undefined,
+  left_fist: undefined,
+  right_fist: undefined,
+  length: undefined,
+};
+
 export const useMeasures = create<Measures & MeasuresActions>()(
   persist(
     (set) => ({
-      neck: 0,
-      chest: 0,
-      waist: 0,
-      shoulder: 0,
-      left_sleeve: 0,
-      right_sleeve: 0,
-      left_fist: 0,
-      right_fist: 0,
-      length: 0,
+      ...initialState,
       updateMeasures: (measures) => set(measures),
     }),
     {
