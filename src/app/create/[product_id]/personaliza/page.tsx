@@ -1,8 +1,10 @@
 'use client';
 import FabricDetails from '@/ui/fabricDetails/FabricDetails';
 import { Button, Typography } from '@/ui/materialComponents';
-import SelectAttribute from '@/ui/selectAtribute/SelectAttribute';
-import SelectSleeve from '@/ui/selectSleeve/SelectSleeve';
+import SelectCollar from '@/ui/selectAtribute/selectCollar/SelectCollar';
+import SelectCuff from '@/ui/selectAtribute/selectCuff/SelectCuff';
+import SelectPocket from '@/ui/selectAtribute/selectPocket/SelectPocket';
+import SelectSleeve from '@/ui/selectAtribute/selectSleeve/SelectSleeve';
 import StepTitle from '@/ui/stepTitle/StepTitle';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -49,24 +51,9 @@ const Personaliza: FC<Props> = ({ params }) => {
           <h3 className="font-semibold pb-4">Características del modelo</h3>
           <div className="flex flex-wrap gap-8">
             <SelectSleeve />
-            <SelectAttribute
-              title="Tipo de puño"
-              name="Botones"
-              image=""
-              onClick={() => console.log('seleccionada')}
-            />
-            <SelectAttribute
-              title="Tipo de bolsillo"
-              name="Con bolsillo"
-              image=""
-              onClick={() => console.log('seleccionada')}
-            />
-            <SelectAttribute
-              title="Tipo de cuello"
-              name="Italiano"
-              image=""
-              onClick={() => console.log('seleccionada')}
-            />
+            <SelectCuff />
+            <SelectPocket />
+            <SelectCollar />
           </div>
         </div>
       </div>

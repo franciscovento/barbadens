@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@material-tailwind/react": "^2.1.9",
+    "@typescript-eslint/eslint-plugin": "^7.9.0",
     "@uidotdev/usehooks": "^2.4.1",
     "@vitest/coverage-v8": "^1.5.3",
     "next": "14.2.3",
