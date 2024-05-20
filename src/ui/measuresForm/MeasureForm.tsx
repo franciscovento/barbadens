@@ -1,5 +1,6 @@
 'use client';
 
+import { appModal } from '@/services/modals/appModal';
 import { Measures, useMeasures } from '@/stores';
 import { Button } from '@/ui/materialComponents';
 import { valuesMeasuresMap } from '@/utils/valuesMeasuresMap';
@@ -9,6 +10,46 @@ import { useParams, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import StepTitle from '../stepTitle/StepTitle';
+import Tutorial from '../tutorial/Tutorial';
+
+const tutorials = [
+  {
+    key: 'neck',
+    tutorial: '2gxQ_d9MpGM',
+  },
+  {
+    key: 'shoulder',
+    tutorial: 'gxQ_d9MpGM',
+  },
+  {
+    key: 'chest',
+    tutorial: '2gxQ_d9MpGM',
+  },
+  {
+    key: 'waist',
+    tutorial: '2gxQ_d9MpGM',
+  },
+  {
+    key: 'left_fist',
+    tutorial: '2gxQ_d9MpGM',
+  },
+  {
+    key: 'right_fist',
+    tutorial: '2gxQ_d9MpGM',
+  },
+  {
+    key: 'left_sleeve',
+    tutorial: '2gxQ_d9MpGM',
+  },
+  {
+    key: 'right_sleeve',
+    tutorial: '2gxQ_d9MpGM',
+  },
+  {
+    key: 'length',
+    tutorial: '2gxQ_d9MpGM',
+  },
+];
 
 const MeasureForm = ({ defaultValues }: { defaultValues: Measures }) => {
   const router = useRouter();
@@ -26,6 +67,23 @@ const MeasureForm = ({ defaultValues }: { defaultValues: Measures }) => {
   const onSubmit = (data: Measures) => {
     updateMeasures(data);
     router.push(`/create/${params.product_id}/checkout`);
+  };
+
+  const displayTutorial = (key: string) => {
+    const tutorial = tutorials.find((t) => t.key === key);
+    if (tutorial) {
+      appModal.fire({
+        title: valuesMeasuresMap[tutorial.key as keyof Measures],
+        html: (
+          <Tutorial
+            title={tutorial.key}
+            description={tutorial.key}
+            tutorialId={tutorial.tutorial}
+          />
+        ),
+        width: 800,
+      });
+    }
   };
 
   useEffect(() => {
@@ -47,7 +105,10 @@ const MeasureForm = ({ defaultValues }: { defaultValues: Measures }) => {
                   <span className="capitalize">
                     {valuesMeasuresMap[value as keyof Measures]}
                   </span>
-                  <span className="text-text text-sm hover:text-blue-600 cursor-pointer">
+                  <span
+                    onClick={() => displayTutorial(value)}
+                    className="text-text text-sm hover:text-blue-600 cursor-pointer"
+                  >
                     Ver tutorial
                   </span>
                 </div>
