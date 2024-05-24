@@ -80,7 +80,7 @@ const FabricCard: FC<Props> = ({
       </div>
       <div className="pt-4">
         <h4 className="font-semibold">{name}</h4>
-        <span className="block text-xl font-medium">s/. {price}</span>
+        <span className="block text-xl font-semibold py-1">s/. {price}.00</span>
         <div className="flex items-center justify-between">
           <p className="text-text text-sm">{description}</p>
           <span className="text-text flex gap-1 items-center text-sm">
