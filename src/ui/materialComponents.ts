@@ -6,6 +6,7 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
+  Chip,
   ThemeProvider,
   Typography,
 } from '@material-tailwind/react';
@@ -16,6 +17,7 @@ export {
   CardBody,
   CardFooter,
   CardHeader,
+  Chip,
   ThemeProvider,
   Typography,
 };
