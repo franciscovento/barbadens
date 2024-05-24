@@ -15,7 +15,7 @@ export const fabrics = [
     price: 89,
     description: '100% Algodón',
     image: '/images/tela2.png',
-    isNew: null,
+    isNew: undefined,
     discount: 20,
     fabricType: 'Pyma',
   },
@@ -26,7 +26,7 @@ export const fabrics = [
     description: '100% Algodón',
     image: '/images/tela3.png',
     isNew: true,
-    discount: null,
+    discount: undefined,
     fabricType: 'Oxford',
   },
   {

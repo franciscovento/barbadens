@@ -11,8 +11,8 @@ interface Props {
   price: number;
   description: string;
   image: string;
-  isNew: boolean;
-  discount: number;
+  isNew?: boolean;
+  discount?: number;
   fabricType: string;
 }
 
