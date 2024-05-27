@@ -11,10 +11,10 @@ interface Props {
 const layout: FC<Props> = ({ children }) => {
   return (
     <>
-      <div className="max-w-lg mx-auto px-2 md:px-8 py-4">
+      <section className="max-w-lg mx-auto px-2 md:px-8 py-4">
         <CheckoutStepper />
-      </div>
-      <div className="app-container py-12">{children}</div>
+      </section>
+      <main className="app-container py-12">{children}</main>
     </>
   );
 };

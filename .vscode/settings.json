@@ -5,5 +5,12 @@
     "source.fixAll": "always",
     "source.organizeImports": "always"
   },
-  "cSpell.words": ["american", "Barbadens", "cuban", "italian", "zustand"]
+  "cSpell.words": [
+    "american",
+    "Barbadens",
+    "clsx",
+    "cuban",
+    "italian",
+    "zustand"
+  ]
 }
