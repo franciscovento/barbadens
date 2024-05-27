@@ -1,64 +1,40 @@
-'use client';
-import { appModal } from '@/services/modals/appModal';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FC } from 'react';
-import FabricModalDetail from '../fabricModalDetail.ts/FabricModalDetail';
 import { Chip } from '../materialComponents';
 
 interface Props {
   id: string;
-  name: string;
-  price: number;
-  description: string;
+  title: string;
   image: string;
+  description: string;
+  price: number;
   isNew?: boolean;
   discount?: number;
   fabricType: string;
 }
-
-const FabricCard: FC<Props> = ({
-  id,
-  description,
-  discount,
+const FabricModalDetail: FC<Props> = ({
+  title,
   image,
+  description,
   isNew,
-  name,
+  discount,
   price,
+  id,
   fabricType,
 }) => {
-  const showFabricModal = () => {
-    appModal.fire({
-      width: 900,
-      html: (
-        <FabricModalDetail
-          title={name}
-          description={description}
-          image={image}
-          isNew={isNew}
-          discount={discount}
-          id={id}
-          fabricType={fabricType}
-          price={price}
-        />
-      ),
-    });
-  };
-
   return (
-    <article className="grid">
-      <div
-        onClick={showFabricModal}
-        className="relative group overflow-hidden rounded-xl"
-      >
+    <div className="flex flex-col items-start">
+      <h4 className="font-semibold capitalize py-4 text-base">{title}</h4>
+      <div className="h-[391px] w-full relative">
         <Image
           src={image}
-          width={176}
-          height={176}
-          alt="tela1"
-          className="w-full h-52 object-cover cursor-pointer rounded-xl duration-300 group-hover:scale-125"
+          alt="fabric details"
+          className="object-cover rounded-xl w-full h-[391px] "
+          width={627}
+          height={391}
         />
-        <div className="flex items-center gap-1 absolute bottom-2 left-2">
+        <div className="flex items-center gap-1 absolute top-4 left-4">
           {isNew && (
             <Chip
               value="nuevo"
@@ -76,11 +52,14 @@ const FabricCard: FC<Props> = ({
           )}
         </div>
       </div>
-      <div className="pt-4">
-        <h4 className="font-semibold">{name}</h4>
-        <span className="block text-xl font-semibold py-1">s/. {price}.00</span>
-        <div className="flex items-center justify-between">
-          <p className="text-text text-sm">{description}</p>
+      <div className="py-4 gap-2 w-full flex flex-col sm:flex-row justify-between sm:items-center">
+        <div>
+          <span className="block text-xl font-semibold py-1">
+            s/. {price}.00
+          </span>
+          <p className="text-text text-xs">{description}</p>
+        </div>
+        <div className="flex flex-col sm:flex-row items-center gap-4">
           <span className="text-text flex gap-1 items-center text-sm">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -96,16 +75,16 @@ const FabricCard: FC<Props> = ({
             </svg>
             {fabricType}
           </span>
+          <Link className="w-full flex-1" href={`/create/${id}/personaliza`}>
+            <button className="w-full sm:w-[221px] rounded-3xl p-2 duration-700 hover:bg-black hover:opacity-60 text-sm px-8 bg-black text-white">
+              {' '}
+              Seleccionar
+            </button>
+          </Link>
         </div>
-        <Link href={`/create/${id}/personaliza`}>
-          <button className="w-full rounded-3xl mt-5 bg-[#ECEDF1] text-black p-2 font-medium duration-700 hover:bg-black hover:text-white">
-            {' '}
-            Seleccionar
-          </button>
-        </Link>
       </div>
-    </article>
+    </div>
   );
 };
 
-export default FabricCard;
+export default FabricModalDetail;

@@ -1,0 +1,5 @@
+/* CLOSE BUTTON APPMODAL SWAL */
+div:where(.swal2-container) button:where(.swal2-close):focus {
+  outline: none;
+  box-shadow: none !important;
+}
