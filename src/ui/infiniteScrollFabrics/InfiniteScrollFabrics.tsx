@@ -3,7 +3,7 @@
 import { fetchProducts } from '@/app/actions';
 import { fabrics } from '@/utils/data/fabrics';
 import { Product } from '@/utils/types/products.interface';
-import { FC, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import FabricCard from '../fabricCard/FabricCard';
 
@@ -12,25 +12,27 @@ interface Props {
   nextPage?: string;
 }
 const InfiniteScrollFabrics: FC<Props> = ({ initialData, nextPage }) => {
-  console.log(nextPage);
-
   const [data, setData] = useState(initialData);
   const [next, setNext] = useState<string | undefined>(nextPage);
   const [ref, inView] = useInView();
+  const nextRef = useRef(next);
+  nextRef.current = next;
 
-  async function loadMoreProducts() {
-    if (next === undefined) return;
-    const offset = Number(new URLSearchParams(next).get('offset'));
+  const loadMoreProducts = useCallback(async () => {
+    console.log('loading more products');
+    const nextPageUrl = nextRef.current;
+    if (nextPageUrl === undefined) return;
+    const offset = Number(new URLSearchParams(nextPageUrl).get('offset'));
     const products = await fetchProducts({ offset });
     setData((prevData) => [...prevData, ...products.items]);
     setNext(products.next || undefined);
-  }
+  }, []);
 
   useEffect(() => {
     if (inView) {
       loadMoreProducts();
     }
-  }, [inView]);
+  }, [inView, loadMoreProducts]);
 
   return (
     <>
