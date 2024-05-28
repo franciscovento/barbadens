@@ -1,0 +1,21 @@
+'use client';
+
+export default function Error({
+  error,
+  reset,
+}: {
+  error: Error & { digest?: string };
+  reset: () => void;
+}) {
+  return (
+    <div className="bg-black flex items-center justify-center gap-4 flex-col w-screen h-[calc(100vh_-_4rem)] text-white">
+      <h2>Something went wrong!</h2>
+      <button
+        className="bg-app-secondary text-app-primary p-2"
+        onClick={() => reset()}
+      >
+        Try again
+      </button>
+    </div>
+  );
+}

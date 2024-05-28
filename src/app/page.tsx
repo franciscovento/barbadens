@@ -1,8 +1,10 @@
-import FabricCard from '@/ui/fabricCard/FabricCard';
+import InfiniteScrollFabrics from '@/ui/infiniteScrollFabrics/InfiniteScrollFabrics';
 import StepTitle from '@/ui/stepTitle/StepTitle';
-import { fabrics } from '@/utils/data/fabrics';
+import { fetchProducts } from './actions';
 
-export default function Home() {
+export default async function Home() {
+  const data = await fetchProducts({});
+
   return (
     <main className="app-container py-12">
       <div className="pb-8 text-center">
@@ -13,15 +15,7 @@ export default function Home() {
         </p>
       </div>
       <div className="grid grid-cols-2 gap-8 sm:grid-cols-[repeat(auto-fill,_minmax(220px,_1fr))]">
-        {fabrics.map((fabric, index) => {
-          return <FabricCard key={index} {...fabric} />;
-        })}
-        {fabrics.map((fabric, index) => {
-          return <FabricCard key={index} {...fabric} />;
-        })}
-        {fabrics.map((fabric, index) => {
-          return <FabricCard key={index} {...fabric} />;
-        })}
+        <InfiniteScrollFabrics initialData={data.items} nextPage={data.next} />
       </div>
     </main>
   );

@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 const Header = () => {
   return (
-    <header className="bg-primary h-16 w-full px-8">
+    <header className="bg-app-primary h-16 w-full px-8">
       <Link href={'/'}>
         <Image
           width={160}
