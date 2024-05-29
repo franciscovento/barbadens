@@ -41,7 +41,7 @@ const Options = () => {
         <button
           key={pocket.id}
           onClick={() => updatePocketValue(pocket.id)}
-          className="text-text py-2 rounded-md border border-text hover:scale-95 duration-300 opacity-80 hover:opacity-100"
+          className="text-app-text py-2 rounded-md border border-text hover:scale-95 duration-300 opacity-80 hover:opacity-100"
         >
           {pocket.label}
           <Image

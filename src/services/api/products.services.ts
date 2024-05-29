@@ -8,4 +8,9 @@ const getProducts = async (queries?: string) => {
   return response.data;
 };
 
-export { getProducts };
+const getProduct = async (id: string) => {
+  const response = await bsaleApi.get<ProductsResponse>(`/products/${id}.json`);
+  return response.data;
+};
+
+export { getProduct, getProducts };

@@ -41,7 +41,7 @@ const Options = () => {
         <button
           key={cuff.id}
           onClick={() => updateCuffValue(cuff.id)}
-          className="text-text py-2 rounded-md border border-text hover:scale-95 duration-300 opacity-80 hover:opacity-100"
+          className="text-app-text py-2 rounded-md border border-text hover:scale-95 duration-300 opacity-80 hover:opacity-100"
         >
           {cuff.label}
           <Image

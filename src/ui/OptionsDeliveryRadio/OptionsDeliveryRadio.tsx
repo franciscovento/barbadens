@@ -3,7 +3,7 @@ import { FC, useState } from 'react';
 import SelectCard from '../selectCard/SelectCard';
 
 interface Props {
-  onSelect: (_value: string) => void;
+  onSelect: (_value: any) => void;
   options: { title: string; description: string; id: number }[];
 }
 

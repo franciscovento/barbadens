@@ -46,7 +46,7 @@ const InfiniteScrollFabrics: FC<Props> = ({ initialData, nextPage }) => {
           price={fabrics[0].price}
           discount={product.id}
           isNew={fabrics[0].isNew}
-          id={fabrics[0].id}
+          id={product.id.toString()}
         />
       ))}
       {next && (

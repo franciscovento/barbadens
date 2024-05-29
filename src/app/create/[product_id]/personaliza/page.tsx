@@ -57,10 +57,10 @@ const Personaliza: FC<Props> = ({ params }) => {
           </div>
         </div>
       </div>
-      <div className=" bg-background">
+      <div className=" bg-app-background">
         <div className="max-w-[370px] mx-auto flex flex-col gap-4 items-center justify-center p-12">
           <Typography variant="h4">Tu camisa</Typography>
-          <Typography className="text-text text-center text-base">
+          <Typography className="text-app-text text-center text-base">
             Su camisa perfecta está casi lista. Por favor, compruebe todos los
             detalles y proceda a insertar sus medidas.
           </Typography>
@@ -75,7 +75,6 @@ const Personaliza: FC<Props> = ({ params }) => {
           </div>
         </div>
       </div>
-      {/* <Link href={`/create/${params.product_id}/medidas`}> Medidas</Link> */}
     </div>
   );
 };

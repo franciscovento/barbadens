@@ -57,10 +57,10 @@ const FabricModalDetail: FC<Props> = ({
           <span className="block text-xl font-semibold py-1">
             s/. {price}.00
           </span>
-          <p className="text-text text-xs">{description}</p>
+          <p className="text-app-text text-xs">{description}</p>
         </div>
         <div className="flex flex-col sm:flex-row items-center gap-4">
-          <span className="text-text flex gap-1 items-center text-sm">
+          <span className="text-app-text flex gap-1 items-center text-sm">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="13"

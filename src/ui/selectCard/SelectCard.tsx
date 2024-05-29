@@ -55,7 +55,7 @@ const SelectCard: FC<Props> = ({ isActive, description, onClick, title }) => {
           </defs>
         </svg>
       </h3>
-      <p className="text-xs text-text pt-2">{description}</p>
+      <p className="text-xs text-app-text pt-2">{description}</p>
     </div>
   );
 };

@@ -107,7 +107,7 @@ const MeasureForm = ({ defaultValues }: { defaultValues: Measures }) => {
                   </span>
                   <span
                     onClick={() => displayTutorial(value)}
-                    className="text-text text-sm hover:text-blue-600 cursor-pointer"
+                    className="text-app-text text-sm hover:text-blue-600 cursor-pointer"
                   >
                     Ver tutorial
                   </span>
@@ -127,10 +127,10 @@ const MeasureForm = ({ defaultValues }: { defaultValues: Measures }) => {
           })}
         </div>
       </div>
-      <div className=" bg-background">
+      <div className=" bg-app-background">
         <div className="max-w-[370px] mx-auto flex flex-col gap-4 items-center justify-center p-12">
           <Typography variant="h4">Toma tus medidas</Typography>
-          <Typography className="text-text text-center text-base">
+          <Typography className="text-app-text text-center text-base">
             Su camisa perfecta está casi lista. Por favor, compruebe todos los
             detalles y proceda a insertar sus medidas.
           </Typography>
