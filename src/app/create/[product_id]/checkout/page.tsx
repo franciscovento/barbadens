@@ -1,9 +1,10 @@
 'use client';
-import { Alert, Input } from '@/ui/materialComponents';
+import { Alert, Button, Input } from '@/ui/materialComponents';
 import OptionsDeliveryRadio from '@/ui/OptionsDeliveryRadio/OptionsDeliveryRadio';
 import StepTitle from '@/ui/stepTitle/StepTitle';
 import Image from 'next/image';
 import { useState } from 'react';
+import makePayment from './actions';
 
 export type DeliveryOptions = '0' | '1';
 const Checkout = () => {
@@ -11,6 +12,16 @@ const Checkout = () => {
   const onSelect = (id: DeliveryOptions) => {
     setSelected(id);
   };
+
+  const makeMpPayment = async () => {
+    return makePayment({
+      id: '1',
+      title: 'Camisa a la medida, cuello italiano, sin bolsillo, manga larga',
+      quantity: 1,
+      unit_price: 15.0,
+    });
+  };
+
   return (
     <div className="grid md:grid-cols-2 md:py-8 gap-8 ">
       <div>
@@ -117,6 +128,7 @@ const Checkout = () => {
         <div className="p-8">
           <h3 className="text-xl font-medium">Opciones de pago</h3>
           <div className="py-8">PAGAR CON MERCADO PAGO</div>
+          <Button onClick={makeMpPayment}>Pagar con mercadopago</Button>
         </div>
       </div>
     </div>
