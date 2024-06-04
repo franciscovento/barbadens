@@ -9,8 +9,8 @@ import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import StepTitle from '../stepTitle/StepTitle';
-import Tutorial from '../tutorial/Tutorial';
+import StepTitle from '../../atoms/stepTitle/StepTitle';
+import Tutorial from '../../atoms/tutorial/Tutorial';
 
 const tutorials = [
   {
@@ -97,14 +97,23 @@ const MeasureForm = ({ defaultValues }: { defaultValues: Measures }) => {
     >
       <div className="flex flex-col gap-4">
         <StepTitle title="Ingresa tus medidas" />
+        <div className="flex flex-col gap-2 ">
+          <p>
+            Ingresa tus medidas en centímetros. Si no sabes cómo tomar tus
+            medidas, haz clic en {' "Ver Tutorial" '} para obtener más
+            información.
+          </p>
+          <p>
+            Si ya tienes una cuenta.{' '}
+            <button className="text-app-accent underline">Ingresa aquí</button>
+          </p>
+        </div>
         <div className="flex flex-col gap-2">
           {Object.keys(defaultValues as {}).map((value) => {
             return (
               <label key={value} className="flex justify-between">
                 <div className="flex flex-col">
-                  <span className="capitalize">
-                    {valuesMeasuresMap[value as keyof Measures]}
-                  </span>
+                  <span>{valuesMeasuresMap[value as keyof Measures]}</span>
                   <span
                     onClick={() => displayTutorial(value)}
                     className="text-app-text text-sm hover:text-blue-600 cursor-pointer"
@@ -127,8 +136,8 @@ const MeasureForm = ({ defaultValues }: { defaultValues: Measures }) => {
           })}
         </div>
       </div>
-      <div className=" bg-app-background">
-        <div className="max-w-[370px] mx-auto flex flex-col gap-4 items-center justify-center p-12">
+      <div className=" bg-app-background flex items-center justify-center">
+        <div className="max-w-[380px] mx-auto flex flex-col gap-4 items-center justify-center p-12">
           <Typography variant="h4">Toma tus medidas</Typography>
           <Typography className="text-app-text text-center text-base">
             Su camisa perfecta está casi lista. Por favor, compruebe todos los
@@ -140,7 +149,19 @@ const MeasureForm = ({ defaultValues }: { defaultValues: Measures }) => {
             width={370}
             height={250}
           />
-          <div>
+          <div className="text-center">
+            <label className="block pb-4 text-center">
+              <span className="text-sm">
+                Pon un nombre al perfil para continuar:
+              </span>
+              <span className="w-full flex-1">
+                <input
+                  className="w-full border border-gray-500 rounded-xl h-8 px-2"
+                  placeholder="Ejemplo: José"
+                  type="text"
+                />
+              </span>
+            </label>
             <Button disabled={!isValid} type="submit">
               Completar paso
             </Button>

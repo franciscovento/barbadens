@@ -1,6 +1,6 @@
 'use client';
 import { FC, useState } from 'react';
-import SelectCard from '../selectCard/SelectCard';
+import SelectCard from '../../atoms/selectCard/SelectCard';
 
 interface Props {
   onSelect: (_value: any) => void;

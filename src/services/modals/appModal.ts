@@ -19,4 +19,26 @@ const appModal = customModal.mixin({
   },
 });
 
-export { appModal };
+const successToast = (message: string) => {
+  return customModal.fire({
+    icon: 'success',
+    toast: true,
+    title: message,
+    position: 'top-end',
+    timer: 3000,
+    showConfirmButton: false,
+  });
+};
+
+const errorToast = (message: string) => {
+  return customModal.fire({
+    icon: 'error',
+    toast: true,
+    title: message,
+    position: 'top-end',
+    timer: 3000,
+    showConfirmButton: false,
+  });
+};
+
+export { appModal, errorToast, successToast };

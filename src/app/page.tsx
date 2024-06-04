@@ -1,5 +1,5 @@
-import InfiniteScrollFabrics from '@/ui/infiniteScrollFabrics/InfiniteScrollFabrics';
-import StepTitle from '@/ui/stepTitle/StepTitle';
+import StepTitle from '@/ui/atoms/stepTitle/StepTitle';
+import InfiniteScrollFabrics from '@/ui/organisms/infiniteScrollFabrics/InfiniteScrollFabrics';
 import { fetchProducts } from './actions';
 
 export default async function Home() {

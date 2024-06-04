@@ -5,7 +5,7 @@ import { fabrics } from '@/utils/data/fabrics';
 import { Product } from '@/utils/types/products.interface';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
-import FabricCard from '../fabricCard/FabricCard';
+import FabricCard from '../../molecules/fabricCard/FabricCard';
 
 interface Props {
   initialData: Product[];

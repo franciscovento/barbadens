@@ -21,7 +21,7 @@ const config: Config = {
       colors: {
         'app-primary': '#212121',
         'app-secondary': '#F4F5F6',
-        'app-accent': '#FFC107',
+        'app-accent': '#016FD0',
         'app-text': '#4D5D6C',
         'app-title': '#333333',
         'app-background': '#F3f3f3',

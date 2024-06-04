@@ -2,15 +2,16 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
 export type Measures = {
-  neck: number | undefined;
+  long: number | undefined;
+  collar: number | undefined;
   chest: number | undefined;
   waist: number | undefined;
+  hip: number | undefined;
+  back: number | undefined;
+  sleeveWidth: number | undefined;
+  sleeveLong: number | undefined;
+  fist: number | undefined;
   shoulder: number | undefined;
-  left_sleeve: number | undefined;
-  right_sleeve: number | undefined;
-  left_fist: number | undefined;
-  right_fist: number | undefined;
-  length: number | undefined;
 };
 
 export type MeasuresActions = {
@@ -18,15 +19,16 @@ export type MeasuresActions = {
 };
 
 const initialState: Measures = {
-  neck: undefined,
+  collar: undefined,
   chest: undefined,
   waist: undefined,
   shoulder: undefined,
-  left_sleeve: undefined,
-  right_sleeve: undefined,
-  left_fist: undefined,
-  right_fist: undefined,
-  length: undefined,
+  sleeveWidth: undefined,
+  sleeveLong: undefined,
+  fist: undefined,
+  long: undefined,
+  back: undefined,
+  hip: undefined,
 };
 
 export const useMeasures = create<Measures & MeasuresActions>()(

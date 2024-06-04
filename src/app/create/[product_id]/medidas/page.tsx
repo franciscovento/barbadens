@@ -1,6 +1,6 @@
 'use client';
-import useMeasuresStoreData from '@/hooks/useMeasuresStoreData';
-import MeasureForm from '@/ui/measuresForm/MeasureForm';
+import MeasureForm from '@/ui/organisms/measuresForm/MeasureForm';
+import useMeasuresStoreData from '@/utils/hooks/useMeasuresStoreData';
 import { FC } from 'react';
 
 interface Props {

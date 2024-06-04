@@ -1,11 +1,11 @@
 'use client';
-import FabricDetails from '@/ui/fabricDetails/FabricDetails';
+import FabricDetails from '@/ui/atoms/fabricDetails/FabricDetails';
+import StepTitle from '@/ui/atoms/stepTitle/StepTitle';
 import { Button, Typography } from '@/ui/materialComponents';
-import SelectCollar from '@/ui/selectAtribute/selectCollar/SelectCollar';
-import SelectCuff from '@/ui/selectAtribute/selectCuff/SelectCuff';
-import SelectPocket from '@/ui/selectAtribute/selectPocket/SelectPocket';
-import SelectSleeve from '@/ui/selectAtribute/selectSleeve/SelectSleeve';
-import StepTitle from '@/ui/stepTitle/StepTitle';
+import SelectCollar from '@/ui/organisms/selectAttribute/selectCollar/SelectCollar';
+import SelectCuff from '@/ui/organisms/selectAttribute/selectCuff/SelectCuff';
+import SelectPocket from '@/ui/organisms/selectAttribute/selectPocket/SelectPocket';
+import SelectSleeve from '@/ui/organisms/selectAttribute/selectSleeve/SelectSleeve';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { FC } from 'react';
