@@ -1,28 +1,32 @@
-'use client';
-import { successToast } from '@/services/modals/appModal';
 import StepTitle from '@/ui/atoms/stepTitle/StepTitle';
 import { Input } from '@/ui/materialComponents';
 import CheckoutStepper from '@/ui/organisms/checkoutStepper/CheckoutStepper';
-import LoginModal from '@/ui/organisms/loginModal/LoginModal';
+import LoginRegisterCard from '@/ui/organisms/loginRegisterCard/LoginRegisterCard';
+import { revalidatePath } from 'next/cache';
 import Image from 'next/image';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { redirect } from 'next/navigation';
+import { FC } from 'react';
 
-const Page = () => {
-  const params = useSearchParams();
-  const router = useRouter();
-  const returnTo = params.get('returnTo');
-
+interface Props {
+  searchParams: {
+    returnTo: string;
+  };
+}
+const Page: FC<Props> = ({ searchParams }) => {
   const onLoginSuccess = async () => {
-    successToast('Inicio de sesión exitoso');
-    router.refresh();
-    router.replace(returnTo + '?new=1' || '/');
+    'use server';
+    revalidatePath(searchParams.returnTo);
+    redirect(searchParams.returnTo);
   };
 
   return (
     <div className="relative overflow-hidden">
       <div className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2  z-40">
         <div className=" bg-white animate-zoomIn p-8 shadow-lg rounded-lg  max-w-full w-[500px]">
-          <LoginModal onLoginSuccess={onLoginSuccess} defaultForm="register" />
+          <LoginRegisterCard
+            onLoginSuccess={onLoginSuccess}
+            defaultForm="register"
+          />
         </div>
       </div>
       <div className="fixed w-full h-full bg-[#00000042] top-0 left-0 z-20"></div>

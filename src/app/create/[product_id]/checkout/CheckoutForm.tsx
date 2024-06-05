@@ -12,6 +12,7 @@ const CheckoutForm = () => {
   const onSelect = (id: DeliveryOptions) => {
     setSelected(id);
   };
+
   return (
     <div className="grid md:grid-cols-2 md:py-8 gap-8">
       <div>

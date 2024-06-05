@@ -20,6 +20,7 @@ async function Checkout({ params }: Props) {
   if (!user) {
     redirect(`/auth/checkout?returnTo=/create/${params.product_id}/checkout`);
   }
+
   return (
     <div>
       <CheckoutForm />

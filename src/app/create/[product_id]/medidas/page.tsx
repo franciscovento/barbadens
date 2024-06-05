@@ -3,15 +3,10 @@ import MeasureForm from '@/ui/organisms/measuresForm/MeasureForm';
 import useMeasuresStoreData from '@/utils/hooks/useMeasuresStoreData';
 import { FC } from 'react';
 
-interface Props {
-  params: {
-    product_id: string;
-  };
-}
-const Medidas: FC<Props> = () => {
+const Medidas: FC = () => {
   const data = useMeasuresStoreData();
-
-  return <MeasureForm defaultValues={data} />;
+  const { profileName, ...measures } = data;
+  return <MeasureForm measures={measures} profileName={profileName} />;
 };
 
 export default Medidas;

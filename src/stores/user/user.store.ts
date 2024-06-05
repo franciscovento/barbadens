@@ -1,18 +1,23 @@
 import { create } from 'zustand';
 
 export type User = {
-  id: string | null;
-  email: string | null;
-  type: 'client' | 'staff' | 'admin';
+  id: string | undefined;
+  email: string | undefined;
+  type: UserRoles;
 };
 
+export type UserRoles = 'client' | 'staff' | 'admin';
+
 export type UserActions = {
+  setUserData: (data: User) => void;
   clearUserData: () => void;
 };
 
 export const useUser = create<User & UserActions>()((set) => ({
-  id: null,
-  email: null,
+  id: undefined,
+  email: undefined,
   type: 'client',
-  clearUserData: () => set({ id: null, email: null, type: 'client' }),
+  setUserData: (data) =>
+    set({ id: data.id, email: data.email, type: data.type }),
+  clearUserData: () => set({ id: undefined, email: undefined, type: 'client' }),
 }));

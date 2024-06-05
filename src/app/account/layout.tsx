@@ -12,7 +12,7 @@ export default async function Layout({ children }: Props) {
 
   // Redirect to login page if not authenticated
   if (!user) {
-    redirect('/auth/login');
+    redirect('/auth');
   }
 
   return <div>{children}</div>;

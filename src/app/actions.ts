@@ -1,5 +1,5 @@
 'use server';
-import { getProducts } from '@/services/api/products.services';
+import { getProducts } from '@/services/api/bsale/products.bsale.services';
 
 export async function fetchProducts({
   offset = 0,

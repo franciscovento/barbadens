@@ -51,7 +51,13 @@ const tutorials = [
   },
 ];
 
-const MeasureForm = ({ defaultValues }: { defaultValues: Measures }) => {
+const MeasureForm = ({
+  measures,
+  profileName,
+}: {
+  measures: Partial<Measures>;
+  profileName: string | undefined;
+}) => {
   const router = useRouter();
   const params = useParams();
   const updateMeasures = useMeasures((state) => state.updateMeasures);
@@ -61,7 +67,10 @@ const MeasureForm = ({ defaultValues }: { defaultValues: Measures }) => {
     reset,
     formState: { isValid },
   } = useForm<Measures>({
-    defaultValues,
+    defaultValues: {
+      ...measures,
+      profileName,
+    },
   });
 
   const onSubmit = (data: Measures) => {
@@ -87,8 +96,8 @@ const MeasureForm = ({ defaultValues }: { defaultValues: Measures }) => {
   };
 
   useEffect(() => {
-    reset(defaultValues);
-  }, [defaultValues, reset]);
+    reset(measures);
+  }, [measures, reset]);
 
   return (
     <form
@@ -109,7 +118,7 @@ const MeasureForm = ({ defaultValues }: { defaultValues: Measures }) => {
           </p>
         </div>
         <div className="flex flex-col gap-2">
-          {Object.keys(defaultValues as {}).map((value) => {
+          {Object.keys(measures as {}).map((value) => {
             return (
               <label key={value} className="flex justify-between">
                 <div className="flex flex-col">
@@ -156,6 +165,7 @@ const MeasureForm = ({ defaultValues }: { defaultValues: Measures }) => {
               </span>
               <span className="w-full flex-1">
                 <input
+                  {...register('profileName', { required: true })}
                   className="w-full border border-gray-500 rounded-xl h-8 px-2"
                   placeholder="Ejemplo: José"
                   type="text"

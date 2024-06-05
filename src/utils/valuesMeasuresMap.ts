@@ -9,4 +9,5 @@ export const valuesMeasuresMap = {
   long: 'Medida de Largo',
   shoulder: 'Medida de Hombro',
   fist: 'Medida de Puño',
+  profileName: 'Nombre del Perfil',
 };

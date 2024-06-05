@@ -1,9 +1,7 @@
 'use client';
-import { appModal } from '@/services/modals/appModal';
 import StepTitle from '@/ui/atoms/stepTitle/StepTitle';
 import { Button, Input } from '@/ui/materialComponents';
-import { createClient } from '@/utils/supabase/client';
-import { useRouter } from 'next/navigation';
+import useAuth from '@/utils/hooks/useAuth.hooks';
 import { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 interface LoginProps {
@@ -17,15 +15,17 @@ interface Props {
   onLoginSuccess: () => void;
 }
 
-const LoginModal: FC<Props> = ({
+const LoginRegisterCard: FC<Props> = ({
   onLoginSuccess,
   defaultForm = 'register',
 }) => {
-  const router = useRouter();
+  const SUCCESS_MESSAGE =
+    'Se creó la cuenta, confirma tu correo e inicia sesión';
+  const { login, signUp } = useAuth();
   const [formType, setFormType] = useState<'login' | 'register'>(defaultForm);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState<boolean>(false);
-
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const {
     register,
     watch,
@@ -47,32 +47,22 @@ const LoginModal: FC<Props> = ({
   const passwordsMatch = watchPassword === watchRepeatPassword;
 
   const loginUser = async (data: LoginProps) => {
-    const supabase = createClient();
-    const { error } = await supabase.auth.signInWithPassword({
-      email: data.email,
-      password: data.password,
-    });
+    const { error } = await login({ data });
     if (error) {
       return setError('root', { message: error.message });
     }
-    appModal.close();
     return onLoginSuccess();
   };
 
   const registerUser = async (data: LoginProps) => {
-    const supabase = createClient();
-    const { error } = await supabase.auth.signUp({
+    const { error } = await signUp({
       email: data.email,
       password: data.password,
-      options: {
-        data: {
-          type: 'client',
-        },
-      },
     });
     if (error) {
       return setError('root', { message: error.message });
     }
+    setSuccessMessage(SUCCESS_MESSAGE);
     return setFormType('login');
   };
 
@@ -83,6 +73,7 @@ const LoginModal: FC<Props> = ({
     if (value === 'register') {
       setFormType('register');
     }
+    setSuccessMessage(null);
     reset();
   };
 
@@ -94,14 +85,13 @@ const LoginModal: FC<Props> = ({
       />
       {formType === 'login' && (
         <p>
-          Para continuar debes{' '}
+          Para continuar debes acceder a tu cuenta o{' '}
           <span
             onClick={() => changueFormType('register')}
             className="text-app-accent underline cursor-pointer"
           >
-            acceder a tu cuenta
-          </span>{' '}
-          o create una nueva:
+            create una nueva:
+          </span>
         </p>
       )}
 
@@ -232,6 +222,11 @@ const LoginModal: FC<Props> = ({
             {errors.root.message}
           </div>
         )}
+        {successMessage && (
+          <div className="text-sm text-center bg-green-500 text-white rounded-md p-1">
+            {successMessage}
+          </div>
+        )}
         <div className="text-center pt-2">
           {formType === 'login' && (
             <Button
@@ -260,4 +255,4 @@ const LoginModal: FC<Props> = ({
   );
 };
 
-export default LoginModal;
+export default LoginRegisterCard;

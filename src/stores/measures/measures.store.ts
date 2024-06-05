@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
 export type Measures = {
+  profileName: string | undefined;
   long: number | undefined;
   collar: number | undefined;
   chest: number | undefined;
@@ -29,6 +30,7 @@ const initialState: Measures = {
   long: undefined,
   back: undefined,
   hip: undefined,
+  profileName: undefined,
 };
 
 export const useMeasures = create<Measures & MeasuresActions>()(
@@ -38,7 +40,7 @@ export const useMeasures = create<Measures & MeasuresActions>()(
       updateMeasures: (measures) => set(measures),
     }),
     {
-      name: 'customShirt',
+      name: 'measures',
       storage: createJSONStorage(() => sessionStorage),
     }
   )

@@ -11,6 +11,7 @@ const useMeasuresStoreData = () => {
   const hip = useMeasures((state) => state).hip;
   const waist = useMeasures((state) => state).waist;
   const fist = useMeasures((state) => state).fist;
+  const profileName = useMeasures((state) => state).profileName;
 
   return {
     chest,
@@ -23,6 +24,7 @@ const useMeasuresStoreData = () => {
     hip,
     waist,
     fist,
+    profileName,
   };
 };
 
