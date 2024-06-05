@@ -48,6 +48,7 @@ const useAuth = () => {
       };
     }
     clearUserData();
+
     return {
       data: {
         message: 'Logged out successfully.',

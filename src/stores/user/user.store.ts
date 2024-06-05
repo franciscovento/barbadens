@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
 
 export type User = {
   id: string | undefined;
@@ -13,11 +14,24 @@ export type UserActions = {
   clearUserData: () => void;
 };
 
-export const useUser = create<User & UserActions>()((set) => ({
+const initialState: User = {
   id: undefined,
   email: undefined,
   type: 'client',
-  setUserData: (data) =>
-    set({ id: data.id, email: data.email, type: data.type }),
-  clearUserData: () => set({ id: undefined, email: undefined, type: 'client' }),
-}));
+};
+
+export const useUser = create<User & UserActions>()(
+  persist(
+    (set) => ({
+      ...initialState,
+      clearUserData: () =>
+        set({ id: undefined, email: undefined, type: 'client' }),
+      setUserData: (data) =>
+        set({ id: data.id, email: data.email, type: data.type }),
+    }),
+    {
+      name: 'user',
+      storage: createJSONStorage(() => localStorage),
+    }
+  )
+);

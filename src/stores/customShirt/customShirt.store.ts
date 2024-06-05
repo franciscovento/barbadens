@@ -29,7 +29,7 @@ export const useCustomShirt = create<CustomShirtState & CustomShirtActions>()(
     }),
     {
       name: 'customShirt',
-      storage: createJSONStorage(() => sessionStorage),
+      storage: createJSONStorage(() => localStorage),
     }
   )
 );

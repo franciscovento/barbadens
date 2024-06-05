@@ -4,16 +4,18 @@ import { errorToast } from '@/services/modals/appModal';
 import { useUser } from '@/stores/user/user.store';
 import useAuth from '@/utils/hooks/useAuth.hooks';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const HeaderLogin = () => {
   const { email } = useUser();
   const { logout } = useAuth();
-
+  const router = useRouter();
   const handleLogout = async () => {
     const response = await logout();
     if (response.error) {
       errorToast(response.error.message);
     }
+    router.refresh();
   };
 
   return (

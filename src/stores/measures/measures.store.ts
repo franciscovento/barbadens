@@ -41,7 +41,7 @@ export const useMeasures = create<Measures & MeasuresActions>()(
     }),
     {
       name: 'measures',
-      storage: createJSONStorage(() => sessionStorage),
+      storage: createJSONStorage(() => localStorage),
     }
   )
 );
