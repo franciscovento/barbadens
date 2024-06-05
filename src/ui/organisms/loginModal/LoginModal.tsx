@@ -3,6 +3,7 @@ import { appModal } from '@/services/modals/appModal';
 import StepTitle from '@/ui/atoms/stepTitle/StepTitle';
 import { Button, Input } from '@/ui/materialComponents';
 import { createClient } from '@/utils/supabase/client';
+import { useRouter } from 'next/navigation';
 import { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 interface LoginProps {
@@ -20,6 +21,7 @@ const LoginModal: FC<Props> = ({
   onLoginSuccess,
   defaultForm = 'register',
 }) => {
+  const router = useRouter();
   const [formType, setFormType] = useState<'login' | 'register'>(defaultForm);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState<boolean>(false);
@@ -85,7 +87,7 @@ const LoginModal: FC<Props> = ({
   };
 
   return (
-    <div className="text-left pt-4 flex flex-col gap-4">
+    <div className="text-left pt-4 flex flex-col gap-4 ">
       <StepTitle
         title={formType === 'login' ? 'Inicia sesión' : 'Crea una cuenta'}
         ribbon="center"

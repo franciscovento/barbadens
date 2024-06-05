@@ -29,6 +29,16 @@ const config: Config = {
       height: {
         'app-screen': 'calc(100vh_-_4rem)',
       },
+      animation: {
+        zoomIn: 'zoomIn 0.3s ease-out both',
+      },
+      keyframes: {
+        zoomIn: {
+          '0%': { scale: '0.5', opacity: '0' },
+          '90%': { scale: '1.05', opacity: '1' },
+          '100%': { opacity: '1', scale: '1' },
+        },
+      },
     },
   },
   plugins: [],

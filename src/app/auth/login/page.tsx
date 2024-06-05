@@ -51,7 +51,7 @@ const LoginPage = () => {
         }
         console.log(response);
 
-        // return router.push('/account');
+        return router.push('/account');
       }
     } catch (error) {
       return console.error(error);

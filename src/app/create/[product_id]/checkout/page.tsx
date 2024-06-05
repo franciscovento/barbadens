@@ -1,22 +1,30 @@
 import { createClient } from '@/utils/supabase/server';
+import { redirect } from 'next/navigation';
 import CheckoutForm from './CheckoutForm';
-import MockCheckoutForm from './MockCheckoutForm';
 
 export type DeliveryOptions = '0' | '1';
-const Checkout = async () => {
+
+interface Props {
+  params: {
+    product_id: string;
+  };
+}
+
+async function Checkout({ params }: Props) {
   const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  const { data, error } = await supabase.auth.getUser();
-
-  if (error) {
-    return <MockCheckoutForm />;
+  // Redirect to login page if not authenticated
+  if (!user) {
+    redirect(`/auth/checkout?returnTo=/create/${params.product_id}/checkout`);
   }
-
   return (
     <div>
       <CheckoutForm />
     </div>
   );
-};
+}
 
 export default Checkout;
