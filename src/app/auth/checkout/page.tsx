@@ -22,11 +22,13 @@ const Page: FC<Props> = ({ searchParams }) => {
   return (
     <div className="relative overflow-hidden">
       <div className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2  z-40">
-        <div className=" bg-white animate-zoomIn p-8 shadow-lg rounded-lg  max-w-full w-[500px]">
-          <LoginRegisterCard
-            onLoginSuccess={onLoginSuccess}
-            defaultForm="register"
-          />
+        <div className="w-screen overflow-hidden">
+          <div className=" bg-white animate-zoomIn p-8 shadow-lg rounded-lg  max-w-full w-[400px] mx-auto">
+            <LoginRegisterCard
+              onLoginSuccess={onLoginSuccess}
+              defaultForm="register"
+            />
+          </div>
         </div>
       </div>
       <div className="fixed w-full h-full bg-[#00000042] top-0 left-0 z-20"></div>
