@@ -14,7 +14,10 @@ export async function POST(request: Request) {
   if (authError) {
     return NextResponse.json({
       data: authUser,
-      error: authError,
+      error: {
+        ...authError,
+        message: 'Credenciales no válidas',
+      },
     });
   }
 
