@@ -1,5 +1,4 @@
 import {
-  getUser,
   LoginProps,
   login as loginSupabase,
   logout as logoutSupabase,
@@ -22,19 +21,12 @@ const useAuth = () => {
         error: authError,
       };
     }
-    const { data: userData, error: userError } = await getUser();
-    if (userError) {
-      return {
-        data: null,
-        error: userError,
-      };
-    }
 
     setUserData({
-      email: userData.user.email,
-      id: userData.user.id,
-      type: userData.user.id as UserRoles,
-      profiles: userData.profiles,
+      email: authData.user.email,
+      id: authData.user.id,
+      type: authData.user.id as UserRoles,
+      profiles: authData.profiles,
     });
 
     return {

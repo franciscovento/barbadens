@@ -13,7 +13,7 @@ export async function POST(request: Request) {
 
   if (authError) {
     return NextResponse.json({
-      data: null,
+      data: authUser,
       error: authError,
     });
   }

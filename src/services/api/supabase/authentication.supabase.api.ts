@@ -11,11 +11,14 @@ export interface LoginProps {
 const supabase = createClient();
 
 export const login = async ({ email, password }: LoginProps) => {
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  });
-  return { data, error };
+  const { data } = await axios.post<{
+    data: { user: User; profiles: Profile[] };
+    error: PostgrestError;
+  }>('/api/auth', { email, password });
+
+  return {
+    ...data,
+  };
 };
 
 export const logout = async (): Promise<{ error: AuthError | null }> => {

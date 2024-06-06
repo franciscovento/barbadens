@@ -5,7 +5,7 @@ import { Measures, useMeasures } from '@/stores';
 import { useUser } from '@/stores/user/user.store';
 import { Button } from '@/ui/materialComponents';
 import { valuesMeasuresMap } from '@/utils/valuesMeasuresMap';
-import { Typography } from '@material-tailwind/react';
+import { Option, Select, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
@@ -141,6 +141,18 @@ const MeasureForm = ({
                 Ingresa aquí
               </button>
             </p>
+          )}
+          {profiles.length > 0 && (
+            <div className="py-2">
+              <Select label="Selecciona un perfil">
+                {profiles.map((profile) => (
+                  <Option value={profile.id} key={profile.id}>
+                    {profile.profile_name}
+                  </Option>
+                ))}
+              </Select>
+              <p className="text-sm pt-2">O crea uno nuevo: </p>
+            </div>
           )}
         </div>
         <div className="flex flex-col gap-2">
