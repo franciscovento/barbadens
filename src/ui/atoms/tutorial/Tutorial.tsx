@@ -1,4 +1,4 @@
-import { StoreProfileMeasures } from '@/stores';
+import { MeasuresStore } from '@/stores';
 import { valuesMeasuresMap } from '@/utils/valuesMeasuresMap';
 import { FC } from 'react';
 import YouTube from 'react-youtube';
@@ -13,7 +13,7 @@ const Tutorial: FC<Props> = ({ description, title, tutorialId }) => {
   return (
     <div className="grid place-content-center">
       <div>
-        <h2>{valuesMeasuresMap[title as keyof StoreProfileMeasures]}</h2>
+        <h2>{valuesMeasuresMap[title as keyof MeasuresStore]}</h2>
         <p>{description}</p>
       </div>
       <div className="py-4">
