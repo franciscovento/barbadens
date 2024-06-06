@@ -1,5 +1,7 @@
+import { Profile, User } from '@/stores/user/user.store';
 import { createClient } from '@/utils/supabase/client';
-import { AuthError } from '@supabase/supabase-js';
+import { AuthError, PostgrestError } from '@supabase/supabase-js';
+import axios from 'axios';
 
 export interface LoginProps {
   email: string;
@@ -33,4 +35,15 @@ export const signUpWithEmail = async ({ email, password }: LoginProps) => {
     },
   });
   return { data, error };
+};
+
+export const getUser = async () => {
+  const { data } = await axios.get<{
+    data: { user: User; profiles: Profile[] };
+    error: PostgrestError;
+  }>('/api/user');
+
+  return {
+    ...data,
+  };
 };

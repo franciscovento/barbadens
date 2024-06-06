@@ -1,10 +1,11 @@
 import {
+  getUser,
   LoginProps,
   login as loginSupabase,
   logout as logoutSupabase,
   signUpWithEmail as signUpWithEmailSupabase,
 } from '@/services/api/supabase/authentication.supabase.api';
-import { useUser } from '@/stores/user/user.store';
+import { UserRoles, useUser } from '@/stores/user/user.store';
 
 interface AuthProps {
   data: LoginProps;
@@ -14,25 +15,28 @@ const useAuth = () => {
   const { setUserData, clearUserData } = useUser();
 
   const login = async ({ data }: AuthProps) => {
-    const { data: authData, error } = await loginSupabase(data);
-    if (error) {
+    const { data: authData, error: authError } = await loginSupabase(data);
+    if (authError) {
       return {
         data: null,
-        error: error,
+        error: authError,
       };
     }
-    if (authData.user) {
-      const {
-        id,
-        email,
-        user_metadata: { type },
-      } = authData.user;
-      setUserData({
-        email,
-        id,
-        type,
-      });
+    const { data: userData, error: userError } = await getUser();
+    if (userError) {
+      return {
+        data: null,
+        error: userError,
+      };
     }
+
+    setUserData({
+      email: userData.user.email,
+      id: userData.user.id,
+      type: userData.user.id as UserRoles,
+      profiles: userData.profiles,
+    });
+
     return {
       data: authData,
       error: null,

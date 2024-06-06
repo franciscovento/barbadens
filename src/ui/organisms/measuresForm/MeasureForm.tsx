@@ -2,6 +2,7 @@
 
 import { appModal } from '@/services/modals/appModal';
 import { Measures, useMeasures } from '@/stores';
+import { useUser } from '@/stores/user/user.store';
 import { Button } from '@/ui/materialComponents';
 import { valuesMeasuresMap } from '@/utils/valuesMeasuresMap';
 import { Typography } from '@material-tailwind/react';
@@ -11,6 +12,7 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import StepTitle from '../../atoms/stepTitle/StepTitle';
 import Tutorial from '../../atoms/tutorial/Tutorial';
+import LoginRegisterCard from '../loginRegisterCard/LoginRegisterCard';
 
 const tutorials = [
   {
@@ -58,6 +60,7 @@ const MeasureForm = ({
   measures: Partial<Measures>;
   profileName: string | undefined;
 }) => {
+  const { profiles } = useUser();
   const router = useRouter();
   const params = useParams();
   const updateMeasures = useMeasures((state) => state.updateMeasures);
@@ -95,6 +98,21 @@ const MeasureForm = ({
     }
   };
 
+  const displayLoginModal = () => {
+    const onLoginSuccess = () => {
+      appModal.close();
+    };
+
+    appModal.fire({
+      html: (
+        <LoginRegisterCard
+          onLoginSuccess={onLoginSuccess}
+          defaultForm="login"
+        />
+      ),
+    });
+  };
+
   useEffect(() => {
     reset(measures);
   }, [measures, reset]);
@@ -112,10 +130,18 @@ const MeasureForm = ({
             medidas, haz clic en {' "Ver Tutorial" '} para obtener más
             información.
           </p>
-          <p>
-            Si ya tienes una cuenta.{' '}
-            <button className="text-app-accent underline">Ingresa aquí</button>
-          </p>
+          {profiles.length === 0 && (
+            <p>
+              Si ya tienes una cuenta.{' '}
+              <button
+                onClick={displayLoginModal}
+                type="button"
+                className="text-app-accent underline"
+              >
+                Ingresa aquí
+              </button>
+            </p>
+          )}
         </div>
         <div className="flex flex-col gap-2">
           {Object.keys(measures as {}).map((value) => {

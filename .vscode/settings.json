@@ -13,6 +13,7 @@
     "clsx",
     "cuban",
     "italian",
+    "Postgrest",
     "supabase",
     "zustand"
   ]
