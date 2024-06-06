@@ -1,5 +1,6 @@
-import { Profile, User } from '@/stores/user/user.store';
+import { User } from '@/stores/user/user.store';
 import { createClient } from '@/utils/supabase/client';
+import { Profile } from '@/utils/types/profile.interface';
 import { AuthError, PostgrestError } from '@supabase/supabase-js';
 import axios from 'axios';
 

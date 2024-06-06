@@ -1,19 +1,12 @@
+import { ProfileWithMeasures } from '@/utils/types/profile.interface';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
-
-export interface Profile {
-  id: string;
-  created_at: string;
-  user_id: string;
-  profile_name: string;
-  birth_date?: string;
-}
 
 export type User = {
   id: string | undefined;
   email: string | undefined;
   type: UserRoles;
-  profiles: Profile[];
+  profiles: ProfileWithMeasures[];
 };
 
 export type UserRoles = 'client' | 'staff' | 'admin';

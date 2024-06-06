@@ -1,44 +1,49 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
-export type Measures = {
-  profileName: string | undefined;
-  long: number | undefined;
-  collar: number | undefined;
+export type MeasuresStore = {
+  id?: string;
+  profile_name: string;
+  back: number | undefined;
   chest: number | undefined;
+  collar: number | undefined;
   waist: number | undefined;
   hip: number | undefined;
-  back: number | undefined;
-  sleeveWidth: number | undefined;
-  sleeveLong: number | undefined;
+  sleeve_width: number | undefined;
+  sleeve_long: number | undefined;
   fist: number | undefined;
   shoulder: number | undefined;
+  long: number | undefined;
 };
 
 export type MeasuresActions = {
-  updateMeasures: (_measures: Measures) => void;
+  updateMeasures: (_measures: MeasuresStore) => void;
+  resetMeasuresStore: () => void;
 };
 
-const initialState: Measures = {
-  collar: undefined,
-  chest: undefined,
-  waist: undefined,
-  shoulder: undefined,
-  sleeveWidth: undefined,
-  sleeveLong: undefined,
-  fist: undefined,
-  long: undefined,
+const initialState: MeasuresStore = {
+  id: '',
+  profile_name: '',
   back: undefined,
+  chest: undefined,
+  collar: undefined,
+  waist: undefined,
   hip: undefined,
-  profileName: undefined,
+  sleeve_width: undefined,
+  sleeve_long: undefined,
+  fist: undefined,
+  shoulder: undefined,
+  long: undefined,
 };
 
-export const useMeasures = create<Measures & MeasuresActions>()(
+export const useMeasures = create<MeasuresStore & MeasuresActions>()(
   persist(
     (set) => ({
       ...initialState,
       updateMeasures: (measures) => set(measures),
+      resetMeasuresStore: () => set(initialState),
     }),
+
     {
       name: 'measures',
       storage: createJSONStorage(() => localStorage),

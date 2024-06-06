@@ -4,6 +4,7 @@ import {
   logout as logoutSupabase,
   signUpWithEmail as signUpWithEmailSupabase,
 } from '@/services/api/supabase/authentication.supabase.api';
+import { useMeasures } from '@/stores';
 import { UserRoles, useUser } from '@/stores/user/user.store';
 
 interface AuthProps {
@@ -12,6 +13,7 @@ interface AuthProps {
 
 const useAuth = () => {
   const { setUserData, clearUserData } = useUser();
+  const { resetMeasuresStore } = useMeasures();
 
   const login = async ({ data }: AuthProps) => {
     const { data: authData, error: authError } = await loginSupabase(data);
@@ -44,6 +46,7 @@ const useAuth = () => {
       };
     }
     clearUserData();
+    resetMeasuresStore();
 
     return {
       data: {

@@ -23,7 +23,7 @@ export async function POST(request: Request) {
 
   const { data: profileData, error: profileError } = await supabase
     .from('profiles')
-    .select('*');
+    .select('*, profile_measures(*)');
   if (profileError) {
     return NextResponse.json({ error: profileError, data: profileData });
   }

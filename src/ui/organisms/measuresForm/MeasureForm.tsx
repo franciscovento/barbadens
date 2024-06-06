@@ -1,13 +1,12 @@
 'use client';
 
 import { appModal } from '@/services/modals/appModal';
-import { Measures, useMeasures } from '@/stores';
+import { MeasuresStore, useMeasures } from '@/stores';
 import { useUser } from '@/stores/user/user.store';
 import { Button } from '@/ui/materialComponents';
 import { valuesMeasuresMap } from '@/utils/valuesMeasuresMap';
 import { Option, Select, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
-import { useParams, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import StepTitle from '../../atoms/stepTitle/StepTitle';
@@ -16,11 +15,11 @@ import LoginRegisterCard from '../loginRegisterCard/LoginRegisterCard';
 
 const tutorials = [
   {
-    key: 'neck',
+    key: 'long',
     tutorial: '2gxQ_d9MpGM',
   },
   {
-    key: 'shoulder',
+    key: 'collar',
     tutorial: 'gxQ_d9MpGM',
   },
   {
@@ -32,60 +31,100 @@ const tutorials = [
     tutorial: '2gxQ_d9MpGM',
   },
   {
-    key: 'left_fist',
+    key: 'hip',
     tutorial: '2gxQ_d9MpGM',
   },
   {
-    key: 'right_fist',
+    key: 'back',
     tutorial: '2gxQ_d9MpGM',
   },
   {
-    key: 'left_sleeve',
+    key: 'sleeve_long',
     tutorial: '2gxQ_d9MpGM',
   },
   {
-    key: 'right_sleeve',
+    key: 'sleeve_width',
     tutorial: '2gxQ_d9MpGM',
   },
   {
-    key: 'length',
+    key: 'fist',
+    tutorial: '2gxQ_d9MpGM',
+  },
+  {
+    key: 'shoulder',
     tutorial: '2gxQ_d9MpGM',
   },
 ];
 
-const MeasureForm = ({
-  measures,
-  profileName,
-}: {
-  measures: Partial<Measures>;
-  profileName: string | undefined;
-}) => {
+interface Props {
+  profileMeasures: MeasuresStore;
+}
+
+const measures = [
+  'long',
+  'collar',
+  'chest',
+  'waist',
+  'hip',
+  'back',
+  'sleeve_long',
+  'sleeve_width',
+  'fist',
+  'shoulder',
+];
+
+const MeasureForm = ({ profileMeasures }: Props) => {
   const { profiles } = useUser();
-  const router = useRouter();
-  const params = useParams();
   const updateMeasures = useMeasures((state) => state.updateMeasures);
+  const resetMeasures = useMeasures((state) => state.resetMeasuresStore);
+
   const {
     register,
     handleSubmit,
     reset,
     formState: { isValid },
-  } = useForm<Measures>({
+  } = useForm<MeasuresStore>({
     defaultValues: {
-      ...measures,
-      profileName,
+      id: profileMeasures.id || '',
+      profile_name: profileMeasures.profile_name || '',
+      back: profileMeasures.back || undefined,
+      chest: profileMeasures.chest || undefined,
+      collar: profileMeasures.collar || undefined,
+      waist: profileMeasures.waist || undefined,
+      hip: profileMeasures.hip || undefined,
+      sleeve_width: profileMeasures.sleeve_width || undefined,
+      sleeve_long: profileMeasures.sleeve_long || undefined,
+      fist: profileMeasures.fist || undefined,
+      shoulder: profileMeasures.shoulder || undefined,
+      long: profileMeasures.long || undefined,
     },
   });
 
-  const onSubmit = (data: Measures) => {
+  const onSubmit = (data: MeasuresStore) => {
+    console.log(data);
     updateMeasures(data);
-    router.push(`/create/${params.product_id}/checkout`);
+    // router.push(`/create/${params.product_id}/checkout`);
+  };
+
+  const onSelectProfile = (profileId: string) => {
+    reset();
+    const profile = profiles.find((p) => p.id === profileId);
+
+    if (profile) {
+      const profileMeasures = profile?.profile_measures;
+      reset({
+        profile_name: profile.profile_name,
+        id: profile.id,
+        ...profileMeasures,
+      });
+    }
   };
 
   const displayTutorial = (key: string) => {
     const tutorial = tutorials.find((t) => t.key === key);
     if (tutorial) {
       appModal.fire({
-        title: valuesMeasuresMap[tutorial.key as keyof Measures],
+        title: valuesMeasuresMap[tutorial.key as keyof MeasuresStore],
         html: (
           <Tutorial
             title={tutorial.key}
@@ -113,9 +152,28 @@ const MeasureForm = ({
     });
   };
 
+  const clearForm = async () => {
+    reset();
+    resetMeasures();
+    reset({
+      profile_name: '',
+      id: '',
+      back: undefined,
+      chest: undefined,
+      collar: undefined,
+      waist: undefined,
+      hip: undefined,
+      sleeve_width: undefined,
+      sleeve_long: undefined,
+      fist: undefined,
+      shoulder: undefined,
+      long: undefined,
+    });
+  };
+
   useEffect(() => {
-    reset(measures);
-  }, [measures, reset]);
+    reset(profileMeasures);
+  }, [profileMeasures]);
 
   return (
     <form
@@ -144,23 +202,33 @@ const MeasureForm = ({
           )}
           {profiles.length > 0 && (
             <div className="py-2">
-              <Select label="Selecciona un perfil">
+              <Select
+                label="Selecciona un perfil"
+                onChange={(value) => onSelectProfile(value!)}
+                value={profileMeasures.id}
+              >
                 {profiles.map((profile) => (
                   <Option value={profile.id} key={profile.id}>
                     {profile.profile_name}
                   </Option>
                 ))}
               </Select>
-              <p className="text-sm pt-2">O crea uno nuevo: </p>
+              <button
+                type="button"
+                onClick={() => clearForm()}
+                className="text-sm pt-2 cursor-pointer underline text-app-accent"
+              >
+                O crea uno nuevo:{' '}
+              </button>
             </div>
           )}
         </div>
         <div className="flex flex-col gap-2">
-          {Object.keys(measures as {}).map((value) => {
+          {measures.map((value, index) => {
             return (
-              <label key={value} className="flex justify-between">
+              <label key={index} className="flex justify-between">
                 <div className="flex flex-col">
-                  <span>{valuesMeasuresMap[value as keyof Measures]}</span>
+                  <span>{value}</span>
                   <span
                     onClick={() => displayTutorial(value)}
                     className="text-app-text text-sm hover:text-blue-600 cursor-pointer"
@@ -171,7 +239,7 @@ const MeasureForm = ({
                 <div>
                   <input
                     className="border border-gray-500 rounded-xl w-20 h-8 px-2"
-                    {...register(value as keyof Measures, {
+                    {...register(value as keyof MeasuresStore, {
                       required: true,
                     })}
                     type="number"
@@ -203,7 +271,7 @@ const MeasureForm = ({
               </span>
               <span className="w-full flex-1">
                 <input
-                  {...register('profileName', { required: true })}
+                  {...register('profile_name', { required: true })}
                   className="w-full border border-gray-500 rounded-xl h-8 px-2"
                   placeholder="Ejemplo: José"
                   type="text"

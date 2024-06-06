@@ -5,8 +5,7 @@ import { FC } from 'react';
 
 const Medidas: FC = () => {
   const data = useMeasuresStoreData();
-  const { profileName, ...measures } = data;
-  return <MeasureForm measures={measures} profileName={profileName} />;
+  return <MeasureForm profileMeasures={data} />;
 };
 
 export default Medidas;
