@@ -7,6 +7,7 @@ import SelectAttribute from '../SelectAttribute';
 
 const SelectSleeve = () => {
   const sleeve = useCustomShirt((state) => state.sleeve_type);
+  const currentSleeve = sleeveOptions.find((s) => s.label === sleeve);
 
   const openModel = () => {
     appModal.fire({
@@ -18,8 +19,8 @@ const SelectSleeve = () => {
   return (
     <SelectAttribute
       title="Tipo de manga"
-      name={sleeve}
-      image="/images/option-test.png"
+      name={currentSleeve?.label || '-'}
+      image={currentSleeve?.image || '/images/option-test.png'}
       onClick={openModel}
     />
   );
@@ -29,10 +30,16 @@ export default SelectSleeve;
 
 const Options = () => {
   const updateSleeve = useCustomShirt((state) => state.updateSleeveType);
-
+  const setCuffToNull = useCustomShirt((state) => state.setCuffToNull);
+  const updateCuff = useCustomShirt((state) => state.updateCuffId);
   const updateSleeveModal = (sleeve: SleeveType) => {
     updateSleeve(sleeve);
-    appModal.clickConfirm();
+    if (sleeve === 'manga corta') {
+      setCuffToNull();
+      return appModal.clickConfirm();
+    }
+    updateCuff(1);
+    return appModal.clickConfirm();
   };
 
   return (

@@ -24,4 +24,15 @@ async function getShirtCollarOptions() {
   };
 }
 
-export { getShirtCollarOptions, getShirtCuffOptions };
+async function getShirtPocketOptions() {
+  const { data, error } = await supabase
+    .from('shirt_pockets')
+    .select('*')
+    .returns<Cuff[]>();
+  return {
+    data,
+    error,
+  };
+}
+
+export { getShirtCollarOptions, getShirtCuffOptions, getShirtPocketOptions };

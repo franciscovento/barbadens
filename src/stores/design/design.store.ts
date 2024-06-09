@@ -5,7 +5,7 @@ export type SleeveType = 'manga corta' | 'manga larga';
 
 export interface ShirtDesign {
   sleeve_type: SleeveType;
-  shirt_cuff_id: number;
+  shirt_cuff_id?: number | null;
   shirt_collar_id: number;
   shirt_pocket_id: number;
 }
@@ -13,6 +13,7 @@ export interface ShirtDesign {
 export type ShirtDesignActions = {
   updateSleeveType: (_sleeve: SleeveType) => void;
   updateCuffId: (_cuff: number) => void;
+  setCuffToNull: () => void;
   updatePocketId: (_pocket: number) => void;
   updateCollarId: (_collar: number) => void;
 };
@@ -32,6 +33,7 @@ export const useCustomShirt = create<ShirtDesign & ShirtDesignActions>()(
       updateCuffId: (cuff) => set({ shirt_cuff_id: cuff }),
       updatePocketId: (pocket) => set({ shirt_pocket_id: pocket }),
       updateSleeveType: (sleeve) => set({ sleeve_type: sleeve }),
+      setCuffToNull: () => set({ shirt_cuff_id: null }),
     }),
     {
       name: 'design',

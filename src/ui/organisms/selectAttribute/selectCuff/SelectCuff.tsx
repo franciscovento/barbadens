@@ -11,7 +11,7 @@ const SelectCuff = () => {
   const [cuffOptions, setCuffOptions] = useState<Cuff[] | null>([]);
   const cuffId = useCustomShirt((state) => state.shirt_cuff_id);
   const cuffSelected = cuffOptions?.find((c) => c.id === cuffId);
-  const openModel = () => {
+  const openModal = () => {
     appModal.fire({
       title: 'Selecciona el tipo de Puño:',
       html: <Options cuffOptions={cuffOptions || []} />,
@@ -24,18 +24,28 @@ const SelectCuff = () => {
       if (response.error) {
         return errorToast(response.error.message);
       }
-      console.log('here', response);
       setCuffOptions(response.data);
     };
     fetchCuffOptions();
   }, []);
+
+  if (!cuffId) {
+    return (
+      <SelectAttribute
+        title="Tipo de puño"
+        name={'No disponible'}
+        image={'/images/not-available.svg'}
+        onClick={() => null}
+      />
+    );
+  }
 
   return (
     <SelectAttribute
       title="Tipo de puño"
       name={cuffSelected?.name || 'botones'}
       image={cuffSelected?.image || '/images/option-test.png'}
-      onClick={openModel}
+      onClick={openModal}
     />
   );
 };

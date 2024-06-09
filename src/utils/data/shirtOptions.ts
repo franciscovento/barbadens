@@ -8,12 +8,12 @@ export const sleeveOptions: ShirtOption[] = [
   {
     id: 0,
     label: 'manga larga',
-    image: '/images/option-test.png',
+    image: '/images/design/manga-larga.svg',
   },
   {
     id: 1,
     label: 'manga corta',
-    image: '/images/option-test.png',
+    image: '/images/design/manga-corta.svg',
   },
 ];
 
