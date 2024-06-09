@@ -36,6 +36,14 @@ async function getShirtPocketOptions() {
   };
 }
 
+async function getShirtDesigns() {
+  const { data, error } = await supabase.from('shirt_designs').select('*');
+  return {
+    data,
+    error,
+  };
+}
+
 async function getShirtDesign(
   design: Pick<
     ShirtDesign,
@@ -76,5 +84,6 @@ export {
   getShirtCollarOptions,
   getShirtCuffOptions,
   getShirtDesign,
+  getShirtDesigns,
   getShirtPocketOptions,
 };

@@ -1,5 +1,5 @@
 'use client';
-import { getShirtDesign } from '@/services/api/supabase/design.services';
+import { getShirtDesigns } from '@/services/api/supabase/design.services';
 import { errorToast } from '@/services/modals/appModal';
 import FabricDetails from '@/ui/atoms/fabricDetails/FabricDetails';
 import StepTitle from '@/ui/atoms/stepTitle/StepTitle';
@@ -8,6 +8,7 @@ import SelectCollar from '@/ui/organisms/selectAttribute/selectCollar/SelectColl
 import SelectCuff from '@/ui/organisms/selectAttribute/selectCuff/SelectCuff';
 import SelectPocket from '@/ui/organisms/selectAttribute/selectPocket/SelectPocket';
 import SelectSleeve from '@/ui/organisms/selectAttribute/selectSleeve/SelectSleeve';
+import { getCurrentDesign } from '@/utils/getCurrentDesing';
 import useShirtDesign from '@/utils/hooks/useShirtDesign.hooks';
 import { Design } from '@/utils/types/design.interface';
 import Image from 'next/image';
@@ -21,9 +22,16 @@ interface Props {
 }
 
 const Personaliza: FC<Props> = ({ params }) => {
-  const [currentDesign, setCurrentDesign] = useState<Design | null>(null);
+  const [designs, setDesigns] = useState<Design[]>([]);
+
   const { shirt_collar_id, shirt_cuff_id, shirt_pocket_id, sleeve_type } =
     useShirtDesign();
+  const currentDesign = getCurrentDesign(designs, {
+    shirt_collar_id,
+    shirt_cuff_id,
+    shirt_pocket_id,
+    sleeve_type,
+  });
   const router = useRouter();
 
   const completeStep = () => {
@@ -33,22 +41,33 @@ const Personaliza: FC<Props> = ({ params }) => {
   };
 
   useEffect(() => {
-    const fetchShirtDesign = async () => {
-      const { data, error } = await getShirtDesign({
-        shirt_collar_id: shirt_collar_id,
-        shirt_cuff_id: shirt_cuff_id,
-        shirt_pocket_id: shirt_pocket_id,
-        sleeve_type: sleeve_type,
-      });
+    const fetchDesigns = async () => {
+      const { data, error } = await getShirtDesigns();
       if (error) {
         errorToast(error.message);
       }
-      if (data && data.length > 0) {
-        setCurrentDesign(data[0] || []);
-      }
+      setDesigns(data || []);
     };
-    fetchShirtDesign();
-  }, [shirt_collar_id, shirt_cuff_id, shirt_pocket_id, sleeve_type]);
+    fetchDesigns();
+  }, []);
+
+  // useEffect(() => {
+  //   const fetchShirtDesign = async () => {
+  //     const { data, error } = await getShirtDesign({
+  //       shirt_collar_id: shirt_collar_id,
+  //       shirt_cuff_id: shirt_cuff_id,
+  //       shirt_pocket_id: shirt_pocket_id,
+  //       sleeve_type: sleeve_type,
+  //     });
+  //     if (error) {
+  //       errorToast(error.message);
+  //     }
+  //     if (data && data.length > 0) {
+  //       setCurrentDesign(data[0] || []);
+  //     }
+  //   };
+  //   fetchShirtDesign();
+  // }, [shirt_collar_id, shirt_cuff_id, shirt_pocket_id, sleeve_type]);
   console.log(currentDesign);
 
   return (
