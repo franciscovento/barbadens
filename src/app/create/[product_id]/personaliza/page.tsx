@@ -1,4 +1,6 @@
 'use client';
+import { getShirtDesign } from '@/services/api/supabase/design.services';
+import { errorToast } from '@/services/modals/appModal';
 import FabricDetails from '@/ui/atoms/fabricDetails/FabricDetails';
 import StepTitle from '@/ui/atoms/stepTitle/StepTitle';
 import { Button, Typography } from '@/ui/materialComponents';
@@ -6,9 +8,11 @@ import SelectCollar from '@/ui/organisms/selectAttribute/selectCollar/SelectColl
 import SelectCuff from '@/ui/organisms/selectAttribute/selectCuff/SelectCuff';
 import SelectPocket from '@/ui/organisms/selectAttribute/selectPocket/SelectPocket';
 import SelectSleeve from '@/ui/organisms/selectAttribute/selectSleeve/SelectSleeve';
+import useShirtDesign from '@/utils/hooks/useShirtDesign.hooks';
+import { Design } from '@/utils/types/design.interface';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 interface Props {
   params: {
@@ -17,11 +21,35 @@ interface Props {
 }
 
 const Personaliza: FC<Props> = ({ params }) => {
+  const [currentDesign, setCurrentDesign] = useState<Design | null>(null);
+  const { shirt_collar_id, shirt_cuff_id, shirt_pocket_id, sleeve_type } =
+    useShirtDesign();
   const router = useRouter();
 
   const completeStep = () => {
-    router.push(`/create/${params.product_id}/medidas`);
+    router.push(
+      `/create/${params.product_id}/medidas?shirt_design_id=${currentDesign?.id}`
+    );
   };
+
+  useEffect(() => {
+    const fetchShirtDesign = async () => {
+      const { data, error } = await getShirtDesign({
+        shirt_collar_id: shirt_collar_id,
+        shirt_cuff_id: shirt_cuff_id,
+        shirt_pocket_id: shirt_pocket_id,
+        sleeve_type: sleeve_type,
+      });
+      if (error) {
+        errorToast(error.message);
+      }
+      if (data && data.length > 0) {
+        setCurrentDesign(data[0] || []);
+      }
+    };
+    fetchShirtDesign();
+  }, [shirt_collar_id, shirt_cuff_id, shirt_pocket_id, sleeve_type]);
+
   return (
     <div className="grid md:grid-cols-2 md:py-8 gap-8 ">
       <div>
@@ -65,7 +93,7 @@ const Personaliza: FC<Props> = ({ params }) => {
             detalles y proceda a insertar sus medidas.
           </Typography>
           <Image
-            src={'/images/camisa-test.png'}
+            src={currentDesign?.image || '/images/camisa-test.png'}
             alt="camisa a la medida"
             width={370}
             height={250}
