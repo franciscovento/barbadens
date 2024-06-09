@@ -1,5 +1,5 @@
 import { createClient } from '@/utils/supabase/client';
-import { Cuff } from '@/utils/types/design.interface';
+import { Collar, Cuff } from '@/utils/types/design.interface';
 
 const supabase = createClient();
 async function getShirtCuffOptions() {
@@ -13,4 +13,15 @@ async function getShirtCuffOptions() {
   };
 }
 
-export { getShirtCuffOptions };
+async function getShirtCollarOptions() {
+  const { data, error } = await supabase
+    .from('shirt_collars')
+    .select('*')
+    .returns<Collar[]>();
+  return {
+    data,
+    error,
+  };
+}
+
+export { getShirtCollarOptions, getShirtCuffOptions };
