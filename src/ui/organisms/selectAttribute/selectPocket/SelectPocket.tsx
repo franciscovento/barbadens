@@ -1,6 +1,6 @@
 'use client';
 import { appModal } from '@/services/modals/appModal';
-import { useCustomShirt } from '@/stores/customShirt/customShirt.store';
+import { useCustomShirt } from '@/stores/design/design.store';
 import { pocketOptions } from '@/utils/data/shirtOptions';
 import Image from 'next/image';
 import SelectAttribute from '../SelectAttribute';
@@ -28,7 +28,7 @@ const SelectPocket = () => {
 export default SelectPocket;
 
 const Options = () => {
-  const updatePocket = useCustomShirt((state) => state.updatePocket);
+  const updatePocket = useCustomShirt((state) => state.updatePocketId);
 
   const updatePocketValue = (pocket: number) => {
     updatePocket(pocket);

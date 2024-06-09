@@ -3,23 +3,15 @@ export interface Profile {
   created_at: string;
   user_id: string;
   profile_name: string;
-  birth_date?: string;
-}
-
-export interface ProfileMeasures {
-  id: string;
-  long: number;
-  collar: number;
-  chest: number;
-  waist: number;
-  hip: number;
-  back: number;
-  sleeveWidth: number;
-  sleeveLong: number;
-  fist: number;
-  shoulder: number;
-}
-
-export interface ProfileWithMeasures extends Profile {
-  profile_measures?: ProfileMeasures;
+  birth_date?: string | null;
+  long?: number | null;
+  collar?: number | null;
+  chest?: number | null;
+  waist?: number | null;
+  hip?: number | null;
+  back?: number | null;
+  sleeveWidth?: number | null;
+  sleeveLong?: number | null;
+  fist?: number | null;
+  shoulder?: number | null;
 }

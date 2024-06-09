@@ -3,7 +3,7 @@ import {
   login as loginSupabase,
   logout as logoutSupabase,
   signUpWithEmail as signUpWithEmailSupabase,
-} from '@/services/api/supabase/authentication.supabase.api';
+} from '@/services/api/supabase/authentication.services';
 import { useMeasures } from '@/stores';
 import { UserRoles, useUser } from '@/stores/user/user.store';
 

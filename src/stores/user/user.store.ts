@@ -1,4 +1,4 @@
-import { ProfileWithMeasures } from '@/utils/types/profile.interface';
+import { Profile } from '@/utils/types/profile.interface';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
@@ -6,7 +6,7 @@ export type User = {
   id: string | undefined;
   email: string | undefined;
   type: UserRoles;
-  profiles: ProfileWithMeasures[];
+  profiles: Profile[];
 };
 
 export type UserRoles = 'client' | 'staff' | 'admin';

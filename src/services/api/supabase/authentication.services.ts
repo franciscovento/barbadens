@@ -51,3 +51,11 @@ export const getUser = async () => {
     ...data,
   };
 };
+
+export const isAuthenticated = async () => {
+  const { data, error } = await supabase.auth.getUser();
+  if (error) {
+    return false;
+  }
+  return data.user ? true : false;
+};

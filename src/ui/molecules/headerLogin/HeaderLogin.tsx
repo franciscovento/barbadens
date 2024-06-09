@@ -1,6 +1,6 @@
 'use client';
 
-import { getUser } from '@/services/api/supabase/authentication.supabase.api';
+import { getUser } from '@/services/api/supabase/authentication.services';
 import { errorToast } from '@/services/modals/appModal';
 import { useUser } from '@/stores/user/user.store';
 import useAuth from '@/utils/hooks/useAuth.hooks';

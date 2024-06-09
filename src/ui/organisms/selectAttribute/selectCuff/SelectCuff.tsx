@@ -1,25 +1,40 @@
 'use client';
-import { appModal } from '@/services/modals/appModal';
-import { useCustomShirt } from '@/stores/customShirt/customShirt.store';
-import { cuffOptions } from '@/utils/data/shirtOptions';
+import { getShirtCuffOptions } from '@/services/api/supabase/design.services';
+import { appModal, errorToast } from '@/services/modals/appModal';
+import { useCustomShirt } from '@/stores/design/design.store';
+import { Cuff } from '@/utils/types/design.interface';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import SelectAttribute from '../SelectAttribute';
 
 const SelectCuff = () => {
-  const cuff = useCustomShirt((state) => state.cuff);
-  const currentCuff = cuffOptions.find((p) => p.id === cuff);
+  const [cuffOptions, setCuffOptions] = useState<Cuff[] | null>([]);
+  const cuffId = useCustomShirt((state) => state.shirt_cuff_id);
+  const cuffSelected = cuffOptions?.find((c) => c.id === cuffId);
   const openModel = () => {
     appModal.fire({
       title: 'Selecciona el tipo de Puño:',
-      html: <Options />,
+      html: <Options cuffOptions={cuffOptions || []} />,
     });
   };
+
+  useEffect(() => {
+    const fetchCuffOptions = async () => {
+      const response = await getShirtCuffOptions();
+      if (response.error) {
+        return errorToast(response.error.message);
+      }
+      console.log('here', response);
+      setCuffOptions(response.data);
+    };
+    fetchCuffOptions();
+  }, []);
 
   return (
     <SelectAttribute
       title="Tipo de puño"
-      name={currentCuff?.label || 'Con botones'}
-      image="/images/option-test.png"
+      name={cuffSelected?.name || 'botones'}
+      image={cuffSelected?.image || '/images/option-test.png'}
       onClick={openModel}
     />
   );
@@ -27,8 +42,8 @@ const SelectCuff = () => {
 
 export default SelectCuff;
 
-const Options = () => {
-  const updateCuff = useCustomShirt((state) => state.updateCuff);
+const Options = ({ cuffOptions }: { cuffOptions: Cuff[] }) => {
+  const updateCuff = useCustomShirt((state) => state.updateCuffId);
 
   const updateCuffValue = (cuff: number) => {
     updateCuff(cuff);
@@ -43,11 +58,11 @@ const Options = () => {
           onClick={() => updateCuffValue(cuff.id)}
           className="text-app-text py-2 rounded-md border border-text hover:scale-95 duration-300 opacity-80 hover:opacity-100"
         >
-          {cuff.label}
+          {cuff.name}
           <Image
             className="mx-auto"
-            src={cuff.image}
-            alt={cuff.label}
+            src={cuff.image || '/images/option-test.png'}
+            alt={cuff.name}
             width={320}
             height={160}
           />

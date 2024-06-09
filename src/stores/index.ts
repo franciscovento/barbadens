@@ -1,2 +1,2 @@
-export * from './customShirt/customShirt.store';
+export * from './design/design.store';
 export * from './measures/measures.store';

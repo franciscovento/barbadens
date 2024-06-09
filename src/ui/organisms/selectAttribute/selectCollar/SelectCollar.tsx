@@ -1,6 +1,6 @@
 'use client';
 import { appModal } from '@/services/modals/appModal';
-import { useCustomShirt } from '@/stores/customShirt/customShirt.store';
+import { useCustomShirt } from '@/stores/design/design.store';
 import { collarOptions } from '@/utils/data/shirtOptions';
 import Image from 'next/image';
 import SelectAttribute from '../SelectAttribute';
@@ -28,7 +28,7 @@ const SelectCollar = () => {
 export default SelectCollar;
 
 const Options = () => {
-  const updateCollar = useCustomShirt((state) => state.updateCollar);
+  const updateCollar = useCustomShirt((state) => state.updateCollarId);
 
   const updateCollarValue = (collar: number) => {
     updateCollar(collar);

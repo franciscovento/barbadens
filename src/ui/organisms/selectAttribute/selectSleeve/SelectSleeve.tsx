@@ -1,13 +1,13 @@
 'use client';
 import { appModal } from '@/services/modals/appModal';
-import { useCustomShirt } from '@/stores/customShirt/customShirt.store';
+import { SleeveType, useCustomShirt } from '@/stores/design/design.store';
 import { sleeveOptions } from '@/utils/data/shirtOptions';
 import Image from 'next/image';
 import SelectAttribute from '../SelectAttribute';
 
 const SelectSleeve = () => {
-  const sleeve = useCustomShirt((state) => state.sleeve);
-  const currentSleeve = sleeveOptions.find((s) => s.id === sleeve);
+  const sleeve = useCustomShirt((state) => state.sleeve_type);
+
   const openModel = () => {
     appModal.fire({
       title: 'Selecciona el tipo de manga:',
@@ -18,7 +18,7 @@ const SelectSleeve = () => {
   return (
     <SelectAttribute
       title="Tipo de manga"
-      name={currentSleeve?.label || 'Manga larga'}
+      name={sleeve}
       image="/images/option-test.png"
       onClick={openModel}
     />
@@ -28,9 +28,9 @@ const SelectSleeve = () => {
 export default SelectSleeve;
 
 const Options = () => {
-  const updateSleeve = useCustomShirt((state) => state.updateSleeve);
+  const updateSleeve = useCustomShirt((state) => state.updateSleeveType);
 
-  const updateSleeveModal = (sleeve: number) => {
+  const updateSleeveModal = (sleeve: SleeveType) => {
     updateSleeve(sleeve);
     appModal.clickConfirm();
   };
@@ -40,7 +40,7 @@ const Options = () => {
       {sleeveOptions.map((sleeve) => (
         <button
           key={sleeve.id}
-          onClick={() => updateSleeveModal(sleeve.id)}
+          onClick={() => updateSleeveModal(sleeve.label as SleeveType)}
           className="text-app-text py-2 rounded-md border border-text hover:scale-95 duration-300 opacity-80 hover:opacity-100"
         >
           {sleeve.label}

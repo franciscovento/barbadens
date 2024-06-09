@@ -7,12 +7,12 @@ interface ShirtOption {
 export const sleeveOptions: ShirtOption[] = [
   {
     id: 0,
-    label: 'Manga larga',
+    label: 'manga larga',
     image: '/images/option-test.png',
   },
   {
     id: 1,
-    label: 'Manga corta',
+    label: 'manga corta',
     image: '/images/option-test.png',
   },
 ];

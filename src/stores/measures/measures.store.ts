@@ -4,16 +4,16 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 export type MeasuresStore = {
   id?: string;
   profile_name: string;
-  back: number | undefined;
-  chest: number | undefined;
-  collar: number | undefined;
-  waist: number | undefined;
-  hip: number | undefined;
-  sleeve_width: number | undefined;
-  sleeve_long: number | undefined;
-  fist: number | undefined;
-  shoulder: number | undefined;
-  long: number | undefined;
+  back: number | null | undefined;
+  chest: number | null | undefined;
+  collar: number | null | undefined;
+  waist: number | null | undefined;
+  hip: number | null | undefined;
+  sleeve_width: number | null | undefined;
+  sleeve_long: number | null | undefined;
+  fist: number | null | undefined;
+  shoulder: number | null | undefined;
+  long: number | null | undefined;
 };
 
 export type MeasuresActions = {

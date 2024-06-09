@@ -46,7 +46,7 @@ const EditProfileModal: FC<EditModalProps> = ({ profile }) => {
       />
       <input
         type="date"
-        defaultValue={form.birth_date}
+        defaultValue={form.birth_date || ''}
         onChange={(e) =>
           setForm((prev) => ({ ...prev, birth_date: e.target.value }))
         }

@@ -31,7 +31,7 @@ const Personaliza: FC<Props> = ({ params }) => {
         <div className="pt-5 grid grid-cols-2 gap-4 sm:gap-8">
           <div className="relative flex-shrink-0 ">
             <Image
-              src={`/images/tela${params.product_id}.png`}
+              src={`/images/tela1.png`}
               fill
               alt="tela"
               className="object-cover"

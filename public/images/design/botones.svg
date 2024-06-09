@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="314px" height="144px" viewBox="0 0 314 144" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="background: #FFFFFF;">
+    <!-- Generator: Sketch 49.1 (51147) - http://www.bohemiancoding.com/sketch -->
+    <title>Cuff-straight</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Cuff-straight" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="thumbnail---cuff">
+            <path d="M96.5,90.9492188 L96.5,144.716797" id="Path-17" stroke="#A9B4C0" stroke-width="3" opacity="0.4"></path>
+            <path d="M216.5,90.9492188 L216.5,144.716797" id="Path-17-Copy" stroke="#A9B4C0" stroke-width="3" opacity="0.4"></path>
+            <g id="cuff/straight-sm" transform="translate(157.000000, 70.500000) scale(1, -1) translate(-157.000000, -70.500000) translate(93.000000, 21.000000)">
+                <polygon id="Stroke-1" stroke="#1B304E" stroke-width="2.9" stroke-linejoin="round" points="111.64942 93.3075 123.24942 93.3075 123.24942 2.871 2.89942 2.871 2.89942 93.3075 75.39942 93.3075"></polygon>
+                <path d="M111.64942,93.3075 L111.64942,2.871" id="Stroke-3" stroke="#1B304E" stroke-width="2.9" stroke-linejoin="round"></path>
+                <g id="button/for-preview" transform="translate(75.400000, 34.452000)" fill="#1B304E" fill-rule="evenodd">
+                    <path d="M18.37875,12.72375 C18.37875,15.84531 15.8481375,18.37875 12.72375,18.37875 C9.60219,18.37875 7.06875,15.84531 7.06875,12.72375 C7.06875,9.60219 9.60219,7.06875 12.72375,7.06875 C15.8481375,7.06875 18.37875,9.60219 18.37875,12.72375" id="BG"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

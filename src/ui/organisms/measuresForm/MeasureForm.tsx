@@ -1,6 +1,11 @@
 'use client';
 
-import { appModal } from '@/services/modals/appModal';
+import { isAuthenticated } from '@/services/api/supabase/authentication.services';
+import {
+  createProfile,
+  updateProfileMeasures,
+} from '@/services/api/supabase/profile.services';
+import { appModal, successToast } from '@/services/modals/appModal';
 import { MeasuresStore, useMeasures } from '@/stores';
 import { useUser } from '@/stores/user/user.store';
 import { Button } from '@/ui/materialComponents';
@@ -82,7 +87,7 @@ const MeasureForm = ({ profileMeasures }: Props) => {
     register,
     handleSubmit,
     reset,
-    formState: { isValid },
+    formState: { isValid, defaultValues },
   } = useForm<MeasuresStore>({
     defaultValues: {
       id: profileMeasures.id || '',
@@ -100,9 +105,26 @@ const MeasureForm = ({ profileMeasures }: Props) => {
     },
   });
 
-  const onSubmit = (data: MeasuresStore) => {
-    console.log(data);
+  const onSubmit = async (data: MeasuresStore) => {
     updateMeasures(data);
+    let error;
+    const resp = await isAuthenticated();
+    if (!resp) {
+      return displayLoginModal();
+    }
+    const { id, ...rest } = data;
+    if (!id) {
+      const { error: createProfileError } = await createProfile(rest);
+      error = createProfileError;
+    } else {
+      const { error: updateProfileError } = await updateProfileMeasures(data);
+      error = updateProfileError;
+    }
+    if (error) {
+      return successToast('Hubo un error al guardar las medidas');
+    }
+    successToast('Se realizó la acción con éxito!');
+    // updateMeasures(data);
     // router.push(`/create/${params.product_id}/checkout`);
   };
 
@@ -111,11 +133,8 @@ const MeasureForm = ({ profileMeasures }: Props) => {
     const profile = profiles.find((p) => p.id === profileId);
 
     if (profile) {
-      const profileMeasures = profile?.profile_measures;
       reset({
-        profile_name: profile.profile_name,
-        id: profile.id,
-        ...profileMeasures,
+        ...profile,
       });
     }
   };
@@ -154,7 +173,7 @@ const MeasureForm = ({ profileMeasures }: Props) => {
 
   const clearForm = async () => {
     reset();
-    resetMeasures();
+    // resetMeasures();
     reset({
       profile_name: '',
       id: '',
@@ -205,7 +224,7 @@ const MeasureForm = ({ profileMeasures }: Props) => {
               <Select
                 label="Selecciona un perfil"
                 onChange={(value) => onSelectProfile(value!)}
-                value={profileMeasures.id}
+                value={defaultValues?.id}
               >
                 {profiles.map((profile) => (
                   <Option value={profile.id} key={profile.id}>
@@ -228,7 +247,7 @@ const MeasureForm = ({ profileMeasures }: Props) => {
             return (
               <label key={index} className="flex justify-between">
                 <div className="flex flex-col">
-                  <span>{value}</span>
+                  <span>{valuesMeasuresMap[value as keyof MeasuresStore]}</span>
                   <span
                     onClick={() => displayTutorial(value)}
                     className="text-app-text text-sm hover:text-blue-600 cursor-pointer"
@@ -243,6 +262,7 @@ const MeasureForm = ({ profileMeasures }: Props) => {
                       required: true,
                     })}
                     type="number"
+                    step="0.1"
                   />{' '}
                   cm
                 </div>
