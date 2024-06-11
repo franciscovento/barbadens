@@ -68,7 +68,6 @@ const Personaliza: FC<Props> = ({ params }) => {
   //   };
   //   fetchShirtDesign();
   // }, [shirt_collar_id, shirt_cuff_id, shirt_pocket_id, sleeve_type]);
-  console.log(currentDesign);
 
   return (
     <div className="grid md:grid-cols-2 md:py-8 gap-8 ">

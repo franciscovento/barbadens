@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
 
   const { data: profileData, error: profileError } = await supabase
     .from('profiles')
-    .select('*, profile_measures(*)');
+    .select('*');
   if (profileError) {
     return NextResponse.json({ error: profileError, data: profileData });
   }
