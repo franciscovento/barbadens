@@ -5,7 +5,7 @@ import {
   signUpWithEmail as signUpWithEmailSupabase,
 } from '@/services/api/supabase/authentication.services';
 import { useMeasures } from '@/stores';
-import { UserRoles, useUser } from '@/stores/user/user.store';
+import { useUser } from '@/stores/user/user.store';
 
 interface AuthProps {
   data: LoginProps;
@@ -27,7 +27,7 @@ const useAuth = () => {
     setUserData({
       email: authData.user.email,
       id: authData.user.id,
-      type: authData.user.id as UserRoles,
+      type: authData.user.type,
       profiles: authData.profiles,
     });
 
