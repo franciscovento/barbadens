@@ -10,7 +10,9 @@ export async function GET() {
   const supabase = createClient();
   const { data, error } = await supabase
     .from('cart')
-    .select('*, cart_product(*, products(fabrics(name), shirt_designs(image)))')
+    .select(
+      '*, cart_product(*, products(fabrics(name), shirt_designs(image)), profiles(profile_name))'
+    )
     .returns<CartProductWithProduct[]>();
 
   return NextResponse.json({

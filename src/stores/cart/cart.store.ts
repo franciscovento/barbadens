@@ -1,11 +1,11 @@
 import { getCart } from '@/services/api/supabase/cart.services';
-import { CartProductWithFabricAndDesign } from '@/utils/types/cart.interface';
+import { CartProductWithFabricDesignProfile } from '@/utils/types/cart.interface';
 import { create } from 'zustand';
 
 export interface CartStore {
   id?: number;
   total?: number;
-  cart_products?: CartProductWithFabricAndDesign[];
+  cart_products?: CartProductWithFabricDesignProfile[];
   user_id?: string;
 }
 

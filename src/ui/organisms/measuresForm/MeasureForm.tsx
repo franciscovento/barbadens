@@ -4,12 +4,13 @@ import { addProductToCart } from '@/services/api/supabase/cart.services';
 import { updateOrCreateProfile } from '@/services/api/supabase/profile.services';
 import { appModal, errorToast, successToast } from '@/services/modals/appModal';
 import { MeasuresStore, useMeasures } from '@/stores';
+import { useCartStore } from '@/stores/cart/cart.store';
 import { useUser } from '@/stores/user/user.store';
 import { Button } from '@/ui/materialComponents';
 import { valuesMeasuresMap } from '@/utils/valuesMeasuresMap';
 import { Option, Select, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
-import { useParams, useSearchParams } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import StepTitle from '../../atoms/stepTitle/StepTitle';
@@ -77,6 +78,8 @@ const measures = [
 ];
 
 const MeasureForm = ({ profileMeasures }: Props) => {
+  const { checkCart } = useCartStore();
+  const router = useRouter();
   const params = useSearchParams();
   const { product_id } = useParams();
   const shirt_design_id = params.get('shirt_design_id');
@@ -87,8 +90,8 @@ const MeasureForm = ({ profileMeasures }: Props) => {
 
   const {
     register,
-    handleSubmit,
     reset,
+    getValues,
     formState: { isValid, defaultValues },
   } = useForm<MeasuresStore>({
     defaultValues: {
@@ -107,7 +110,8 @@ const MeasureForm = ({ profileMeasures }: Props) => {
     },
   });
 
-  const onSubmit = async (data: MeasuresStore) => {
+  const onSubmit = async (mode: 'go_to_checkout' | 'continue_shopping') => {
+    const data = getValues();
     updateMeasures(data);
 
     if (!isAuthenticated) {
@@ -132,7 +136,17 @@ const MeasureForm = ({ profileMeasures }: Props) => {
       }
       updateProfileId(profileData.id);
     }
+    checkCart();
     successToast('Se realizó la acción con éxito!');
+    if (mode === 'go_to_checkout') {
+      // navigate to checkout
+      return router.push(`/create/${product_id}/checkout`);
+    }
+
+    if (mode === 'continue_shopping') {
+      // navigate to continue shopping
+      return router.push(`/`);
+    }
   };
 
   const onSelectProfile = (profileId: string) => {
@@ -202,10 +216,7 @@ const MeasureForm = ({ profileMeasures }: Props) => {
   }, [profileMeasures]);
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="grid md:grid-cols-2 md:py-8 gap-8 "
-    >
+    <form className="grid md:grid-cols-2 md:py-8 gap-8 ">
       <div className="flex flex-col gap-4">
         <StepTitle title="Ingresa tus medidas" />
         <div className="flex flex-col gap-2 ">
@@ -306,10 +317,19 @@ const MeasureForm = ({ profileMeasures }: Props) => {
               </span>
             </label>
             <div className="flex flex-col gap-4">
-              <Button disabled={!isValid} variant="outlined">
+              <Button
+                onClick={() => onSubmit('continue_shopping')}
+                type="button"
+                disabled={!isValid}
+                variant="outlined"
+              >
                 Agregar y seguir comprando
               </Button>
-              <Button disabled={!isValid} type="submit">
+              <Button
+                onClick={() => onSubmit('go_to_checkout')}
+                type="button"
+                disabled={!isValid}
+              >
                 Ir al checkout
               </Button>
             </div>
