@@ -32,8 +32,11 @@ const Cart = () => {
         <StepTitle title="Carrito" />
         <div className="flex flex-col gap-4 py-8">
           {cart_products?.map((product, index) => (
-            <div key={index} className="flex items-center justify-between">
-              <div className="flex items-center gap-4 shrink-0">
+            <div
+              key={index}
+              className="flex items-center justify-between  gap-4"
+            >
+              <div className="flex items-center gap-4  flex-wrap">
                 <Image
                   className="border border-black"
                   src={'/images/placeholder-image.jpg'}
@@ -69,7 +72,7 @@ const Cart = () => {
                     })
                   }
                 />
-                <span className="text-sm">
+                <span className="text-sm text-nowrap">
                   S/.{product.unit_price * product.quantity}
                 </span>
                 <SvgTrash

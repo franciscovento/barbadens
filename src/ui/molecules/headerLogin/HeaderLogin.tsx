@@ -31,6 +31,7 @@ const HeaderLogin = () => {
   const displayCart = () => {
     appSidebar.fire({
       html: <Cart />,
+      width: 'fit-content',
     });
   };
 
