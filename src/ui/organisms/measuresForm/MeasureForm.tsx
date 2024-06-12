@@ -1,17 +1,15 @@
 'use client';
 
-import { isAuthenticated } from '@/services/api/supabase/authentication.services';
-import {
-  createProfile,
-  updateProfileMeasures,
-} from '@/services/api/supabase/profile.services';
-import { appModal, successToast } from '@/services/modals/appModal';
+import { addProductToCart } from '@/services/api/supabase/cart.services';
+import { updateOrCreateProfile } from '@/services/api/supabase/profile.services';
+import { appModal, errorToast, successToast } from '@/services/modals/appModal';
 import { MeasuresStore, useMeasures } from '@/stores';
 import { useUser } from '@/stores/user/user.store';
 import { Button } from '@/ui/materialComponents';
 import { valuesMeasuresMap } from '@/utils/valuesMeasuresMap';
 import { Option, Select, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useParams, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import StepTitle from '../../atoms/stepTitle/StepTitle';
@@ -79,9 +77,13 @@ const measures = [
 ];
 
 const MeasureForm = ({ profileMeasures }: Props) => {
-  const { profiles } = useUser();
+  const params = useSearchParams();
+  const { product_id } = useParams();
+  const shirt_design_id = params.get('shirt_design_id');
+
+  const { profiles, isAuthenticated } = useUser();
   const updateMeasures = useMeasures((state) => state.updateMeasures);
-  const resetMeasures = useMeasures((state) => state.resetMeasuresStore);
+  const updateProfileId = useMeasures((state) => state.updateProfileId);
 
   const {
     register,
@@ -107,25 +109,30 @@ const MeasureForm = ({ profileMeasures }: Props) => {
 
   const onSubmit = async (data: MeasuresStore) => {
     updateMeasures(data);
-    let error;
-    const resp = await isAuthenticated();
-    if (!resp) {
+
+    if (!isAuthenticated) {
       return displayLoginModal();
     }
-    const { id, ...rest } = data;
-    if (!id) {
-      const { error: createProfileError } = await createProfile(rest);
-      error = createProfileError;
-    } else {
-      const { error: updateProfileError } = await updateProfileMeasures(data);
-      error = updateProfileError;
-    }
-    if (error) {
+
+    const { data: profileData, error: profileError } =
+      await updateOrCreateProfile(data);
+
+    if (profileError) {
       return successToast('Hubo un error al guardar las medidas');
     }
+
+    if (profileData) {
+      const { error } = await addProductToCart({
+        design_id: Number(shirt_design_id),
+        fabric_id: 1, // product_id,
+        profile_id: profileData.id,
+      });
+      if (error) {
+        return errorToast('Hubo un error al agregar el producto al carrito');
+      }
+      updateProfileId(profileData.id);
+    }
     successToast('Se realizó la acción con éxito!');
-    // updateMeasures(data);
-    // router.push(`/create/${params.product_id}/checkout`);
   };
 
   const onSelectProfile = (profileId: string) => {
@@ -298,9 +305,14 @@ const MeasureForm = ({ profileMeasures }: Props) => {
                 />
               </span>
             </label>
-            <Button disabled={!isValid} type="submit">
-              Completar paso
-            </Button>
+            <div className="flex flex-col gap-4">
+              <Button disabled={!isValid} variant="outlined">
+                Agregar y seguir comprando
+              </Button>
+              <Button disabled={!isValid} type="submit">
+                Ir al checkout
+              </Button>
+            </div>
           </div>
         </div>
       </div>

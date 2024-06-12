@@ -1,4 +1,5 @@
 import { createClient } from '@/utils/supabase/server';
+import { Product } from '@/utils/types/products.interface';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
@@ -11,7 +12,8 @@ export async function POST(request: NextRequest) {
       design_id,
       fabric_id,
     })
-    .select('*');
+    .select()
+    .returns<Product[]>();
 
   if (productError) {
     return NextResponse.json({ error: productError, data: null });

@@ -117,7 +117,7 @@ const Personaliza: FC<Props> = ({ params }) => {
             width={370}
             height={250}
           />
-          <div>
+          <div className="flex gap-2 flex-col">
             <Button onClick={completeStep}>Completar paso</Button>
           </div>
         </div>

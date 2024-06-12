@@ -10,7 +10,7 @@ export async function GET() {
   const supabase = createClient();
   const { data, error } = await supabase
     .from('cart')
-    .select('*, cart_product(*)')
+    .select('*, cart_product(*, products(fabrics(name), shirt_designs(image)))')
     .returns<CartProductWithProduct[]>();
 
   return NextResponse.json({
@@ -47,6 +47,7 @@ export async function POST(request: NextRequest) {
         error: cartError,
       });
     }
+
     const { data: cartProductData, error: cartProductError } = await supabase
       .from('cart_product')
       .insert({
@@ -64,6 +65,7 @@ export async function POST(request: NextRequest) {
         error: cartProductError,
       });
     }
+
     return NextResponse.json({
       data: cartProductData,
       error: cartProductError,
@@ -78,7 +80,8 @@ export async function POST(request: NextRequest) {
       design_id,
       cart_id: cart[0].id,
     })
-    .select('*');
+    .select('*')
+    .returns<CartProduct[]>();
 
   if (cartProductError) {
     return NextResponse.json({
@@ -88,9 +91,7 @@ export async function POST(request: NextRequest) {
   }
 
   return NextResponse.json({
-    data: {
-      message: 'Product already in cart, increasing quantity !',
-    },
+    data: cartProductData,
     error: cartProductError,
   });
 }

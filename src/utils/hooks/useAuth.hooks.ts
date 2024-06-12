@@ -5,6 +5,7 @@ import {
   signUpWithEmail as signUpWithEmailSupabase,
 } from '@/services/api/supabase/authentication.services';
 import { useMeasures } from '@/stores';
+import { useCartStore } from '@/stores/cart/cart.store';
 import { useUser } from '@/stores/user/user.store';
 
 interface AuthProps {
@@ -12,6 +13,8 @@ interface AuthProps {
 }
 
 const useAuth = () => {
+  const checkCart = useCartStore((state) => state.checkCart);
+  const emptyCart = useCartStore((state) => state.emptyCart);
   const { setUserData, clearUserData } = useUser();
   const { resetMeasuresStore } = useMeasures();
 
@@ -29,7 +32,10 @@ const useAuth = () => {
       id: authData.user.id,
       type: authData.user.type,
       profiles: authData.profiles,
+      isAuthenticated: true,
     });
+
+    checkCart();
 
     return {
       data: authData,
@@ -46,6 +52,7 @@ const useAuth = () => {
       };
     }
     clearUserData();
+    emptyCart();
     resetMeasuresStore();
 
     return {

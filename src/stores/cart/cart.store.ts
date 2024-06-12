@@ -1,30 +1,47 @@
+import { getCart } from '@/services/api/supabase/cart.services';
+import { CartProductWithFabricAndDesign } from '@/utils/types/cart.interface';
 import { create } from 'zustand';
-import { createJSONStorage, persist } from 'zustand/middleware';
 
-export interface Cart {
+export interface CartStore {
   id?: number;
   total?: number;
-  products?: ProductCart[];
+  cart_products?: CartProductWithFabricAndDesign[];
+  user_id?: string;
 }
 
-export interface ProductCart {
-  productId: string;
-  profileId: string;
-  quantity: number;
-}
+export type CartActions = {
+  checkCart: () => void;
+  emptyCart: () => void;
+};
 
-export type CartActions = {};
+const initialState: CartStore = {
+  id: undefined,
+  total: undefined,
+  cart_products: [],
+  user_id: undefined,
+};
 
-const initialState: Cart = {};
-
-export const useCart = create<Cart & CartActions>()(
-  persist(
-    (set) => ({
-      ...initialState,
-    }),
-    {
-      name: 'cart',
-      storage: createJSONStorage(() => localStorage),
+export const useCartStore = create<CartStore & CartActions>()((set, get) => ({
+  ...initialState,
+  emptyCart: () => {
+    set({
+      id: undefined,
+      total: undefined,
+      cart_products: [],
+      user_id: undefined,
+    });
+  },
+  checkCart: async () => {
+    const { data } = await getCart();
+    if (data && data.length > 0) {
+      set({
+        id: data[0].id,
+        total: data[0].total,
+        cart_products: data[0].cart_product,
+        user_id: data[0].user_id,
+      });
+    } else {
+      get().emptyCart();
     }
-  )
-);
+  },
+}));

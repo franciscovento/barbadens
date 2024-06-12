@@ -15,6 +15,17 @@ export interface CartProduct {
   profile_id: string;
 }
 
-export interface CartProductWithProduct extends CartProduct {
-  cart_product: CartProduct[];
+export interface CartProductWithFabricAndDesign extends CartProduct {
+  products: {
+    fabrics: {
+      name: string;
+    };
+    shirt_designs: {
+      image: string;
+    };
+  };
+}
+
+export interface CartProductWithProduct extends Cart {
+  cart_product: CartProductWithFabricAndDesign[];
 }

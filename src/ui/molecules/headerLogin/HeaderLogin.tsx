@@ -1,15 +1,23 @@
 'use client';
 
-import { getUser } from '@/services/api/supabase/authentication.services';
 import { errorToast } from '@/services/modals/appModal';
+import { appSidebar } from '@/services/sidebar/appSidebar';
+import { useCartStore } from '@/stores/cart/cart.store';
 import { useUser } from '@/stores/user/user.store';
+import SgvCart from '@/ui/atoms/svgs/SgvCart';
+import Cart from '@/ui/organisms/cart/Cart';
 import useAuth from '@/utils/hooks/useAuth.hooks';
+import useCart from '@/utils/hooks/useCart.hooks';
+import { Badge, IconButton } from '@material-tailwind/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 const HeaderLogin = () => {
-  const { email, setUserData, clearUserData } = useUser();
+  const checkAuth = useUser((state) => state.checkAuth);
+  const checkCart = useCartStore((state) => state.checkCart);
+  const userEmail = useUser((state) => state.email);
+  const { cart_products } = useCart();
   const { logout } = useAuth();
   const router = useRouter();
   const handleLogout = async () => {
@@ -20,32 +28,36 @@ const HeaderLogin = () => {
     router.refresh();
   };
 
+  const displayCart = () => {
+    appSidebar.fire({
+      html: <Cart />,
+    });
+  };
+
   useEffect(() => {
-    const checkAuth = async () => {
-      const { data, error } = await getUser();
-      if (error) {
-        clearUserData();
-      } else {
-        setUserData({
-          email: data.user?.email,
-          id: data.user?.id,
-          type: data.user?.type,
-          profiles: data.profiles,
-        });
-      }
-    };
     checkAuth();
-  }, [clearUserData, setUserData]);
+  }, [checkAuth]);
+
+  useEffect(() => {
+    checkCart();
+  }, [checkCart]);
 
   return (
     <div className="text-white text-right">
-      {email ? (
-        <>
-          <p className="text-sm">Hola, {email}</p>
-          <button onClick={handleLogout} className="text-sm underline">
-            Cerrar sesión
-          </button>
-        </>
+      {userEmail ? (
+        <div className="flex items-center gap-4">
+          <div>
+            <p className="text-sm">Hola, {userEmail}</p>
+            <button onClick={handleLogout} className="text-sm underline">
+              Cerrar sesión
+            </button>
+          </div>
+          <Badge content={cart_products?.length}>
+            <IconButton onClick={displayCart}>
+              <SgvCart className="w-6 h-6" />
+            </IconButton>
+          </Badge>
+        </div>
       ) : (
         <Link className="text-sm underline" href={'/auth'}>
           Iniciar sesión

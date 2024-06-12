@@ -19,6 +19,7 @@ export type MeasuresStore = {
 export type MeasuresActions = {
   updateMeasures: (_measures: MeasuresStore) => void;
   resetMeasuresStore: () => void;
+  updateProfileId: (_id: string) => void;
 };
 
 const initialState: MeasuresStore = {
@@ -42,6 +43,7 @@ export const useMeasures = create<MeasuresStore & MeasuresActions>()(
       ...initialState,
       updateMeasures: (measures) => set(measures),
       resetMeasuresStore: () => set(initialState),
+      updateProfileId: (id) => set({ id }),
     }),
 
     {
