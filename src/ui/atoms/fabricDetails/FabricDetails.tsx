@@ -18,7 +18,7 @@ const FabricDetails: FC<Props> = ({ title, attributes }) => {
         })}
       </div>
       <Link
-        href={'/'}
+        href={'/create'}
         className="border border-black p-2 text-xs sm:text-sm text-center"
       >
         Selecciona nueva tela

@@ -42,6 +42,7 @@ export const useUser = create<User & UserActions>()((set, get) => ({
       email: data.email,
       type: data.type,
       profiles: data.profiles,
+      isAuthenticated: data.isAuthenticated,
     }),
   checkAuth: async () => {
     const { data, error } = await getUser();

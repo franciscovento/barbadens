@@ -11,8 +11,13 @@ import useCart from '@/utils/hooks/useCart.hooks';
 import { CartProductId } from '@/utils/types/cart.interface';
 import { Button } from '@material-tailwind/react';
 import Image from 'next/image';
+import { FC } from 'react';
 
-const Cart = () => {
+interface Props {
+  onCheckoutRedirect: () => void;
+}
+
+const Cart: FC<Props> = ({ onCheckoutRedirect }) => {
   const { cart_products, total } = useCart();
   const checkCart = useCartStore((state) => state.checkCart);
 
@@ -20,11 +25,7 @@ const Cart = () => {
     productId: CartProductId,
     quantity: number
   ) => {
-    const { data, error } = await updatedQuantityFromProductCart(
-      productId,
-      quantity
-    );
-    console.log(data, error);
+    const { error } = await updatedQuantityFromProductCart(productId, quantity);
 
     if (!error) {
       checkCart();
@@ -55,7 +56,7 @@ const Cart = () => {
               key={index}
               className="flex items-center justify-between  gap-4"
             >
-              <div className="flex items-center gap-4  flex-wrap">
+              <div className="flex items-center gap-4 flex-wrap sm:flex-nowrap ">
                 <Image
                   className="border border-black"
                   src={'/images/placeholder-image.jpg'}
@@ -66,7 +67,7 @@ const Cart = () => {
                 <div className="flex flex-col gap-1 text-left ">
                   <p className="text-sm">{product.products.fabrics.name}</p>
                   <p className="text-xs text-app-text">
-                    Perfil: {product.profiles.profile_name}
+                    {product.profiles.profile_name}
                   </p>
                 </div>
               </div>
@@ -114,7 +115,9 @@ const Cart = () => {
         <Button onClick={() => appSidebar.close()} variant="outlined">
           Continuar comprando
         </Button>
-        <Button disabled={cart_products?.length === 0}>Ir al Checkout</Button>
+        {cart_products && cart_products?.length > 0 && (
+          <Button onClick={onCheckoutRedirect}>Ir al Checkout</Button>
+        )}
       </div>
     </div>
   );

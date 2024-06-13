@@ -4,8 +4,8 @@ import Link from 'next/link';
 
 const Header = () => {
   return (
-    <header className="bg-app-primary h-16 w-full px-8 flex items-center justify-between">
-      <Link href={'/'}>
+    <header className="bg-app-primary h-16 w-full px-8 flex items-center justify-between fixed top-0 left-0 z-40">
+      <Link href={'/create'}>
         <Image
           width={160}
           height={45}

@@ -51,24 +51,6 @@ const Personaliza: FC<Props> = ({ params }) => {
     fetchDesigns();
   }, []);
 
-  // useEffect(() => {
-  //   const fetchShirtDesign = async () => {
-  //     const { data, error } = await getShirtDesign({
-  //       shirt_collar_id: shirt_collar_id,
-  //       shirt_cuff_id: shirt_cuff_id,
-  //       shirt_pocket_id: shirt_pocket_id,
-  //       sleeve_type: sleeve_type,
-  //     });
-  //     if (error) {
-  //       errorToast(error.message);
-  //     }
-  //     if (data && data.length > 0) {
-  //       setCurrentDesign(data[0] || []);
-  //     }
-  //   };
-  //   fetchShirtDesign();
-  // }, [shirt_collar_id, shirt_cuff_id, shirt_pocket_id, sleeve_type]);
-
   return (
     <div className="grid md:grid-cols-2 md:py-8 gap-8 ">
       <div>

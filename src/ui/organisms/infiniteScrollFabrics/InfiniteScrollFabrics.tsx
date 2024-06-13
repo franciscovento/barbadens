@@ -1,6 +1,6 @@
 'use client';
 
-import { fetchProducts } from '@/app/actions';
+import { fetchProducts } from '@/app/(store)/create/actions';
 import { fabrics } from '@/utils/data/fabrics';
 import { Product } from '@/utils/types/products.interface';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';

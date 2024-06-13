@@ -140,12 +140,12 @@ const MeasureForm = ({ profileMeasures }: Props) => {
     successToast('Se realizó la acción con éxito!');
     if (mode === 'go_to_checkout') {
       // navigate to checkout
-      return router.push(`/create/${product_id}/checkout`);
+      return router.push(`/checkout`);
     }
 
     if (mode === 'continue_shopping') {
       // navigate to continue shopping
-      return router.push(`/`);
+      return router.push(`/create`);
     }
   };
 
@@ -179,6 +179,7 @@ const MeasureForm = ({ profileMeasures }: Props) => {
 
   const displayLoginModal = () => {
     const onLoginSuccess = () => {
+      router.refresh();
       appModal.close();
     };
 
@@ -330,7 +331,7 @@ const MeasureForm = ({ profileMeasures }: Props) => {
                 type="button"
                 disabled={!isValid}
               >
-                Ir al checkout
+                Agregar e ir al checkout
               </Button>
             </div>
           </div>

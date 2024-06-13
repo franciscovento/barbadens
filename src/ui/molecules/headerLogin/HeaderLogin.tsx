@@ -10,10 +10,11 @@ import useAuth from '@/utils/hooks/useAuth.hooks';
 import useCart from '@/utils/hooks/useCart.hooks';
 import { Badge, IconButton } from '@material-tailwind/react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 const HeaderLogin = () => {
+  const path = usePathname();
   const checkAuth = useUser((state) => state.checkAuth);
   const checkCart = useCartStore((state) => state.checkCart);
   const userEmail = useUser((state) => state.email);
@@ -28,9 +29,14 @@ const HeaderLogin = () => {
     router.refresh();
   };
 
+  const redirectToCheckout = () => {
+    appSidebar.close();
+    router.push('/checkout');
+  };
+
   const displayCart = () => {
     appSidebar.fire({
-      html: <Cart />,
+      html: <Cart onCheckoutRedirect={() => redirectToCheckout()} />,
       width: 'fit-content',
     });
   };
@@ -43,7 +49,7 @@ const HeaderLogin = () => {
     checkCart();
   }, [checkCart]);
 
-  return (
+  return !path.includes('checkout') ? (
     <div className="text-white text-right">
       {userEmail ? (
         <div className="flex items-center gap-4">
@@ -65,6 +71,8 @@ const HeaderLogin = () => {
         </Link>
       )}
     </div>
+  ) : (
+    <div></div>
   );
 };
 

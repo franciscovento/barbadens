@@ -13,11 +13,11 @@ const layout: FC<Props> = ({ children }) => {
     <>
       <section
         id="stepper-container"
-        className=" max-w-lg mx-auto px-2 md:px-8 py-4"
+        className=" max-w-lg mx-auto px-2 md:px-8 pb-12  "
       >
         <CheckoutStepper />
       </section>
-      <main className="app-container py-12">{children}</main>
+      <div>{children}</div>
     </>
   );
 };
