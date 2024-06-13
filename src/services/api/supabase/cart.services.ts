@@ -1,5 +1,7 @@
+import { createClient } from '@/utils/supabase/client';
 import {
   CartProduct,
+  CartProductId,
   CartProductWithProduct,
 } from '@/utils/types/cart.interface';
 import { ApiResponse } from '@/utils/types/response.interface';
@@ -42,4 +44,48 @@ const addProductToCart = async (
   };
 };
 
-export { addProductToCart, getCart };
+const deleteProductFromCart = async (productId: CartProductId) => {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from('cart_product')
+    .delete()
+    .eq('cart_id', productId.cart_id)
+    .eq('design_id', productId.design_id)
+    .eq('fabric_id', productId.fabric_id)
+    .eq('profile_id', productId.profile_id)
+    .select()
+    .returns<CartProduct[]>();
+
+  return {
+    data,
+    error,
+  };
+};
+
+const updatedQuantityFromProductCart = async (
+  productId: CartProductId,
+  quantity: number
+) => {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from('cart_product')
+    .update({ quantity })
+    .eq('cart_id', productId.cart_id)
+    .eq('design_id', productId.design_id)
+    .eq('fabric_id', productId.fabric_id)
+    .eq('profile_id', productId.profile_id)
+    .select()
+    .returns<CartProduct[]>();
+
+  return {
+    data,
+    error,
+  };
+};
+
+export {
+  addProductToCart,
+  deleteProductFromCart,
+  getCart,
+  updatedQuantityFromProductCart,
+};

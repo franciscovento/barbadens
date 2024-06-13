@@ -32,3 +32,10 @@ export interface CartProductWithFabricDesignProfile extends CartProduct {
 export interface CartProductWithProduct extends Cart {
   cart_product: CartProductWithFabricDesignProfile[];
 }
+
+export interface CartProductId {
+  cart_id: number;
+  design_id: number;
+  fabric_id: number;
+  profile_id: string;
+}
