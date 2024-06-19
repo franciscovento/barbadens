@@ -2,9 +2,6 @@ import React, { FC } from 'react';
 
 interface Props {
   children: React.ReactNode;
-  params: {
-    product_id: string;
-  };
 }
 
 const layout: FC<Props> = ({ children }) => {

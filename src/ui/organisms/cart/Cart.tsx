@@ -4,14 +4,13 @@ import {
 } from '@/services/api/supabase/cart.services';
 import { appSidebar } from '@/services/sidebar/appSidebar';
 import { useCartStore } from '@/stores/cart/cart.store';
-import Counter from '@/ui/atoms/counter/Counter';
 import StepTitle from '@/ui/atoms/stepTitle/StepTitle';
-import SvgTrash from '@/ui/atoms/svgs/SvgTrash';
 import useCart from '@/utils/hooks/useCart.hooks';
 import { CartProductId } from '@/utils/types/cart.interface';
 import { Button } from '@material-tailwind/react';
 import Image from 'next/image';
 import { FC } from 'react';
+import CartItem from './CartItem';
 
 interface Props {
   onCheckoutRedirect: () => void;
@@ -71,8 +70,12 @@ const Cart: FC<Props> = ({ onCheckoutRedirect }) => {
                   </p>
                 </div>
               </div>
-
-              <div className="flex items-center gap-4">
+              <CartItem
+                deleteItem={deleteItem}
+                onChangueProductQuantity={onChangueProductQuantity}
+                product={product}
+              />
+              {/* <div className="flex items-center gap-4">
                 <Counter
                   value={product.quantity}
                   onChangueValue={(value) =>
@@ -103,7 +106,7 @@ const Cart: FC<Props> = ({ onCheckoutRedirect }) => {
                     })
                   }
                 />
-              </div>
+              </div> */}
             </div>
           ))}
         </div>

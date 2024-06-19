@@ -1,9 +1,11 @@
 import StepTitle from '@/ui/atoms/stepTitle/StepTitle';
 import InfiniteScrollFabrics from '@/ui/organisms/infiniteScrollFabrics/InfiniteScrollFabrics';
-import { fetchProducts } from './actions';
+import { fetchFabrics } from './actions';
 
 const CreatePage = async () => {
-  const data = await fetchProducts({});
+  // const data = await fetchProducts({});
+  const { data: fabrics, error } = await fetchFabrics();
+
   return (
     <>
       <div className="pb-8 text-center">
@@ -14,7 +16,12 @@ const CreatePage = async () => {
         </p>
       </div>
       <div className="grid grid-cols-2 gap-8 sm:grid-cols-[repeat(auto-fill,_minmax(220px,_1fr))] ">
-        <InfiniteScrollFabrics initialData={data.items} nextPage={data.next} />
+        {fabrics && <InfiniteScrollFabrics initialData={fabrics} />}
+        {error && (
+          <p>
+            Hubo un error al cargar las telas... Inténtalo nuevamente más tarde.
+          </p>
+        )}
       </div>
     </>
   );

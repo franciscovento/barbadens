@@ -81,7 +81,7 @@ const MeasureForm = ({ profileMeasures }: Props) => {
   const { checkCart } = useCartStore();
   const router = useRouter();
   const params = useSearchParams();
-  const { product_id } = useParams();
+  const { fabric_id } = useParams();
   const shirt_design_id = params.get('shirt_design_id');
 
   const { profiles, isAuthenticated } = useUser();
@@ -122,13 +122,13 @@ const MeasureForm = ({ profileMeasures }: Props) => {
       await updateOrCreateProfile(data);
 
     if (profileError) {
-      return successToast('Hubo un error al guardar las medidas');
+      return errorToast('Hubo un error al guardar las medidas');
     }
 
     if (profileData) {
       const { error } = await addProductToCart({
         design_id: Number(shirt_design_id),
-        fabric_id: 1, // product_id,
+        fabric_id: Number(fabric_id),
         profile_id: profileData.id,
       });
       if (error) {
@@ -137,7 +137,7 @@ const MeasureForm = ({ profileMeasures }: Props) => {
       updateProfileId(profileData.id);
     }
     checkCart();
-    successToast('Se realizó la acción con éxito!');
+    successToast('Se agregó el producto al carrito');
     if (mode === 'go_to_checkout') {
       // navigate to checkout
       return router.push(`/checkout`);

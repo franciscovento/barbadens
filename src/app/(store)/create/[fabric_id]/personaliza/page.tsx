@@ -17,7 +17,7 @@ import { FC, useEffect, useState } from 'react';
 
 interface Props {
   params: {
-    product_id: string;
+    fabric_id: string;
   };
 }
 
@@ -36,7 +36,7 @@ const Personaliza: FC<Props> = ({ params }) => {
 
   const completeStep = () => {
     router.push(
-      `/create/${params.product_id}/medidas?shirt_design_id=${currentDesign?.id}`
+      `/create/${params.fabric_id}/medidas?shirt_design_id=${currentDesign?.id}`
     );
   };
 
