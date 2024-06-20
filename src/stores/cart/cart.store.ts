@@ -1,5 +1,12 @@
-import { getCart } from '@/services/api/supabase/cart.services';
-import { CartProductWithFabricDesignProfile } from '@/utils/types/cart.interface';
+import {
+  deleteProductFromCart,
+  getCart,
+  updatedQuantityFromProductCart,
+} from '@/services/api/supabase/cart.services';
+import {
+  CartProductId,
+  CartProductWithFabricDesignProfile,
+} from '@/utils/types/cart.interface';
 import { create } from 'zustand';
 
 export interface CartStore {
@@ -12,6 +19,11 @@ export interface CartStore {
 export type CartActions = {
   checkCart: () => void;
   emptyCart: () => void;
+  onChangueProductQuantity: (
+    productId: CartProductId,
+    quantity: number
+  ) => void;
+  deleteItem: (productId: CartProductId) => void;
 };
 
 const initialState: CartStore = {
@@ -42,6 +54,26 @@ export const useCartStore = create<CartStore & CartActions>()((set, get) => ({
       });
     } else {
       get().emptyCart();
+    }
+  },
+  deleteItem: async (productId: CartProductId) => {
+    const { error } = await deleteProductFromCart(productId);
+    if (!error) {
+      get().checkCart();
+    } else {
+      alert('Ocurrió un error al eliminar el producto');
+    }
+  },
+  onChangueProductQuantity: async (
+    productId: CartProductId,
+    quantity: number
+  ) => {
+    const { error } = await updatedQuantityFromProductCart(productId, quantity);
+
+    if (!error) {
+      get().checkCart();
+    } else {
+      alert('Ocurrió un error al actualizar la cantidad del producto');
     }
   },
 }));

@@ -1,25 +1,45 @@
+export interface GetClientsResponse {
+  href: string;
+  count: number;
+  limit: number;
+  offset: number;
+  items: Client[];
+}
+
 export interface Client {
-  companyOrPerson: number; // empresa (0) | Persona o (1)
-  facebook: string | null;
-  municipality: string;
-  phone: string | null;
+  href: string;
+  id: number;
+  firstName: null;
+  lastName: string;
+  email: string;
+  code: string;
+  phone: null;
+  company: string;
+  note: null;
+  facebook: null;
+  twitter: null;
+  hasCredit: null;
+  maxCredit: number;
+  state: number;
   activity: string;
   city: string;
-  maxCredit: number;
-  hasCredit: 1 | null;
-  accumulatePoints: 1;
-  lastName: string;
-  note: string;
-  firstName: string;
-  company: string; // Razón social del cliente (String).
+  commerciallyBlocked: number;
+  district: string;
   address: string;
-  email: string;
-  twitter: string;
-  code: string; // Rut del cliente (String).
-  dynamicAttributes: [
-    {
-      description: string;
-      dynamicAttributeId: number;
-    },
-  ];
+  companyOrPerson: number;
+  accumulatePoints: number;
+  points: number;
+  pointsUpdated: string;
+  sendDte: number;
+  isForeigner: number;
+  prestashopClienId: number;
+  createdAt: number;
+  updatedAt: number;
+  contacts: Addresses;
+  attributes: Addresses;
+  addresses: Addresses;
+}
+
+export interface Addresses {
+  href: string;
 }

@@ -6,7 +6,16 @@ const nextConfig = {
   },
   experimental: {
     missingSuspenseWithCSRBailout: false,
-  }
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'dojiw2m9tvv09.cloudfront.net',
+        port: '',
+      },
+    ],
+  },
 };
 
 export default nextConfig;

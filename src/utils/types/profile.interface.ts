@@ -14,4 +14,5 @@ export interface Profile {
   sleeveLong?: number | null;
   fist?: number | null;
   shoulder?: number | null;
+  is_primary: boolean;
 }

@@ -13,6 +13,7 @@ export async function GET() {
     .select(
       '*, cart_product(*, products(fabrics(name), shirt_designs(image)), profiles(profile_name))'
     )
+    .order('id', { ascending: false })
     .returns<CartProductWithProduct[]>();
 
   return NextResponse.json({

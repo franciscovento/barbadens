@@ -2,6 +2,7 @@ import CheckoutStepper from '@/ui/organisms/checkoutStepper/CheckoutStepper';
 import { createClient } from '@/utils/supabase/server';
 import { CartProductWithProduct } from '@/utils/types/cart.interface';
 import { redirect } from 'next/navigation';
+import { Suspense } from 'react';
 import CheckoutForm from './CheckoutForm';
 
 export type DeliveryOptions = '0' | '1';
@@ -31,7 +32,9 @@ async function Checkout() {
         >
           <CheckoutStepper />
         </section>
-        <CheckoutForm />
+        <Suspense>
+          <CheckoutForm />
+        </Suspense>
       </main>
     </>
   );

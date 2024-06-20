@@ -3,8 +3,8 @@ import InfiniteScrollFabrics from '@/ui/organisms/infiniteScrollFabrics/Infinite
 import { fetchFabrics } from './actions';
 
 const CreatePage = async () => {
-  // const data = await fetchProducts({});
-  const { data: fabrics, error } = await fetchFabrics();
+  const data = await fetchFabrics({});
+  // const { data: fabrics, error } = await fetchFabrics();
 
   return (
     <>
@@ -16,12 +16,14 @@ const CreatePage = async () => {
         </p>
       </div>
       <div className="grid grid-cols-2 gap-8 sm:grid-cols-[repeat(auto-fill,_minmax(220px,_1fr))] ">
-        {fabrics && <InfiniteScrollFabrics initialData={fabrics} />}
-        {error && (
+        {data.data && (
+          <InfiniteScrollFabrics initialData={data.data} nextPage={data.next} />
+        )}
+        {/* {
           <p>
             Hubo un error al cargar las telas... Inténtalo nuevamente más tarde.
           </p>
-        )}
+        } */}
       </div>
     </>
   );

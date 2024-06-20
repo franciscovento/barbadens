@@ -226,7 +226,7 @@ const MeasureForm = ({ profileMeasures }: Props) => {
             medidas, haz clic en {' "Ver Tutorial" '} para obtener más
             información.
           </p>
-          {profiles.length === 0 && (
+          {!isAuthenticated && (
             <p>
               Si ya tienes una cuenta.{' '}
               <button
