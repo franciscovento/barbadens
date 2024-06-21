@@ -18,6 +18,7 @@
     "yarn": "please-use-npm"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.6.0",
     "@material-tailwind/react": "^2.1.9",
     "@supabase/ssr": "^0.3.0",
     "@supabase/supabase-js": "^2.43.4",
@@ -35,6 +36,7 @@
     "react-youtube": "^10.1.0",
     "sweetalert2": "^11.11.0",
     "sweetalert2-react-content": "^5.0.7",
+    "yup": "^1.4.0",
     "zustand": "^4.5.2"
   },
   "devDependencies": {

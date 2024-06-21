@@ -4,11 +4,12 @@ import { FC, useState } from 'react';
 
 interface Props {
   onSelect: (_value: any) => void;
-  options: { title: string; description: string; id: number; icon?: string }[];
+  options: { name: string; description: string; id: number; icon?: string }[];
+  defaultValue: number;
 }
 
-const OptionsPayments: FC<Props> = ({ onSelect, options }) => {
-  const [state, setState] = useState(0);
+const OptionsPayments: FC<Props> = ({ onSelect, options, defaultValue }) => {
+  const [state, setState] = useState(defaultValue);
 
   const handleSelect = (id: number) => {
     const itemSelected = options.find((option) => option.id === id);
@@ -20,7 +21,7 @@ const OptionsPayments: FC<Props> = ({ onSelect, options }) => {
     return (
       <SelectCard
         key={option.id}
-        title={option.title}
+        title={option.name}
         description={option.description}
         isActive={state === option.id}
         onClick={() => handleSelect(option.id)}

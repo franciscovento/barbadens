@@ -38,6 +38,7 @@ const Counter: FC<Props> = ({ onChangueValue, value, maxItemsToBuy = 10 }) => {
   return (
     <div className="w-20  text-sm flex items-center gap-3 border border-gray-500 rounded-md justify-center">
       <button
+        type="button"
         className="flex-1"
         onClick={() => handleChangueValue('decrement')}
       >
@@ -45,6 +46,7 @@ const Counter: FC<Props> = ({ onChangueValue, value, maxItemsToBuy = 10 }) => {
       </button>
       <span>{counter}</span>
       <button
+        type="button"
         className="flex-1"
         onClick={() => handleChangueValue('increment')}
       >

@@ -13,8 +13,10 @@
     "clsx",
     "cuban",
     "italian",
+    "mercadopago",
     "Postgrest",
     "supabase",
+    "yape",
     "zustand"
   ]
 }

@@ -5,10 +5,15 @@ import SelectCard from '../../atoms/selectCard/SelectCard';
 interface Props {
   onSelect: (_value: any) => void;
   options: { title: string; description: string; id: number }[];
+  defaultValue: number;
 }
 
-const OptionsDeliveryRadio: FC<Props> = ({ onSelect, options }) => {
-  const [state, setState] = useState(0);
+const OptionsDeliveryRadio: FC<Props> = ({
+  onSelect,
+  options,
+  defaultValue,
+}) => {
+  const [state, setState] = useState(defaultValue);
 
   const handleSelect = (id: number) => {
     const itemSelected = options.find((option) => option.id === id);
