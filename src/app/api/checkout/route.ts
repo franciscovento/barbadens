@@ -1,30 +1,47 @@
 // import bsaleApi from '@/utils/axios.utils';
 
+import bsaleApi from '@/utils/axios.utils';
+import { createClient } from '@/utils/supabase/server';
 import {
   Checkout,
   CheckoutResponse,
 } from '@/utils/types/bsale/checkout.interface';
-import axios from 'axios';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   try {
     const checkoutInfo = (await request.json()) as Checkout;
-    const response = await axios.post<CheckoutResponse>(
-      'https://api.bsale.io/v1/markets/checkout.json',
-      checkoutInfo,
-      {
-        headers: {
-          access_token: '647ed4627e9ad1ab38b287e934e62dd64520960c',
-        },
-        withCredentials: true,
-      }
+    const response = await bsaleApi.post<CheckoutResponse>(
+      '/v1/markets/checkout.json',
+      checkoutInfo
     );
+
+    const supabase = createClient();
+    const { error } = await supabase.rpc('create_order', {
+      token: response.data.data.token,
+    });
+
+    if (error) {
+      return NextResponse.json({
+        data: null,
+        error: error,
+      });
+    }
+
     return NextResponse.json({
-      data: response.data.data,
+      data: response.data,
       error: null,
     });
   } catch (error) {
-    return NextResponse.json({ error: error, data: null });
+    return NextResponse.json(
+      {
+        error: {
+          message:
+            'No se pudo procesar el pedido. Inténtalo nuevamente más tarde',
+        },
+        data: null,
+      },
+      { status: 500 }
+    );
   }
 }

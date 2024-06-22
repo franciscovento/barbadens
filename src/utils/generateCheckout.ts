@@ -39,7 +39,7 @@ export function generateCheckout(
   return {
     marketId: 1,
     generateDocument: 1,
-    pickStoreId: 0,
+    pickStoreId: 1,
     payProcess: 'for_validate',
     documentData: {
       declareSii: 1,

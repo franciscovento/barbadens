@@ -12,8 +12,11 @@ import { useForm } from 'react-hook-form';
 import CartResume from './CartResume';
 import OptionsPayments from './OptionsPayments';
 
-import { processCheckout } from '@/services/api/bsale/checkout.services';
+import { createCheckout } from '@/services/api/bsale/checkout.services';
+import { errorToast } from '@/services/modals/appModal';
+import { useCartStore } from '@/stores/cart/cart.store';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useRouter } from 'next/navigation';
 import * as yup from 'yup';
 
 export type DeliveryOptions = 0 | 1;
@@ -56,11 +59,11 @@ const schema: yup.ObjectSchema<CheckoutInfo> = yup
     }),
     clientBuildingNumber: yup.string().when('withdrawStore', {
       is: 0,
-      then: (schema) => schema.default(''),
+      then: (schema) => schema.required('Ingresa número de calle'),
     }),
     clientPostcode: yup.string().when('withdrawStore', {
       is: 0,
-      then: (schema) => schema.default(''),
+      then: (schema) => schema.required('Ingresa tu código postal'),
     }),
     // ? Datos dependientes de boleta o factura
     // extrasUserData: yup.object().nullable(),
@@ -70,6 +73,8 @@ const schema: yup.ObjectSchema<CheckoutInfo> = yup
 const CheckoutForm = () => {
   // const [checkBoxPick, setCheckBoxPick] = useState(true);
   const { cart_products = [] } = useCart();
+  const router = useRouter();
+  const checkCart = useCartStore((state) => state.checkCart);
   const {
     register,
     handleSubmit,
@@ -94,15 +99,25 @@ const CheckoutForm = () => {
   };
 
   const onSubmit = async (data: CheckoutInfo) => {
-    const checkout = generateCheckout(data, cart_products);
-
-    const { data: checkoutProcess, error } = await processCheckout(checkout);
-    // console.log(checkout);
-    // return checkoutProcess;
-    // await waitFor(2000);
+    try {
+      const checkout = generateCheckout(data, cart_products);
+      const { data: checkoutData, error: checkoutError } =
+        await createCheckout(checkout);
+      if (checkoutError) {
+        return errorToast(
+          checkoutError?.message ||
+            'Ocurrió un error por favor inténtalo más tarde'
+        );
+      }
+      checkCart();
+      router.refresh();
+      return router.push(`/checkout/${checkoutData?.data.token}`);
+    } catch (error) {
+      return errorToast(
+        'Ocurrió un error creando el pedido, por favor inténtalo nuevamente'
+      );
+    }
   };
-
-  const waitFor = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
   useEffect(() => {
     if (watchWithdrawStore == 1) {
@@ -170,10 +185,14 @@ const CheckoutForm = () => {
           <div>
             <h3 className="text-xl font-medium pt-8">Datos de delivery</h3>
             <div className="pt-4 flex flex-col gap-4">
-              <Input label="Dirección" {...register('clientStreet')} />
+              <div className="grid lg:grid-cols-2 gap-4">
+                <Input label="Nombre de calle" {...register('clientStreet')} />
+                <Input label="Número" {...register('clientBuildingNumber')} />
+              </div>
               <div className="grid lg:grid-cols-2 gap-4">
                 <Input label="Distrito" {...register('clientCityZone')} />
                 <Input label="Provincia" {...register('clientState')} />
+                <Input label="Código postal" {...register('clientPostcode')} />
                 <Input
                   value={'Perú'}
                   label="país"
@@ -227,7 +246,7 @@ const CheckoutForm = () => {
         </div>
         <div className="flex items-center justify-end">
           <Button
-            // disabled={!isValid || isSubmitting || isSubmitSuccessful}
+            disabled={!isValid || isSubmitting || isSubmitSuccessful}
             type="submit"
           >
             Confirmar e ir a pagar

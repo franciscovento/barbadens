@@ -23,4 +23,9 @@ const getFabrics = async (queries?: string) => {
   return response.data;
 };
 
+// const createCheckout = async (checkout: Checkout) => {
+//   const response = await bsaleApi.post('/v1/markets/checkout.json', checkout);
+//   return response.data;
+// };
+
 export { getFabrics, getProduct, getProducts };
