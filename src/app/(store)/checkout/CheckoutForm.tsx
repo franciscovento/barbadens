@@ -84,7 +84,7 @@ const CheckoutForm = () => {
     formState: { isValid, isSubmitSuccessful, isSubmitting },
   } = useForm<CheckoutInfo>({
     defaultValues: {
-      ptId: 1,
+      ptId: 2,
       withdrawStore: 0,
       shippingCost: 0,
     },
@@ -239,7 +239,7 @@ const CheckoutForm = () => {
           <div className="flex flex-col gap-4 py-4">
             <OptionsPayments
               defaultValue={watchPdId}
-              options={paymentOptions}
+              options={paymentOptions.filter((opt) => opt.active)}
               onSelect={(id) => setValue('ptId', id)}
             />
           </div>

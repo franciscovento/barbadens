@@ -1,6 +1,4 @@
-'use client';
-import { checkoutMock } from '@/utils/data/mocks/checkout.mock';
-import axios from 'axios';
+import { getCheckoutByToken } from '@/services/api/bsale/checkout.services';
 import { FC } from 'react';
 
 interface Props {
@@ -8,20 +6,13 @@ interface Props {
     token: string;
   };
 }
-const page: FC<Props> = ({ params }) => {
-  const handleClick = async () => {
-    const response = await axios.post('/api/checkout', checkoutMock);
-    console.log(response);
+const page: FC<Props> = async ({ params }) => {
+  const response = await getCheckoutByToken(params.token);
+  // console.log(error);
 
-    return response;
-  };
   return (
     <main className="app-container py-8 mt-16">
-      <div>token : {params.token}</div>
-      <button onClick={handleClick}>generate checkout</button>
-      {/* <form action={createNewCheckout}>
-        <button>Crear checkout</button>
-      </form> */}
+      {JSON.stringify(response?.data)}
     </main>
   );
 };

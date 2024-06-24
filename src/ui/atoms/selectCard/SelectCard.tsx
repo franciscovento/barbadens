@@ -67,7 +67,7 @@ const SelectCard: FC<Props> = ({
           </h3>
           <p className="text-xs text-app-text pt-2">{description}</p>
         </div>
-        {icon && <Image src={icon} alt={title} width={50} height={50} />}
+        {icon && <Image src={icon} alt={title} width={120} height={60} />}
       </div>
     </div>
   );

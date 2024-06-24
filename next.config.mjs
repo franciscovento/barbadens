@@ -14,6 +14,16 @@ const nextConfig = {
         hostname: 'dojiw2m9tvv09.cloudfront.net',
         port: '',
       },
+      {
+        protocol: 'https',
+        hostname: 's3.amazonaws.com',
+        port: '',
+      },
+      {
+        protocol: 'https',
+        hostname: 'bsalemarket.s3.amazonaws.com',
+        port: '',
+      },
     ],
   },
 };
