@@ -5,15 +5,12 @@ import {
   CartProductWithProduct,
 } from '@/utils/types/cart.interface';
 import { ApiResponse } from '@/utils/types/response.interface';
-import { PostgrestError } from '@supabase/supabase-js';
 import axios from 'axios';
 import { getOrCreateProduct } from './products.services';
 
 const getCart = async () => {
   const { data: response } =
-    await axios.get<ApiResponse<CartProductWithProduct[], PostgrestError>>(
-      '/api/cart'
-    );
+    await axios.get<ApiResponse<CartProductWithProduct[]>>('/api/cart');
   return {
     data: response.data,
     error: response.error,
@@ -37,9 +34,10 @@ const addProductToCart = async (
     };
   }
 
-  const { data: response } = await axios.post<
-    ApiResponse<CartProduct[], PostgrestError>
-  >('/api/cart', cartItem);
+  const { data: response } = await axios.post<ApiResponse<CartProduct[]>>(
+    '/api/cart',
+    cartItem
+  );
   return {
     data: response.data?.[0],
     error: response.error,
