@@ -3,18 +3,21 @@ import { successToast } from '@/services/modals/appModal';
 import StepTitle from '@/ui/atoms/stepTitle/StepTitle';
 import BasicTable from '@/ui/organisms/table/BasicTable';
 import { createClient } from '@/utils/supabase/client';
+import { ChannelResponse } from '@/utils/types/channelResponse.interface';
 import { Order } from '@/utils/types/order.interface';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 const Page = () => {
-  const router = useRouter();
-  const [orders, setOrders] = useState<Order[]>();
+  const [orders, setOrders] = useState<Order[]>([]);
   const supabase = createClient();
 
   const handleInserts = (payload: any) => {
-    console.log(payload);
-    router.refresh();
+    const response = payload as ChannelResponse<Order>;
+    setOrders((prev) => {
+      let ordersCopy = [...prev];
+      ordersCopy.unshift(response.new);
+      return ordersCopy;
+    });
     successToast('Nueva orden recibida!');
   };
 
@@ -48,7 +51,7 @@ const Page = () => {
   return (
     <>
       <StepTitle title="Últimas ordenes" />
-      {orders && <BasicTable orders={orders} />}
+      {orders.length > 0 && <BasicTable orders={orders} />}
     </>
   );
 };

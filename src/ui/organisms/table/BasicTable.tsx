@@ -13,7 +13,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { FC, useCallback, useMemo, useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 interface Props {
   orders: Order[];
@@ -21,6 +21,8 @@ interface Props {
 
 const BasicTable: FC<Props> = ({ orders }) => {
   const [data, setData] = useState(orders);
+  const isFirstTime = useRef(true);
+
   const columns = useMemo(
     () => [
       {
@@ -37,7 +39,7 @@ const BasicTable: FC<Props> = ({ orders }) => {
       {
         header: 'Status',
         accessorKey: 'status',
-        cell: ({ getValue }) => {
+        cell: ({ getValue }: { getValue: () => string }) => {
           const status = getValue();
           return (
             <Chip className="text-center w-fit" value={status} color="amber" />
@@ -59,7 +61,7 @@ const BasicTable: FC<Props> = ({ orders }) => {
       {
         id: 'actions',
         header: ' ',
-        cell: ({ row }) => {
+        cell: ({ row }: { row: any }) => {
           return (
             <Menu>
               <MenuHandler>
@@ -93,6 +95,14 @@ const BasicTable: FC<Props> = ({ orders }) => {
     data: data,
     getCoreRowModel: getCoreRowModel(),
   });
+
+  useEffect(() => {
+    if (!isFirstTime.current) {
+      setData(orders);
+    }
+
+    isFirstTime.current = false;
+  }, [orders]);
 
   return (
     <div className="overflow-x-auto py-12">
