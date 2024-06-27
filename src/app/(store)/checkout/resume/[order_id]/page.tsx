@@ -1,17 +1,15 @@
-import { getCheckoutByToken } from '@/services/api/bsale/checkout.services';
 import StepTitle from '@/ui/atoms/stepTitle/StepTitle';
 import { Button, Chip } from '@/ui/materialComponents';
 import { checkoutStatusMap } from '@/utils/checkoutStatusMap';
 import { createClient } from '@/utils/supabase/server';
-import { PayProcess } from '@/utils/types/bsale/checkout.interface';
-import { GetOrdersResponse } from '@/utils/types/orders.interface';
+import { OrderStatus, OrderWithProducts } from '@/utils/types/order.interface';
 import Link from 'next/link';
 import { FC } from 'react';
 import PaymentSection from './PaymentSection';
 
 interface Props {
   params: {
-    token: string;
+    order_id: string;
   };
 }
 const Page: FC<Props> = async ({ params }) => {
@@ -19,8 +17,8 @@ const Page: FC<Props> = async ({ params }) => {
   const { data: orders, error: ordersError } = await supabase
     .from('orders')
     .select('*, order_product(*, products(*), profiles(*))')
-    .eq('bsale_token', params.token)
-    .returns<GetOrdersResponse[]>();
+    .eq('id', params.order_id)
+    .returns<OrderWithProducts[]>();
 
   if ((orders && orders?.length === 0) || ordersError) {
     return (
@@ -29,18 +27,18 @@ const Page: FC<Props> = async ({ params }) => {
       </div>
     );
   }
-  const { data, error } = await getCheckoutByToken(params.token);
+  // const { data, error } = await getCheckoutByToken(params.order_id);
   const order = orders[0];
 
-  const checkout = data?.data;
-  const getCheckoutProcessStatus = (status: PayProcess) => {
-    if (status === 'for_validate') {
+  // const checkout = data?.data;
+  const getCheckoutProcessStatus = (status: OrderStatus) => {
+    if (status === 'pending') {
       return 'amber';
     }
-    if (status == 'success') {
+    if (status == 'confirmed') {
       return 'green';
     }
-    if (status === 'fail') {
+    if (status === 'cancelled') {
       return 'red';
     }
   };
@@ -49,16 +47,19 @@ const Page: FC<Props> = async ({ params }) => {
       <StepTitle title="Resumen del pedido" ribbon="center" />
       <div className="py-12">
         <div className="bg-app-background px-12 py-8 flex justify-center items-center flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          {checkout?.ptId && <PaymentSection ptId={checkout?.ptId} />}
+          {order.checkout_info?.ptId && (
+            <PaymentSection ptId={order.checkout_info?.ptId} />
+          )}
           <div className="sm:text-right order-1 sm:order-2 text-center">
             <span className="text-sm text-app-text ">Monto a Pagar</span>
             <p className="font-semibold text-4xl py-2">
-              S/. {checkout?.totalCart}
+              S/. {order?.total_products + order.shipping_cost}
             </p>
-            {checkout?.payProcess && (
+            {order.status === 'pending' && (
               <Chip
-                color={getCheckoutProcessStatus(checkout.payProcess)}
-                value={checkoutStatusMap[checkout?.payProcess]}
+                className="text-center"
+                color={getCheckoutProcessStatus(order.status)}
+                value={checkoutStatusMap[order.status]}
               />
             )}
           </div>
@@ -89,24 +90,29 @@ const Page: FC<Props> = async ({ params }) => {
           <div className="flex flex-col gap-4 text-center sm:text-left">
             <div className="flex flex-col gap-1">
               <span className="font-bold capitalize">
-                {checkout?.clientName} {checkout?.clientLastName}
+                {order.checkout_info?.clientName}{' '}
+                {order.checkout_info?.clientLastName}
               </span>
-              <span>Tel: {checkout?.clientPhone}</span>
-              <span>{checkout?.extrasUserData?.user_rut}</span>
+              <span>Tel: {order.checkout_info?.clientPhone}</span>
+              <span>{order.checkout_info.clientDocument}</span>
             </div>
-            <span className="text-app-accent">{checkout?.clientEmail}</span>
+            <span className="text-app-accent">
+              {order.checkout_info?.clientEmail}
+            </span>
           </div>
           <span className="block h-1 w-[220px] sm:h-[120px] sm:w-1 bg-app-background"></span>
-          {checkout?.withdrawStore === 0 ? (
+          {order.checkout_info?.withdrawStore === 0 ? (
             <div className="flex flex-col gap-1 text-center sm:text-left">
               <h3 className="font-bold">Datos de delivery</h3>
               <span className="capitalize">
-                {checkout?.clientStreet} {checkout?.clientBuildingNumber},{' '}
-                {checkout?.clientCityZone}
+                {order.checkout_info?.clientStreet}{' '}
+                {order.checkout_info?.clientBuildingNumber},{' '}
+                {order.checkout_info?.clientCityZone}
               </span>
               <span className="capitalize">
-                {checkout?.clientState} {checkout?.clientPostcode} -{' '}
-                {checkout?.clientCountry}
+                {order.checkout_info?.clientState}{' '}
+                {order.checkout_info?.clientPostcode} -{' '}
+                {order.checkout_info?.clientCountry}
               </span>
             </div>
           ) : (

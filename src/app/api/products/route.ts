@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
       fabric_id,
       name,
       price,
-      barCode,
+      bar_code: barCode,
     })
     .select()
     .returns<Product[]>();

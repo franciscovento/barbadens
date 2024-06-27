@@ -1,5 +1,7 @@
 export const checkoutStatusMap = {
-  for_validate: 'Por validar',
-  success: 'Confirmado',
-  fail: 'Cancelado',
+  pending: 'Pendiente',
+  confirmed: 'Confirmado',
+  cancelled: 'Cancelado',
+  shipped: 'Enviando',
+  completed: 'Completado',
 };

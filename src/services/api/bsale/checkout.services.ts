@@ -1,8 +1,6 @@
-import {
-  Checkout,
-  CreateCheckoutResponse,
-} from '@/utils/types/bsale/checkout.interface';
+import { Checkout } from '@/utils/types/bsale/checkout.interface';
 import { GetCheckoutResponse } from '@/utils/types/bsale/checkoutResponse.interface';
+import { Order } from '@/utils/types/order.interface';
 
 import { ApiResponse } from '@/utils/types/response.interface';
 import axios from 'axios';
@@ -10,7 +8,7 @@ import axios from 'axios';
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 async function createCheckout(checkout: Checkout) {
-  const response = await axios.post<ApiResponse<CreateCheckoutResponse>>(
+  const response = await axios.post<ApiResponse<Order>>(
     '/api/checkout',
     checkout
   );

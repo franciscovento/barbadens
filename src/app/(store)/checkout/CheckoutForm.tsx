@@ -103,6 +103,7 @@ const CheckoutForm = () => {
       const checkout = generateCheckout(data, cart_products);
       const { data: checkoutData, error: checkoutError } =
         await createCheckout(checkout);
+
       if (checkoutError) {
         return errorToast(
           checkoutError?.message ||
@@ -111,7 +112,7 @@ const CheckoutForm = () => {
       }
 
       checkCart();
-      return router.push(`/checkout/resume/${checkoutData?.data.token}`);
+      return router.push(`/checkout/resume/${checkoutData?.id}`);
     } catch (error) {
       return errorToast(
         'Ocurrió un error creando el pedido, por favor inténtalo nuevamente'
@@ -246,7 +247,7 @@ const CheckoutForm = () => {
         </div>
         <div className="flex items-center justify-end">
           <Button
-            disabled={!isValid || isSubmitting || isSubmitSuccessful}
+            // disabled={!isValid || isSubmitting || isSubmitSuccessful}
             type="submit"
           >
             Confirmar e ir a pagar
