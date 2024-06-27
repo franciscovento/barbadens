@@ -4,6 +4,8 @@ import axios from 'axios';
 interface Product {
   design_id: number;
   fabric_id: number;
+  name: string;
+  bar_code: string;
   created_at: string;
   price: number;
 }

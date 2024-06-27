@@ -109,9 +109,9 @@ const CheckoutForm = () => {
             'Ocurrió un error por favor inténtalo más tarde'
         );
       }
+
       checkCart();
-      router.refresh();
-      return router.push(`/checkout/${checkoutData?.data.token}`);
+      return router.push(`/checkout/resume/${checkoutData?.data.token}`);
     } catch (error) {
       return errorToast(
         'Ocurrió un error creando el pedido, por favor inténtalo nuevamente'

@@ -29,7 +29,7 @@ export interface Checkout {
   };
 }
 
-export type PayProcess = 'success' | 'pending' | 'for_validate';
+export type PayProcess = 'success' | 'fail' | 'for_validate';
 
 export interface CartDetail {
   quantity: number;
@@ -47,7 +47,7 @@ export interface ExtrasUserData {
   comuna?: string;
 }
 
-export interface CheckoutResponse {
+export interface CreateCheckoutResponse {
   code: string;
   data: Data;
 }

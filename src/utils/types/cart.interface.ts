@@ -17,9 +17,7 @@ export interface CartProduct {
 
 export interface CartProductWithFabricDesignProfile extends CartProduct {
   products: {
-    fabrics: {
-      name: string;
-    };
+    name: string;
     shirt_designs: {
       image: string;
     };

@@ -3,7 +3,7 @@ export const paymentOptions = [
     id: 2,
     name: 'Transferencia bancaria',
     description: 'Deposita en nuestra cuenta',
-    icon: undefined,
+    icon: '/images/payments-logos/interbank-logo.png',
     active: 1,
   },
   {
@@ -44,6 +44,7 @@ export const paymentOptions = [
     // icon: '/images/payments-logos/yape_logo.png',
     icon: 'https://s3.amazonaws.com/bsalemarket/imagenes/b_pago_yape.png',
     active: 1,
+    qr: '/images/payments-logos/yape-qr.png',
   },
   {
     id: 13,

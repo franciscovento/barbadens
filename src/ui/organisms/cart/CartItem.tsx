@@ -28,7 +28,7 @@ const CartItem: FC<Props> = ({
           height={70}
         />
         <div className="flex flex-col gap-1 text-left ">
-          <p className="text-sm">{product.products.fabrics.name}</p>
+          <p className="text-sm">{product.products.name}</p>
           <p className="text-xs text-app-text">
             {product.profiles.profile_name}
           </p>
