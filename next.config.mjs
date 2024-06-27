@@ -24,6 +24,11 @@ const nextConfig = {
         hostname: 'bsalemarket.s3.amazonaws.com',
         port: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'docs.material-tailwind.com',
+        port: '',
+      },
     ],
   },
 };

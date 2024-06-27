@@ -4,7 +4,6 @@ import { fetchFabrics } from './actions';
 
 const CreatePage = async () => {
   const data = await fetchFabrics({});
-  // const { data: fabrics, error } = await fetchFabrics();
 
   return (
     <>

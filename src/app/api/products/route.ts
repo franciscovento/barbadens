@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
   const supabase = createClient();
   const { design_id, fabric_id } = await request.json();
   let name;
-  let barCode;
+  let barCode = null;
   let price = 270;
   try {
     const { data } = await bsaleApi.get<GetVariantResponse>(
