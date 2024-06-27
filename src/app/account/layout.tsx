@@ -18,7 +18,7 @@ const layout: FC<Props> = async ({ children }) => {
       <div className="w-14 bg-app-primary min-h-[calc(100vh-64px)] mx-auto">
         <Sidebar />
       </div>
-      <div className="bg-blue-gray-100 flex-1 p-8">{children}</div>
+      <div className="flex-1 p-8 overflow-hidden">{children}</div>
     </main>
   );
 };
