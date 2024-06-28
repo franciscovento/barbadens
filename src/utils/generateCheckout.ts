@@ -1,29 +1,12 @@
-import { CartDetail, Checkout } from './types/bsale/checkout.interface';
+import {
+  Checkout,
+  FormCheckoutSchema,
+} from '@/app/(store)/checkout/formSchema';
+import { CartDetail } from './types/bsale/checkout.interface';
 import { CartProductWithFabricDesignProfile } from './types/cart.interface';
 
-export type CheckoutInfo = Pick<
-  Checkout,
-  | 'code'
-  | 'clientName'
-  | 'clientLastName'
-  | 'clientEmail'
-  | 'clientPhone'
-  | 'clientCountry'
-  | 'clientState'
-  | 'clientCityZone'
-  | 'clientStreet'
-  | 'clientPostcode'
-  | 'clientBuildingNumber'
-  | 'shippingCost'
-  | 'withdrawStore'
-  | 'ptId'
-  | 'shippingComment'
-  | 'pickCode'
-  | 'pickName'
->;
-
 export function generateCheckout(
-  checkoutInfo: CheckoutInfo,
+  checkoutInfo: FormCheckoutSchema,
   cartProducts: CartProductWithFabricDesignProfile[]
 ): Checkout {
   let cartDetails: CartDetail[] = [];
@@ -37,15 +20,6 @@ export function generateCheckout(
   });
 
   return {
-    marketId: 1,
-    generateDocument: 1,
-    pickStoreId: 1,
-    payProcess: 'for_validate',
-    documentData: {
-      declareSii: 1,
-      officeId: 1,
-      emissionDate: Date.now(),
-    },
     cartDetails,
     ...checkoutInfo,
   };

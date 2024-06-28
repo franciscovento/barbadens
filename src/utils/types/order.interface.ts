@@ -1,9 +1,11 @@
+import { Checkout } from '@/app/(store)/checkout/formSchema';
+
 export interface Order {
   id: number;
   created_at: Date;
   user_id: string;
   status: OrderStatus;
-  checkout_info: CheckoutInfo;
+  checkout_info: Checkout;
   payment_type_id: null;
   shipping_cost: number;
   total_products: number;
@@ -16,44 +18,10 @@ export type OrderStatus =
   | 'delivered'
   | 'cancelled';
 
-export interface CheckoutInfo {
-  code: string;
-  ptId: number;
-  marketId: number;
-  pickCode?: string;
-  pickName?: string;
-  clientName: string;
-  clientDocument: string;
-  payProcess: string;
-  cartDetails: CartDetail[];
-  clientEmail: string;
-  clientPhone: string;
-  pickStoreId: number;
-  documentData: DocumentData;
-  shippingCost: number;
-  withdrawStore: number;
-  clientLastName: string;
-  clientPostcode: string;
-  shippingComment: string;
-  generateDocument: number;
-  clientBuildingNumber: string;
-  clientStreet?: string;
-  clientCityZone?: string;
-  clientState?: string;
-  clientCountry?: string;
-  extrasUserData?: any;
-}
-
 export interface CartDetail {
   quantity: number;
   grossUnitValue: number;
   idVarianteProducto: number;
-}
-
-export interface DocumentData {
-  officeId: number;
-  declareSii: number;
-  emissionDate: number;
 }
 
 export interface OrderWithProducts extends Order {
@@ -100,51 +68,3 @@ export interface Profiles {
   sleeve_width: number;
   profile_lastname: null;
 }
-
-interface ClientDetails {
-  clientName: string;
-  clientLastName: string;
-  clientEmail: string;
-  clientPhone: string;
-  clientDocument: string;
-}
-
-interface Address {
-  clientStreet: string;
-  clientNumber: string;
-  clientDistrict?: string;
-  clientState: string;
-  clientCountry: string;
-  postalCode?: string;
-}
-
-interface CompanyDetails {
-  ruc: string;
-  company_name: string;
-  company_address: string;
-  company_district: string;
-  company_state: string;
-}
-
-interface CheckoutBase extends ClientDetails {
-  ptId: number;
-  marketId: number;
-  cartDetails: CartDetail[];
-  withdrawStore: boolean;
-}
-
-export interface CheckoutWithDelivery extends CheckoutBase, Address {}
-
-export interface CheckoutWithPickUp extends CheckoutBase {
-  pickName: string;
-  pickCode: string;
-  pickStoreId: string;
-}
-
-export interface CheckoutWithDeliveryAndBill
-  extends CheckoutWithDelivery,
-    CompanyDetails {}
-
-export interface CheckoutWithPickupAndBill
-  extends CheckoutWithPickUp,
-    CompanyDetails {}

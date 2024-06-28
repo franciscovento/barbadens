@@ -5,7 +5,6 @@ import OptionsDeliveryRadio from '@/ui/molecules/OptionsDeliveryRadio/OptionsDel
 
 import SelectCard from '@/ui/atoms/selectCard/SelectCard';
 import { paymentOptions } from '@/utils/data/paymentOptions';
-import { CheckoutInfo, generateCheckout } from '@/utils/generateCheckout';
 import useCart from '@/utils/hooks/useCart.hooks';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -15,63 +14,12 @@ import OptionsPayments from './OptionsPayments';
 import { createCheckout } from '@/services/api/bsale/checkout.services';
 import { errorToast } from '@/services/modals/appModal';
 import { useCartStore } from '@/stores/cart/cart.store';
+import { generateCheckout } from '@/utils/generateCheckout';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/navigation';
-import * as yup from 'yup';
-
-export type DeliveryOptions = 0 | 1;
-
-const schema: yup.ObjectSchema<CheckoutInfo> = yup
-  .object({
-    clientEmail: yup.string().email().required(),
-    code: yup.string().required(),
-    clientName: yup.string().required('Nombre es requerido'),
-    clientLastName: yup.string().required('Apellido es requerido'),
-    clientPhone: yup.string().required('Necesitas un teléfono'),
-    shippingComment: yup.string().default(''),
-    ptId: yup.number().required().default(1),
-    shippingCost: yup.number(),
-    withdrawStore: yup.number().default(0).required(),
-    //? 0: Datos dependientes de withdrawStore
-    pickCode: yup.string().when('withdrawStore', {
-      is: 1,
-      then: (schema) => schema.required('N° Documento es requerido'),
-    }),
-    pickName: yup.string().when('withdrawStore', {
-      is: 1,
-      then: (schema) => schema.required('Nombre es requerido'),
-    }),
-    clientStreet: yup.string().when('withdrawStore', {
-      is: 0,
-      then: (schema) => schema.required('Dirección es requerida'),
-    }),
-    clientCityZone: yup.string().when('withdrawStore', {
-      is: 0,
-      then: (schema) => schema.required('Distrito es requerido'),
-    }),
-    clientState: yup.string().when('withdrawStore', {
-      is: 0,
-      then: (schema) => schema.required('Provincia es requerida'),
-    }),
-    clientCountry: yup.string().when('withdrawStore', {
-      is: 0,
-      then: (schema) => schema.required('País es requerido'),
-    }),
-    clientBuildingNumber: yup.string().when('withdrawStore', {
-      is: 0,
-      then: (schema) => schema.required('Ingresa número de calle'),
-    }),
-    clientPostcode: yup.string().when('withdrawStore', {
-      is: 0,
-      then: (schema) => schema.required('Ingresa tu código postal'),
-    }),
-    // ? Datos dependientes de boleta o factura
-    // extrasUserData: yup.object().nullable(),
-  })
-  .required();
+import { FormCheckoutSchema, formCheckoutSchema } from './formSchema';
 
 const CheckoutForm = () => {
-  // const [checkBoxPick, setCheckBoxPick] = useState(true);
   const { cart_products = [] } = useCart();
   const router = useRouter();
   const checkCart = useCartStore((state) => state.checkCart);
@@ -82,35 +30,38 @@ const CheckoutForm = () => {
     unregister,
     setValue,
     formState: { isValid, isSubmitSuccessful, isSubmitting },
-  } = useForm<CheckoutInfo>({
+  } = useForm({
     defaultValues: {
       ptId: 2,
+      pickStoreId: 1,
+      marketId: 1,
+      documentType: 0,
       withdrawStore: 0,
-      shippingCost: 0,
+      shippingCost: 20,
     },
-    resolver: yupResolver(schema),
+    resolver: yupResolver(formCheckoutSchema),
     mode: 'all',
   });
   const watchWithdrawStore = watch('withdrawStore');
   const watchPdId = watch('ptId');
+  const watchDocumentType = watch('documentType');
 
-  const onSelect = (id: DeliveryOptions) => {
+  const onSelectDeliveryOption = (id: number) => {
     setValue('withdrawStore', id);
   };
 
-  const onSubmit = async (data: CheckoutInfo) => {
+  const onSelectDocumentType = (id: number) => {
+    setValue('documentType', id);
+  };
+
+  const onSubmit = async (data: FormCheckoutSchema) => {
     try {
       const checkout = generateCheckout(data, cart_products);
       const { data: checkoutData, error: checkoutError } =
         await createCheckout(checkout);
-
       if (checkoutError) {
-        return errorToast(
-          checkoutError?.message ||
-            'Ocurrió un error por favor inténtalo más tarde'
-        );
+        throw checkoutError;
       }
-
       checkCart();
       return router.push(`/checkout/resume/${checkoutData?.id}`);
     } catch (error) {
@@ -124,6 +75,7 @@ const CheckoutForm = () => {
     if (watchWithdrawStore == 1) {
       unregister('clientStreet');
       unregister('clientCityZone');
+      unregister('clientBuildingNumber');
       unregister('clientState');
       unregister('clientCountry');
     }
@@ -133,6 +85,16 @@ const CheckoutForm = () => {
       unregister('pickName');
     }
   }, [watchWithdrawStore, unregister]);
+
+  useEffect(() => {
+    if (watchDocumentType == 0) {
+      unregister('ruc');
+      unregister('companyAddress');
+      unregister('companyCityZone');
+      unregister('companyName');
+      unregister('companyState');
+    }
+  }, [watchDocumentType, unregister]);
 
   return (
     <form
@@ -145,17 +107,12 @@ const CheckoutForm = () => {
         <div className="pt-4">
           <h3 className="text-xl font-medium">Información del cliente</h3>
           <div className="grid gap-4 pt-4">
-            <Input
-              className="!invalid:border-red-400"
-              label="Correo electrónico"
-              {...register('clientEmail')}
-            />
+            <Input label="Correo electrónico" {...register('clientEmail')} />
             <div className="grid lg:grid-cols-2 gap-4">
               <Input {...register('clientName')} label="Nombre" />
               <Input label="Apellido" {...register('clientLastName')} />
-
               <Input label="Teléfono" {...register('clientPhone')} />
-              <Input label="Dni" {...register('code')} />
+              <Input label="Dni" {...register('clientDocument')} />
             </div>
           </div>
         </div>
@@ -165,7 +122,7 @@ const CheckoutForm = () => {
           <div className="pt-4">
             <OptionsDeliveryRadio
               defaultValue={watchWithdrawStore}
-              onSelect={onSelect}
+              onSelect={onSelectDeliveryOption}
               options={[
                 {
                   id: 0,
@@ -200,8 +157,6 @@ const CheckoutForm = () => {
                   readOnly
                   {...register('clientCountry')}
                 />
-                {/* <Input label="zip" /> */}
-                {/* <Input label="Teléfono" {...register('clientPhone')} /> */}
               </div>
             </div>
           </div>
@@ -224,14 +179,41 @@ const CheckoutForm = () => {
                 />
                 <Input label="N° Documento" {...register('pickCode')} />
               </div>
-
-              {/* <Checkbox
-                onChange={(e) => setCheckBoxPick(e.target.checked)}
-                label="Yo mismo lo iré a buscar"
-              /> */}
             </div>
           </div>
         )}
+        <div>
+          <h3 className="text-xl font-medium pt-8">Tipo de documento</h3>
+          <div className="pt-4">
+            <OptionsDeliveryRadio
+              defaultValue={watchDocumentType}
+              onSelect={onSelectDocumentType}
+              options={[
+                {
+                  id: 0,
+                  title: 'Boleta',
+                  description: 'Documento simple',
+                },
+                {
+                  id: 1,
+                  title: 'Factura',
+                  description: 'Necesitas datos de la empresa',
+                },
+              ]}
+            />
+          </div>
+          {watchDocumentType == 1 && (
+            <div className="pt-4">
+              <div className="grid lg:grid-cols-2 gap-4">
+                <Input label="RUC" {...register('ruc')} />
+                <Input label="Razón Social" {...register('companyName')} />
+                <Input label="Dirección" {...register('companyAddress')} />
+                <Input label="Distrito" {...register('companyCityZone')} />
+                <Input label="Provincia" {...register('companyState')} />
+              </div>
+            </div>
+          )}
+        </div>
       </div>
       <div>
         <CartResume />
@@ -241,13 +223,13 @@ const CheckoutForm = () => {
             <OptionsPayments
               defaultValue={watchPdId}
               options={paymentOptions.filter((opt) => opt.active)}
-              onSelect={(id) => setValue('ptId', id)}
+              onSelect={(id: number) => setValue('ptId', id)}
             />
           </div>
         </div>
         <div className="flex items-center justify-end">
           <Button
-            // disabled={!isValid || isSubmitting || isSubmitSuccessful}
+            disabled={!isValid || isSubmitting || isSubmitSuccessful}
             type="submit"
           >
             Confirmar e ir a pagar

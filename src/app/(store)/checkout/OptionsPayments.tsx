@@ -3,7 +3,7 @@ import SelectCard from '@/ui/atoms/selectCard/SelectCard';
 import { FC, useState } from 'react';
 
 interface Props {
-  onSelect: (_value: any) => void;
+  onSelect: (_value: number) => void;
   options: { name: string; description: string; id: number; icon?: string }[];
   defaultValue: number;
 }
@@ -14,7 +14,9 @@ const OptionsPayments: FC<Props> = ({ onSelect, options, defaultValue }) => {
   const handleSelect = (id: number) => {
     const itemSelected = options.find((option) => option.id === id);
     setState(id);
-    onSelect(itemSelected?.id.toString() || '');
+    if (itemSelected) {
+      onSelect(itemSelected?.id);
+    }
   };
 
   return options.map((option) => {

@@ -3,7 +3,7 @@ import { FC, useState } from 'react';
 import SelectCard from '../../atoms/selectCard/SelectCard';
 
 interface Props {
-  onSelect: (_value: any) => void;
+  onSelect: (_value: number) => void;
   options: { title: string; description: string; id: number }[];
   defaultValue: number;
 }
@@ -18,7 +18,9 @@ const OptionsDeliveryRadio: FC<Props> = ({
   const handleSelect = (id: number) => {
     const itemSelected = options.find((option) => option.id === id);
     setState(id);
-    onSelect(itemSelected?.id.toString() || '');
+    if (itemSelected) {
+      onSelect(itemSelected?.id);
+    }
   };
 
   return (

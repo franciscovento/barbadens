@@ -1,7 +1,8 @@
 'use client';
 import { errorToast } from '@/services/modals/appModal';
 import { generateDocument } from '@/utils/generateDocument';
-import { Order } from '@/utils/types/order.interface';
+import { getStatusOrder } from '@/utils/getStatusOrder';
+import { Order, OrderStatus } from '@/utils/types/order.interface';
 import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
 import {
   Chip,
@@ -10,6 +11,7 @@ import {
   MenuItem,
   MenuList,
 } from '@material-tailwind/react';
+import { color } from '@material-tailwind/react/types/components/alert';
 import {
   flexRender,
   getCoreRowModel,
@@ -42,13 +44,15 @@ const BasicTable: FC<Props> = ({ orders }) => {
       {
         header: 'Status',
         accessorKey: 'status',
-        cell: ({ getValue }: { getValue: () => string }) => {
-          const status = getValue(); // "pending" | "confirmed" | "shipped" | "delivered" | "cancelled"
+        cell: ({ getValue }: { getValue: () => OrderStatus }) => {
+          const status = getStatusOrder(getValue()); // "pending" | "confirmed" | "shipped" | "delivered" | "cancelled"
+
           return (
             <Chip
-              className="text-center w-fit"
-              value={status}
-              color={status === 'pending' ? 'amber' : 'green'}
+              className="text-center w-fit text-[11px]"
+              value={status.text}
+              color={status.color as color}
+              icon={status.icon}
             />
           );
         },

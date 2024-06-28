@@ -1,4 +1,4 @@
-import { Checkout } from '@/utils/types/bsale/checkout.interface';
+import { Checkout } from '@/app/(store)/checkout/formSchema';
 import { Order } from '@/utils/types/order.interface';
 
 import { ApiResponse } from '@/utils/types/response.interface';
