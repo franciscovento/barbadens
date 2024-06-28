@@ -100,3 +100,51 @@ export interface Profiles {
   sleeve_width: number;
   profile_lastname: null;
 }
+
+interface ClientDetails {
+  clientName: string;
+  clientLastName: string;
+  clientEmail: string;
+  clientPhone: string;
+  clientDocument: string;
+}
+
+interface Address {
+  clientStreet: string;
+  clientNumber: string;
+  clientDistrict?: string;
+  clientState: string;
+  clientCountry: string;
+  postalCode?: string;
+}
+
+interface CompanyDetails {
+  ruc: string;
+  company_name: string;
+  company_address: string;
+  company_district: string;
+  company_state: string;
+}
+
+interface CheckoutBase extends ClientDetails {
+  ptId: number;
+  marketId: number;
+  cartDetails: CartDetail[];
+  withdrawStore: boolean;
+}
+
+export interface CheckoutWithDelivery extends CheckoutBase, Address {}
+
+export interface CheckoutWithPickUp extends CheckoutBase {
+  pickName: string;
+  pickCode: string;
+  pickStoreId: string;
+}
+
+export interface CheckoutWithDeliveryAndBill
+  extends CheckoutWithDelivery,
+    CompanyDetails {}
+
+export interface CheckoutWithPickupAndBill
+  extends CheckoutWithPickUp,
+    CompanyDetails {}

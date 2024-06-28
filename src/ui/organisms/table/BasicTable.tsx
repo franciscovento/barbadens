@@ -1,4 +1,6 @@
 'use client';
+import { errorToast } from '@/services/modals/appModal';
+import { generateDocument } from '@/utils/generateDocument';
 import { Order } from '@/utils/types/order.interface';
 import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
 import {
@@ -13,6 +15,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+import axios from 'axios';
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 interface Props {
@@ -40,9 +43,13 @@ const BasicTable: FC<Props> = ({ orders }) => {
         header: 'Status',
         accessorKey: 'status',
         cell: ({ getValue }: { getValue: () => string }) => {
-          const status = getValue();
+          const status = getValue(); // "pending" | "confirmed" | "shipped" | "delivered" | "cancelled"
           return (
-            <Chip className="text-center w-fit" value={status} color="amber" />
+            <Chip
+              className="text-center w-fit"
+              value={status}
+              color={status === 'pending' ? 'amber' : 'green'}
+            />
           );
         },
       },
@@ -68,8 +75,8 @@ const BasicTable: FC<Props> = ({ orders }) => {
                 <EllipsisVerticalIcon className="cursor-pointer block w-7 h-7" />
               </MenuHandler>
               <MenuList>
-                <MenuItem onClick={() => makeAnAction(row.id)}>
-                  Menu Item 1
+                <MenuItem onClick={() => confirmPayment(row.original)}>
+                  Confirmar pago
                 </MenuItem>
                 <MenuItem onClick={() => makeAnAction(row.id)}>
                   Menu Item 2
@@ -88,6 +95,19 @@ const BasicTable: FC<Props> = ({ orders }) => {
 
   const makeAnAction = useCallback((_id: number) => {
     console.log(_id);
+  }, []);
+
+  const confirmPayment = useCallback(async (order: Order) => {
+    try {
+      const doc = generateDocument(order);
+      const response = await axios.post('/api/document', {
+        data: doc,
+        order_id: order.id,
+      });
+      console.log(response);
+    } catch (error) {
+      errorToast('ocurrió un error');
+    }
   }, []);
 
   const table = useReactTable({

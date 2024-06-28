@@ -1,17 +1,17 @@
 export interface Document {
   documentTypeId: number;
-  officeId: number;
-  priceListId: number;
+  officeId?: number;
+  priceListId?: number;
   emissionDate: number;
   expirationDate: number;
   declare: number;
   dispatch: number;
-  clientId: number;
+  clientId?: number;
   client: {
     code: string;
-    city: string;
-    municipality: string;
-    address: string;
+    city?: string;
+    municipality?: string;
+    address?: string;
     email: string;
     companyOrPerson: number;
     firstName: string;
@@ -19,17 +19,23 @@ export interface Document {
     dynamicAttributes?: DynamicAttributes[];
   };
   sendEmail: number;
-  details: [
-    {
-      variantId: number;
-      netUnitValue: number;
-      quantity: number;
-      taxId: [number];
-      discount: number;
-      comment: string;
-    },
-  ];
-  dynamicAttributes: DynamicAttributes[];
+  details: Details[];
+  dynamicAttributes?: DynamicAttributes[];
+  payments?: Payments[];
+}
+
+export interface Payments {
+  paymentTypeId: number;
+  amount: number;
+  recordDate: number;
+}
+export interface Details {
+  variantId: number;
+  grossUnitValue: number;
+  quantity: number;
+  taxId?: [number];
+  discount?: number;
+  comment?: string;
 }
 
 export interface DynamicAttributes {

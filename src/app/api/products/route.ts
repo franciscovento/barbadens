@@ -1,4 +1,4 @@
-import bsaleApi from '@/utils/axios.utils';
+import bsaleApi from '@/utils/axios/bsaleApi.utils';
 import { createClient } from '@/utils/supabase/server';
 import { GetVariantResponse } from '@/utils/types/bsale/variant.interface';
 import { Product } from '@/utils/types/products.interface';

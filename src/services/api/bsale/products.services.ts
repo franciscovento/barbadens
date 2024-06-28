@@ -1,4 +1,4 @@
-import bsaleApi from '@/utils/axios.utils';
+import bsaleApi from '@/utils/axios/bsaleApi.utils';
 import { FabricsResponse } from '@/utils/types/bsale/fabrics.interface';
 
 const getFabrics = async (queries?: string) => {
