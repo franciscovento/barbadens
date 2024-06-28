@@ -24,7 +24,7 @@ const generateDocument = (order: Order): Document => {
     expirationDate: ms,
     dispatch: 0, // si descuenta stock automáticamente o no
     client: {
-      code: order.checkout_info.code,
+      code: order.checkout_info.clientDocument,
       // city: order.checkout_info.clientCityZone || '',
       // municipality: order.checkout_info.clientState || '',
       // address:
