@@ -1,8 +1,10 @@
 'use client';
-import { errorToast } from '@/services/modals/appModal';
+import { appModal, errorToast } from '@/services/modals/appModal';
+import { appSidebar } from '@/services/sidebar/appSidebar';
+import ConfirmPayment from '@/ui/templates/confirmPayment/ConfirmPayment';
 import { generateDocument } from '@/utils/generateDocument';
 import { getStatusOrder } from '@/utils/getStatusOrder';
-import { Order, OrderStatus } from '@/utils/types/order.interface';
+import { OrderStatus, OrderWithProducts } from '@/utils/types/order.interface';
 import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
 import {
   Chip,
@@ -21,7 +23,7 @@ import axios from 'axios';
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 interface Props {
-  orders: Order[];
+  orders: OrderWithProducts[];
   mutate: () => void;
 }
 
@@ -37,7 +39,7 @@ const BasicTable: FC<Props> = ({ orders, mutate }) => {
       },
       {
         header: 'Nombre',
-        accessorFn: (info: Order) =>
+        accessorFn: (info: OrderWithProducts) =>
           info.checkout_info.clientName +
           ' ' +
           info.checkout_info.clientLastName,
@@ -68,7 +70,8 @@ const BasicTable: FC<Props> = ({ orders, mutate }) => {
       },
       {
         header: 'Total',
-        accessorFn: (info: Order) => info.total_products + info.shipping_cost,
+        accessorFn: (info: OrderWithProducts) =>
+          info.total_products + info.shipping_cost,
       },
       {
         id: 'actions',
@@ -80,8 +83,13 @@ const BasicTable: FC<Props> = ({ orders, mutate }) => {
                 <EllipsisVerticalIcon className="cursor-pointer block w-7 h-7" />
               </MenuHandler>
               <MenuList>
-                <MenuItem onClick={() => confirmPayment(row.original)}>
-                  Confirmar pago
+                {row.original.status === 'pending' && (
+                  <MenuItem onClick={() => confirmPayment(row.original)}>
+                    Confirmar pago
+                  </MenuItem>
+                )}
+                <MenuItem onClick={() => viewCheckOut(row.original)}>
+                  Ver checkout
                 </MenuItem>
               </MenuList>
             </Menu>
@@ -96,18 +104,32 @@ const BasicTable: FC<Props> = ({ orders, mutate }) => {
     console.log(_id);
   }, []);
 
-  const confirmPayment = useCallback(async (order: Order) => {
+  const confirmPayment = useCallback(async (order: OrderWithProducts) => {
     try {
-      const doc = generateDocument(order);
-      const response = await axios.post('/api/document', {
-        data: doc,
-        order_id: order.id,
+      const { isConfirmed } = await appModal.fire({
+        html: <ConfirmPayment order={order} />,
+        confirmButtonText: 'Confirmar pago',
+        reverseButtons: true,
+        showCancelButton: true,
+        showConfirmButton: true,
       });
+      if (isConfirmed) {
+        const doc = generateDocument(order);
+        await axios.post('/api/document', {
+          data: doc,
+          order_id: order.id,
+        });
+        mutate();
+      }
     } catch (error) {
-      errorToast('ocurrió un error');
-    } finally {
-      mutate();
+      errorToast('ocurrió un inténtalo de nuevo más tarde');
     }
+  }, []);
+
+  const viewCheckOut = useCallback((order: OrderWithProducts) => {
+    appSidebar.fire({
+      html: JSON.stringify(order),
+    });
   }, []);
 
   const table = useReactTable({

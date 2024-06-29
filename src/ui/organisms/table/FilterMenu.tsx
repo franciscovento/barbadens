@@ -52,7 +52,6 @@ const FilterMenu = () => {
     }
     return router.push(`${pathName}?status=${status}`);
   };
-  console.log(currentStatus);
 
   return (
     <div className="w-full h-11 mt-8 rounded-t-xl flex items-center bg-app-background gap-1">

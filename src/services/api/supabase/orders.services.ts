@@ -1,5 +1,5 @@
 import { createClient } from '@/utils/supabase/client';
-import { Order, OrderStatus } from '@/utils/types/order.interface';
+import { OrderStatus, OrderWithProducts } from '@/utils/types/order.interface';
 
 const supabase = createClient();
 
@@ -8,11 +8,9 @@ const getOrders = async (
   limit: number,
   status?: OrderStatus | null
 ) => {
-  console.log(offset, limit);
-
   const query = supabase
     .from('orders')
-    .select('*')
+    .select('*, products(*)')
     .range(offset, limit)
     .order('created_at', { ascending: false });
 
@@ -20,7 +18,7 @@ const getOrders = async (
     query.eq('status', status);
   }
 
-  const { data, error } = await query.returns<Order[]>();
+  const { data, error } = await query.returns<OrderWithProducts[]>();
 
   return {
     data,

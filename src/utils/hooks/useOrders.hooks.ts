@@ -2,10 +2,10 @@ import { getOrders } from '@/services/api/supabase/orders.services';
 import { errorToast } from '@/services/modals/appModal';
 import { PostgrestError } from '@supabase/supabase-js';
 import { useEffect, useState } from 'react';
-import { Order, OrderStatus } from '../types/order.interface';
+import { OrderStatus, OrderWithProducts } from '../types/order.interface';
 
 const useOrders = (offset: number, limit: number, status?: OrderStatus) => {
-  const [data, setData] = useState<Order[] | null>(null);
+  const [data, setData] = useState<OrderWithProducts[] | null>(null);
   const [error, setError] = useState<PostgrestError | unknown>();
   const [isLoading, setIsLoading] = useState(true);
 
