@@ -9,7 +9,7 @@ export interface Order {
   payment_type_id: null;
   shipping_cost: number;
   total_products: number;
-  document_id: null;
+  document_url: string | null;
 }
 export type OrderStatus =
   | 'pending'

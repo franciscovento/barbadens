@@ -2,22 +2,38 @@
 import { successToast } from '@/services/modals/appModal';
 import StepTitle from '@/ui/atoms/stepTitle/StepTitle';
 import BasicTable from '@/ui/organisms/table/BasicTable';
+import FilterMenu from '@/ui/organisms/table/FilterMenu';
+import Pagination from '@/ui/organisms/table/Pagination';
+import useOrders from '@/utils/hooks/useOrders.hooks';
 import { createClient } from '@/utils/supabase/client';
 import { ChannelResponse } from '@/utils/types/channelResponse.interface';
-import { Order } from '@/utils/types/order.interface';
-import { useEffect, useState } from 'react';
+import { Order, OrderStatus } from '@/utils/types/order.interface';
 
-const Page = () => {
-  const [orders, setOrders] = useState<Order[]>([]);
+interface Props {
+  searchParams: {
+    limit?: string;
+    offset?: string;
+    status?: string;
+  };
+}
+const Page = ({ searchParams }: Props) => {
+  const GAP = 4;
+  const offset = Number(searchParams?.offset) || 0;
+  const limit = Number(searchParams?.limit) || 4;
+  const status = (searchParams.status as OrderStatus) || null;
+
+  const {
+    data: orders,
+    error,
+    isLoading,
+    mutate,
+  } = useOrders(offset, limit, status);
+
   const supabase = createClient();
 
   const handleInserts = (payload: any) => {
     const response = payload as ChannelResponse<Order>;
-    setOrders((prev) => {
-      let ordersCopy = [...prev];
-      ordersCopy.unshift(response.new);
-      return ordersCopy;
-    });
+    mutate();
     successToast('Nueva orden recibida!');
   };
 
@@ -30,28 +46,35 @@ const Page = () => {
     )
     .subscribe();
 
-  useEffect(() => {
-    const getOrders = async () => {
-      const { data, error } = await supabase
-        .from('orders')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .returns<Order[]>();
-
-      if (error) {
-        console.error('error', error);
-      } else {
-        setOrders(data);
-      }
-    };
-
-    getOrders();
-  }, [supabase]);
-
   return (
     <>
       <StepTitle title="Últimas ordenes" />
-      {orders.length > 0 && <BasicTable orders={orders} />}
+      {isLoading && <div>Cargando....</div>}
+      {error && <div>Ocurrió un error...</div>}
+
+      <div className="overflow-x-auto pb-8">
+        {orders && (
+          <>
+            <FilterMenu />
+            <div className="bg-white p-4 min-h-[calc(100vh-320px)]">
+              {orders.length > 0 ? (
+                <BasicTable orders={orders} mutate={mutate} />
+              ) : (
+                <div className="flex items-center justify-center pt-12">
+                  Esta lista está vacía...
+                </div>
+              )}
+            </div>
+          </>
+        )}
+      </div>
+
+      <Pagination
+        gap={GAP}
+        offset={offset}
+        limit={limit}
+        totalItems={orders?.length || 0}
+      />
     </>
   );
 };

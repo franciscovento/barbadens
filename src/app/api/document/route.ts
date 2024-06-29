@@ -33,6 +33,7 @@ export async function POST(req: NextRequest) {
       .from('orders')
       .update({
         status: 'confirmed',
+        document_url: data.urlPublicView,
       })
       .eq('id', body.order_id)
       .select('*');

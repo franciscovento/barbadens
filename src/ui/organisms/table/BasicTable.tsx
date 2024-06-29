@@ -22,9 +22,10 @@ import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 interface Props {
   orders: Order[];
+  mutate: () => void;
 }
 
-const BasicTable: FC<Props> = ({ orders }) => {
+const BasicTable: FC<Props> = ({ orders, mutate }) => {
   const [data, setData] = useState(orders);
   const isFirstTime = useRef(true);
 
@@ -82,12 +83,6 @@ const BasicTable: FC<Props> = ({ orders }) => {
                 <MenuItem onClick={() => confirmPayment(row.original)}>
                   Confirmar pago
                 </MenuItem>
-                <MenuItem onClick={() => makeAnAction(row.id)}>
-                  Menu Item 2
-                </MenuItem>
-                <MenuItem onClick={() => makeAnAction(row.id)}>
-                  Menu Item 3
-                </MenuItem>
               </MenuList>
             </Menu>
           );
@@ -108,9 +103,10 @@ const BasicTable: FC<Props> = ({ orders }) => {
         data: doc,
         order_id: order.id,
       });
-      console.log(response);
     } catch (error) {
       errorToast('ocurrió un error');
+    } finally {
+      mutate();
     }
   }, []);
 
@@ -129,46 +125,41 @@ const BasicTable: FC<Props> = ({ orders }) => {
   }, [orders]);
 
   return (
-    <div className="overflow-x-auto py-12">
-      <table className="w-full min-w-max table-auto text-left">
-        <thead>
-          {table.getHeaderGroups().map((headerGroup) => {
-            return (
-              <tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <th
-                    className="p-2 text-app-text text-sm font-semibold"
-                    key={header.id}
-                    colSpan={header.colSpan}
-                  >
-                    {/* Handles all possible header column def scenarios for `header` */}
+    <table className="w-full min-w-max table-auto text-left">
+      <thead>
+        {table.getHeaderGroups().map((headerGroup) => {
+          return (
+            <tr key={headerGroup.id}>
+              {headerGroup.headers.map((header) => (
+                <th
+                  className="p-2 text-app-text text-sm font-semibold"
+                  key={header.id}
+                  colSpan={header.colSpan}
+                >
+                  {/* Handles all possible header column def scenarios for `header` */}
 
-                    {flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
-                  </th>
-                ))}
-              </tr>
-            );
-          })}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <tr
-              key={row.id}
-              className="bg-white hover:bg-gray-100 duration-100 "
-            >
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="p-2">
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
+                  {flexRender(
+                    header.column.columnDef.header,
+                    header.getContext()
+                  )}
+                </th>
               ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          );
+        })}
+      </thead>
+      <tbody>
+        {table.getRowModel().rows.map((row) => (
+          <tr key={row.id} className="bg-white hover:bg-gray-100 duration-100 ">
+            {row.getVisibleCells().map((cell) => (
+              <td key={cell.id} className="p-2">
+                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
 };
 
