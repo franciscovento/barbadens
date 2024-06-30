@@ -8,7 +8,7 @@ export interface Document {
   dispatch: number;
   clientId?: number;
   client: {
-    code: string;
+    code?: string;
     city?: string;
     municipality?: string;
     address?: string;

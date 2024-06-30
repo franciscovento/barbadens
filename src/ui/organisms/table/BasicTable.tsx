@@ -1,5 +1,5 @@
 'use client';
-import { appModal, errorToast } from '@/services/modals/appModal';
+import { appModal } from '@/services/modals/appModal';
 import { appSidebar } from '@/services/sidebar/appSidebar';
 import ConfirmPayment from '@/ui/templates/confirmPayment/ConfirmPayment';
 import { generateDocument } from '@/utils/generateDocument';
@@ -21,6 +21,7 @@ import {
 } from '@tanstack/react-table';
 import axios from 'axios';
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import Swal from 'sweetalert2';
 
 interface Props {
   orders: OrderWithProducts[];
@@ -100,30 +101,40 @@ const BasicTable: FC<Props> = ({ orders, mutate }) => {
     []
   );
 
-  const makeAnAction = useCallback((_id: number) => {
-    console.log(_id);
-  }, []);
-
   const confirmPayment = useCallback(async (order: OrderWithProducts) => {
-    try {
-      const { isConfirmed } = await appModal.fire({
+    return appModal
+      .fire({
         html: <ConfirmPayment order={order} />,
-        confirmButtonText: 'Confirmar pago',
-        reverseButtons: true,
         showCancelButton: true,
         showConfirmButton: true,
+        confirmButtonText: 'Generar documento',
+        reverseButtons: true,
+        showLoaderOnConfirm: true,
+        preConfirm: async () => {
+          try {
+            const doc = generateDocument(order);
+            const response = await axios.post('/api/document', {
+              data: doc,
+              order_id: order.id,
+            });
+            mutate();
+            return response.data;
+          } catch (error) {
+            Swal.showValidationMessage(`
+            Request failed: ${error}
+          `);
+          }
+        },
+        allowOutsideClick: () => !Swal.isLoading(),
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          appModal.fire({
+            title: `${result}`,
+            html: JSON.stringify(result.value),
+          });
+        }
       });
-      if (isConfirmed) {
-        const doc = generateDocument(order);
-        await axios.post('/api/document', {
-          data: doc,
-          order_id: order.id,
-        });
-        mutate();
-      }
-    } catch (error) {
-      errorToast('ocurrió un inténtalo de nuevo más tarde');
-    }
   }, []);
 
   const viewCheckOut = useCallback((order: OrderWithProducts) => {

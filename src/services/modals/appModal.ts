@@ -1,3 +1,4 @@
+import { AxiosResponse } from 'axios';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
@@ -15,7 +16,7 @@ const appModal = customModal.mixin({
   </svg>
   `,
   customClass: {
-    popup: 'rounded-2xl',
+    container: 'appModal',
   },
 });
 
@@ -38,6 +39,37 @@ const errorToast = (message: string) => {
     position: 'top-end',
     timer: 3000,
     showConfirmButton: false,
+  });
+};
+
+interface AsyncModalConfig<T> {
+  cb: () => Promise<AxiosResponse<T>>;
+}
+const appModalAsync = async <T>(config: AsyncModalConfig<T>) => {
+  return Swal.fire({
+    title: 'Confirmar Pago',
+    showCancelButton: true,
+    confirmButtonText: 'Generar documento',
+    reverseButtons: true,
+    showLoaderOnConfirm: true,
+    preConfirm: async () => {
+      try {
+        const response = await config.cb();
+        return response.data;
+      } catch (error) {
+        Swal.showValidationMessage(`
+          Request failed: ${error}
+        `);
+      }
+    },
+    allowOutsideClick: () => !Swal.isLoading(),
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire({
+        title: `${result}`,
+        html: JSON.stringify(result),
+      });
+    }
   });
 };
 
