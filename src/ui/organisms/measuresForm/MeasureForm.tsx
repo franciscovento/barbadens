@@ -125,6 +125,10 @@ const MeasureForm = ({ profileMeasures }: Props) => {
       return errorToast('Hubo un error al guardar las medidas');
     }
 
+    if (!profileData) {
+      errorToast('Ocurrió un error, limpia el formulario y vuelve a empezar');
+    }
+
     if (profileData) {
       const { error } = await addProductToCart({
         design_id: Number(shirt_design_id),
@@ -138,15 +142,15 @@ const MeasureForm = ({ profileMeasures }: Props) => {
     }
     checkCart();
     successToast('Se agregó el producto al carrito');
-    if (mode === 'go_to_checkout') {
-      // navigate to checkout
-      return router.push(`/checkout`);
-    }
+    // if (mode === 'go_to_checkout') {
+    //   // navigate to checkout
+    //   return router.push(`/checkout`);
+    // }
 
-    if (mode === 'continue_shopping') {
-      // navigate to continue shopping
-      return router.push(`/create`);
-    }
+    // if (mode === 'continue_shopping') {
+    //   // navigate to continue shopping
+    //   return router.push(`/create`);
+    // }
   };
 
   const onSelectProfile = (profileId: string) => {
