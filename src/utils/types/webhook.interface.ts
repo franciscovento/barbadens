@@ -1,18 +1,18 @@
-type InsertPayload<T> = {
+export type InsertPayload<T> = {
   type: 'INSERT';
   table: string;
   schema: string;
   record: T;
   old_record: null;
 };
-type UpdatePayload<T> = {
+export type UpdatePayload<T> = {
   type: 'UPDATE';
   table: string;
   schema: string;
   record: T;
   old_record: T;
 };
-type DeletePayload<T> = {
+export type DeletePayload<T> = {
   type: 'DELETE';
   table: string;
   schema: string;
