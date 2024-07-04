@@ -23,8 +23,8 @@ const makePayment = async (items: MpProductItem[]) => {
         failure: 'http://localhost:3000/checkout/resume/50?status=fail',
         pending: 'http://localhost:3000/checkout/resume/50?status=pending',
       },
-      // notification_url:
-      //   'https://deemed-tommy-mississippi-moderate.trycloudflare.com/api/payments?source_news=webhooks&order=50',
+      notification_url:
+        'https://deemed-tommy-mississippi-moderate.trycloudflare.com/api/payments?source_news=webhooks&order=50',
       // shipments: {
       //   cost: 20,
       //   free_shipping: true,

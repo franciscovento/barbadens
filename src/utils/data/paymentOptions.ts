@@ -28,7 +28,7 @@ export const paymentOptions = [
     // icon: '/images/payments-logos/mercadopago_logo.png',
     icon: 'https://s3.amazonaws.com/bsalemarket/imagenes/pago_mercado-pago.png',
 
-    active: 1,
+    active: 0,
   },
   {
     id: 10,
