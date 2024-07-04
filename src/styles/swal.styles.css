@@ -3,3 +3,7 @@ div:where(.swal2-container) button:where(.swal2-close):focus {
   outline: none;
   box-shadow: none !important;
 }
+
+.appModal .swal2-confirm {
+  background-color: #016fd0 !important;
+}

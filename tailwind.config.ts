@@ -21,13 +21,23 @@ const config: Config = {
       colors: {
         'app-primary': '#212121',
         'app-secondary': '#F4F5F6',
-        'app-accent': '#FFC107',
+        'app-accent': '#016FD0',
         'app-text': '#4D5D6C',
         'app-title': '#333333',
         'app-background': '#F3f3f3',
       },
       height: {
         'app-screen': 'calc(100vh_-_4rem)',
+      },
+      animation: {
+        zoomIn: 'zoomIn 0.3s ease-out both',
+      },
+      keyframes: {
+        zoomIn: {
+          '0%': { scale: '0.5', opacity: '0' },
+          '90%': { scale: '1.05', opacity: '1' },
+          '100%': { opacity: '1', scale: '1' },
+        },
       },
     },
   },

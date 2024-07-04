@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="314px" height="144px" viewBox="0 0 314 144" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="background: #FFFFFF;">
+    <!-- Generator: Sketch 49.1 (51147) - http://www.bohemiancoding.com/sketch -->
+    <title>Sleve-long</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Sleve-long" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="thumbnail/sleeve/long-sleeve" transform="translate(99.000000, 14.000000)">
+            <g id="thumbnail/sleeves/long-sleeve">
+                <path d="M95.6491228,7 L95.578919,6.94169366 C95.1679342,6.58789655 94.6768732,6.32443827 94.1364501,6.17867243 L71.2280702,0" id="Stroke-7" stroke="#CED6DA" stroke-width="2"></path>
+                <path d="M44.7719298,0 L21.8635499,6.17867243 C21.3234924,6.32443827 20.8320658,6.58789655 20.4214466,6.94205358 L20.3508772,7" id="Stroke-11" stroke="#CED6DA" stroke-width="2"></path>
+                <path d="M24.4210526,44 L24.8180841,87.9022947 L24.4549869,104.627084 C24.4508394,104.815265 24.5202162,104.9979 24.6484125,105.137649 L28.2906957,109.104971 C32.3202071,113.494128 38.0600079,116 44.0829718,116 L57.9911394,116 L58.0088606,116 L71.9170282,116 C77.9399921,116 83.6797929,113.494128 87.7093043,109.104971 L91.3515875,105.137649 C91.4797838,104.9979 91.5491606,104.815265 91.5450131,104.627084 L91.1819159,87.9022947 L91.5789474,44" id="Stroke-9" stroke="#CED6DA" stroke-width="2"></path>
+                <path d="M92.5964912,44 L99.5294149,63.3999428 C99.6582143,63.7892651 99.7220758,64.1977043 99.7192056,64.608717 L99.4601718,98" id="Stroke-3" stroke="#1B304E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M96.6666667,7 C97.1080993,7.37582619 97.4614576,7.86129912 97.6888945,8.42282332 L114.581828,50.0970747 C115.627047,52.674696 116.104912,55.463858 115.980759,58.2596652 L114.125186,100" id="Stroke-11" stroke="#1B304E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                <g id="Group" transform="translate(12.719298, 53.500000) scale(-1, 1) translate(-12.719298, -53.500000) translate(0.000000, 6.000000)" stroke="#1B304E" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                    <path d="M0.971031273,37.8908366 L8.05959199,57.3616269 C8.1912828,57.7523711 8.25657797,58.1623019 8.25364336,58.5748155 L7.98879442,92.0880416" id="Stroke-3"></path>
+                    <path d="M5.09789103,0.815023292 C5.54131509,1.19332813 5.89626751,1.68200286 6.12473039,2.24723042 L23.0938725,44.1963321 C24.1438068,46.7909533 24.6238276,49.5985103 24.4991146,52.4127565 L22.6351702,94.4283773" id="Stroke-11"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
