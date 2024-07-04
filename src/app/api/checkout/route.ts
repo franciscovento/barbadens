@@ -1,19 +1,23 @@
 // import bsaleApi from '@/utils/axios.utils';
 
 import { Checkout } from '@/app/(store)/checkout/formSchema';
+import bsaleApi from '@/utils/axios/bsaleApi.utils';
 import { createClient } from '@/utils/supabase/server';
+import { CreateCheckoutResponse } from '@/utils/types/bsale/checkout.interface';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   try {
     const checkout = (await request.json()) as Checkout;
     const supabase = createClient();
+
+    const response = await bsaleApi.post<CreateCheckoutResponse>(
+      '/v1/markets/checkout.json',
+      checkout
+    );
     const { data, error } = await supabase.rpc('create_new_order', {
-      checkout,
+      checkout: response.data.data,
     });
-    // const { data, error } = await supabase.rpc('create_order_checkout', {
-    //   checkout_info: checkoutInfo,
-    // });
 
     return NextResponse.json({
       data,

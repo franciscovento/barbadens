@@ -6,16 +6,16 @@ import { appModal, errorToast, successToast } from '@/services/modals/appModal';
 import { MeasuresStore, useMeasures } from '@/stores';
 import { useCartStore } from '@/stores/cart/cart.store';
 import { useUser } from '@/stores/user/user.store';
+import StepTitle from '@/ui/atoms/stepTitle/StepTitle';
+import Tutorial from '@/ui/atoms/tutorial/Tutorial';
 import { Button } from '@/ui/materialComponents';
+import LoginRegisterCard from '@/ui/organisms/loginRegisterCard/LoginRegisterCard';
 import { valuesMeasuresMap } from '@/utils/valuesMeasuresMap';
 import { Option, Select, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import StepTitle from '../../atoms/stepTitle/StepTitle';
-import Tutorial from '../../atoms/tutorial/Tutorial';
-import LoginRegisterCard from '../loginRegisterCard/LoginRegisterCard';
 
 const tutorials = [
   {
@@ -142,15 +142,15 @@ const MeasureForm = ({ profileMeasures }: Props) => {
     }
     checkCart();
     successToast('Se agregó el producto al carrito');
-    // if (mode === 'go_to_checkout') {
-    //   // navigate to checkout
-    //   return router.push(`/checkout`);
-    // }
+    if (mode === 'go_to_checkout') {
+      // navigate to checkout
+      return router.push(`/checkout`);
+    }
 
-    // if (mode === 'continue_shopping') {
-    //   // navigate to continue shopping
-    //   return router.push(`/create`);
-    // }
+    if (mode === 'continue_shopping') {
+      // navigate to continue shopping
+      return router.push(`/create`);
+    }
   };
 
   const onSelectProfile = (profileId: string) => {

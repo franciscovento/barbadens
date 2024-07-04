@@ -7,7 +7,7 @@ export interface Document {
   declare: number;
   dispatch: number;
   clientId?: number;
-  client: {
+  client?: {
     code?: string;
     city?: string;
     municipality?: string;
@@ -30,8 +30,9 @@ export interface Payments {
   recordDate: number;
 }
 export interface Details {
-  variantId: number;
-  grossUnitValue: number;
+  detailId?: number;
+  variantId?: number;
+  grossUnitValue?: number;
   quantity: number;
   taxId?: [number];
   discount?: number;

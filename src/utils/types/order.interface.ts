@@ -1,11 +1,11 @@
-import { Checkout } from '@/app/(store)/checkout/formSchema';
+import { ExtrasUserData } from './bsale/checkout.interface';
 
 export interface Order {
   id: number;
   created_at: Date;
   user_id: string;
   status: OrderStatus;
-  checkout_info: Checkout;
+  checkout_info: CheckoutInfo;
   payment_type_id: null;
   shipping_cost: number;
   total_products: number;
@@ -67,4 +67,46 @@ export interface Profiles {
   profile_name: string;
   sleeve_width: number;
   profile_lastname: null;
+}
+
+export interface CheckoutInfo {
+  id: number;
+  url: string;
+  ptId: number;
+  token: string;
+  total: number;
+  active: number;
+  cartId: number;
+  isMafs: number;
+  createAt: number;
+  currency: Currency;
+  marketId: number;
+  isService: number;
+  totalCart: number;
+  clientName: string;
+  payProcess: string;
+  cartDetails: string[];
+  clientEmail: string;
+  clientPhone: string;
+  clientState: string;
+  pickStoreId: number;
+  clientStreet: string;
+  discountCost: number;
+  shippingCost: number;
+  clientCountry: string;
+  documentToken: string;
+  withdrawStore: number;
+  clientCityZone: string;
+  clientLastName: string;
+  clientPostcode: string;
+  documentNumber: number;
+  clientBuildingNumber: string;
+  id_venta_documento_tributario: number;
+  extrasUserData?: ExtrasUserData;
+}
+
+export interface Currency {
+  symbol: null;
+  decimals: number;
+  decimalSeparator: null;
 }

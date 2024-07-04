@@ -1,8 +1,5 @@
 'use client';
-import { appModal } from '@/services/modals/appModal';
 import { appSidebar } from '@/services/sidebar/appSidebar';
-import ConfirmPayment from '@/ui/templates/confirmPayment/ConfirmPayment';
-import { generateDocument } from '@/utils/generateDocument';
 import { getStatusOrder } from '@/utils/getStatusOrder';
 import { OrderStatus, OrderWithProducts } from '@/utils/types/order.interface';
 import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
@@ -19,9 +16,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import axios from 'axios';
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import Swal from 'sweetalert2';
 
 interface Props {
   orders: OrderWithProducts[];
@@ -84,11 +79,6 @@ const BasicTable: FC<Props> = ({ orders, mutate }) => {
                 <EllipsisVerticalIcon className="cursor-pointer block w-7 h-7" />
               </MenuHandler>
               <MenuList>
-                {row.original.status === 'pending' && (
-                  <MenuItem onClick={() => confirmPayment(row.original)}>
-                    Confirmar pago
-                  </MenuItem>
-                )}
                 <MenuItem onClick={() => viewCheckOut(row.original)}>
                   Ver checkout
                 </MenuItem>
@@ -101,41 +91,41 @@ const BasicTable: FC<Props> = ({ orders, mutate }) => {
     []
   );
 
-  const confirmPayment = useCallback(async (order: OrderWithProducts) => {
-    return appModal
-      .fire({
-        html: <ConfirmPayment order={order} />,
-        showCancelButton: true,
-        showConfirmButton: true,
-        confirmButtonText: 'Generar documento',
-        reverseButtons: true,
-        showLoaderOnConfirm: true,
-        preConfirm: async () => {
-          try {
-            const doc = generateDocument(order);
-            const response = await axios.post('/api/document', {
-              data: doc,
-              order_id: order.id,
-            });
-            mutate();
-            return response.data;
-          } catch (error) {
-            Swal.showValidationMessage(`
-            Request failed: ${error}
-          `);
-          }
-        },
-        allowOutsideClick: () => !Swal.isLoading(),
-      })
-      .then((result) => {
-        if (result.isConfirmed) {
-          appModal.fire({
-            title: `${result}`,
-            html: JSON.stringify(result.value),
-          });
-        }
-      });
-  }, []);
+  // const confirmPayment = useCallback(async (order: OrderWithProducts) => {
+  //   return appModal
+  //     .fire({
+  //       html: <ConfirmPayment order={order} />,
+  //       showCancelButton: true,
+  //       showConfirmButton: true,
+  //       confirmButtonText: 'Generar documento',
+  //       reverseButtons: true,
+  //       showLoaderOnConfirm: true,
+  //       preConfirm: async () => {
+  //         try {
+  //           const doc = generateDocument(order);
+  //           const response = await axios.post('/api/document', {
+  //             data: doc,
+  //             order_id: order.id,
+  //           });
+  //           mutate();
+  //           return response.data;
+  //         } catch (error) {
+  //           Swal.showValidationMessage(`
+  //           Request failed: ${error}
+  //         `);
+  //         }
+  //       },
+  //       allowOutsideClick: () => !Swal.isLoading(),
+  //     })
+  //     .then((result) => {
+  //       if (result.isConfirmed) {
+  //         appModal.fire({
+  //           title: `${result}`,
+  //           html: JSON.stringify(result.value),
+  //         });
+  //       }
+  //     });
+  // }, []);
 
   const viewCheckOut = useCallback((order: OrderWithProducts) => {
     appSidebar.fire({

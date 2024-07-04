@@ -95,7 +95,7 @@ const Page: FC<Props> = async ({ params }) => {
                 {order.checkout_info?.clientLastName}
               </span>
               <span>Tel: {order.checkout_info?.clientPhone}</span>
-              <span>{order.checkout_info.clientDocument}</span>
+              <span>{order.checkout_info.extrasUserData?.user_rut}</span>
             </div>
             <span className="text-app-accent">
               {order.checkout_info?.clientEmail}

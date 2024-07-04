@@ -18,11 +18,6 @@ const CreatePage = async () => {
         {data.data && (
           <InfiniteScrollFabrics initialData={data.data} nextPage={data.next} />
         )}
-        {/* {
-          <p>
-            Hubo un error al cargar las telas... Inténtalo nuevamente más tarde.
-          </p>
-        } */}
       </div>
     </>
   );

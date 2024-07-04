@@ -34,29 +34,33 @@ const CheckoutForm = () => {
     defaultValues: {
       ptId: 2,
       pickStoreId: 1,
+      generateDocument: 1,
       marketId: 1,
-      documentType: 0,
+      // documentType: 0,
       withdrawStore: 0,
-      shippingCost: 20,
+      shippingCost: 0,
+      payProcess: 'for_validate',
     },
     resolver: yupResolver(formCheckoutSchema),
     mode: 'all',
   });
   const watchWithdrawStore = watch('withdrawStore');
   const watchPdId = watch('ptId');
-  const watchDocumentType = watch('documentType');
+  // const watchDocumentType = watch('documentType');
 
   const onSelectDeliveryOption = (id: number) => {
     setValue('withdrawStore', id);
   };
 
-  const onSelectDocumentType = (id: number) => {
-    setValue('documentType', id);
-  };
+  // const onSelectDocumentType = (id: number) => {
+  //   setValue('documentType', id);
+  // };
 
   const onSubmit = async (data: FormCheckoutSchema) => {
     try {
       const checkout = generateCheckout(data, cart_products);
+      console.log(checkout);
+
       const { data: checkoutData, error: checkoutError } =
         await createCheckout(checkout);
       if (checkoutError) {
@@ -86,15 +90,15 @@ const CheckoutForm = () => {
     }
   }, [watchWithdrawStore, unregister]);
 
-  useEffect(() => {
-    if (watchDocumentType == 0) {
-      unregister('ruc');
-      unregister('companyAddress');
-      unregister('companyCityZone');
-      unregister('companyName');
-      unregister('companyState');
-    }
-  }, [watchDocumentType, unregister]);
+  // useEffect(() => {
+  //   if (watchDocumentType == 0) {
+  //     unregister('ruc');
+  //     unregister('companyAddress');
+  //     unregister('companyCityZone');
+  //     unregister('companyName');
+  //     unregister('companyState');
+  //   }
+  // }, [watchDocumentType, unregister]);
 
   return (
     <form
@@ -112,7 +116,7 @@ const CheckoutForm = () => {
               <Input {...register('clientName')} label="Nombre" />
               <Input label="Apellido" {...register('clientLastName')} />
               <Input label="Teléfono" {...register('clientPhone')} />
-              <Input label="Dni" {...register('clientDocument')} />
+              {/* <Input label="Dni" {...register('clientDocument')} /> */}
             </div>
           </div>
         </div>
@@ -182,7 +186,7 @@ const CheckoutForm = () => {
             </div>
           </div>
         )}
-        <div>
+        {/* <div>
           <h3 className="text-xl font-medium pt-8">Tipo de documento</h3>
           <div className="pt-4">
             <OptionsDeliveryRadio
@@ -213,7 +217,7 @@ const CheckoutForm = () => {
               </div>
             </div>
           )}
-        </div>
+        </div> */}
       </div>
       <div>
         <CartResume />

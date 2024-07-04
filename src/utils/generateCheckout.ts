@@ -19,7 +19,16 @@ export function generateCheckout(
     });
   });
 
+  let date = new Date();
+  let mls = date.getTime();
+  let ms = Math.floor(mls / 1000);
+
   return {
+    documentData: {
+      declareSii: 1,
+      officeId: 1,
+      emissionDate: ms,
+    },
     cartDetails,
     ...checkoutInfo,
   };

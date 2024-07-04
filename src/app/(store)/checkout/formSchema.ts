@@ -1,3 +1,7 @@
+import {
+  ExtrasUserData,
+  PayProcess,
+} from '@/utils/types/bsale/checkout.interface';
 import { CartDetail } from '@/utils/types/order.interface';
 import * as yup from 'yup';
 
@@ -6,31 +10,33 @@ export interface FormCheckoutSchema {
   clientLastName: string;
   clientEmail: string;
   clientPhone: string;
-  clientDocument: string;
   ptId: number;
   marketId: number;
   shippingComment?: string;
   shippingCost: number;
   withdrawStore: number;
-  documentType: number;
   clientStreet?: string;
   clientBuildingNumber?: string;
   clientCityZone?: string;
   clientState?: string;
   clientCountry?: string;
+  payProcess: PayProcess;
   clientPostcode?: yup.Maybe<string | undefined>;
   pickCode?: string;
   pickName?: string;
+  generateDocument: number;
   pickStoreId?: number;
-  ruc?: string;
-  companyName?: string;
-  companyAddress?: string;
-  companyCityZone?: string;
-  companyState?: string;
+  extrasUserData?: ExtrasUserData | null;
 }
 
 export interface Checkout extends FormCheckoutSchema {
   cartDetails: CartDetail[];
+  documentData: {
+    clientId?: number;
+    declareSii: number;
+    officeId: number;
+    emissionDate: number;
+  };
 }
 
 export const formCheckoutSchema = yup
@@ -39,13 +45,14 @@ export const formCheckoutSchema = yup
     clientLastName: yup.string().required('Apellido es requerido'),
     clientEmail: yup.string().email().required('Necesitas un email'),
     clientPhone: yup.string().required('Necesitas un teléfono'),
-    clientDocument: yup.string().required('Necesitas un teléfono'),
     ptId: yup.number().default(1).required(),
     marketId: yup.number().default(1).required(),
     shippingComment: yup.string(),
     shippingCost: yup.number().default(0).required(),
+    generateDocument: yup.number<0 | 1>().default(1).required(),
+    payProcess: yup.string<PayProcess>().default('for_validate').required(),
     withdrawStore: yup.number().default(0).required(), // 0: delivery | 1: recojo en tienda
-    documentType: yup.number().default(0).required(), // 0: boleta | 1: factura
+    // documentType: yup.number().default(0).required(), // 0: boleta | 1: factura
     //? Datos dependientes de withdrawStore = 0
     clientStreet: yup.string().when('withdrawStore', {
       is: 0,
@@ -82,25 +89,25 @@ export const formCheckoutSchema = yup
     }),
     clientPostcode: yup.string().notRequired(),
     // ? Datos dependientes de document_type = 1
-    ruc: yup.string().when('documentType', {
-      is: 1,
-      then: (schema) => schema.required('Ingresa nro de RUC o DNI'),
-    }),
-    companyName: yup.string().when('documentType', {
-      is: 1,
-      then: (schema) => schema.required('Ingresa nombre de persona o empresa'),
-    }),
-    companyAddress: yup.string().when('documentType', {
-      is: 1,
-      then: (schema) => schema.required('Ingresa dirección'),
-    }),
-    companyCityZone: yup.string().when('documentType', {
-      is: 1,
-      then: (schema) => schema.required('Ingresa el distrito'),
-    }),
-    companyState: yup.string().when('documentType', {
-      is: 1,
-      then: (schema) => schema.required('Ingresa el estado'),
-    }),
+    // ruc: yup.string().when('documentType', {
+    //   is: 1,
+    //   then: (schema) => schema.required('Ingresa nro de RUC o DNI'),
+    // }),
+    // companyName: yup.string().when('documentType', {
+    //   is: 1,
+    //   then: (schema) => schema.required('Ingresa nombre de persona o empresa'),
+    // }),
+    // companyAddress: yup.string().when('documentType', {
+    //   is: 1,
+    //   then: (schema) => schema.required('Ingresa dirección'),
+    // }),
+    // companyCityZone: yup.string().when('documentType', {
+    //   is: 1,
+    //   then: (schema) => schema.required('Ingresa el distrito'),
+    // }),
+    // companyState: yup.string().when('documentType', {
+    //   is: 1,
+    //   then: (schema) => schema.required('Ingresa el estado'),
+    // }),
   })
   .required();

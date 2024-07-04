@@ -1,15 +1,18 @@
 import { Details, Document } from './types/bsale/document.interface';
-import { Order } from './types/order.interface';
+import { GetDocumentWithDetailsResponse } from './types/document.interface';
 
-const generateDocument = (order: Order): Document => {
-  const cartProducts = order.checkout_info.cartDetails;
-
+const generateDocument = (
+  documentWeb: GetDocumentWithDetailsResponse,
+  { payment_type_id, order_id }: { payment_type_id: number; order_id: number }
+): Document => {
   let details: Details[] = [];
-  cartProducts.forEach((product) => {
+  documentWeb.details.items.forEach((detail) => {
     details.push({
-      variantId: product.idVarianteProducto,
-      grossUnitValue: product.grossUnitValue,
-      quantity: product.quantity,
+      detailId: detail.id,
+      // variantId: detail.variant.id,
+      // grossUnitValue: detail.totalAmount,
+      quantity: detail.quantity,
+      comment: ` - orden: ${order_id}`,
     });
   });
 
@@ -19,25 +22,47 @@ const generateDocument = (order: Order): Document => {
 
   return {
     documentTypeId: 22,
-    declare: 1,
     emissionDate: ms,
     expirationDate: ms,
-    dispatch: 0, // si descuenta stock automáticamente o no
-    client: {
-      code: order.checkout_info.clientDocument,
-      // city: order.checkout_info.clientCityZone || '',
-      // municipality: order.checkout_info.clientState || '',
-      // address:
-      //   order.checkout_info.clientStreet +
-      //   order.checkout_info.clientBuildingNumber,
-      email: order.checkout_info.clientEmail,
-      companyOrPerson: 0, // 0 | 1
-      firstName: order.checkout_info.clientName,
-      lastName: order.checkout_info.clientLastName,
-    },
-    details: details,
+    payments: [
+      {
+        paymentTypeId: payment_type_id,
+        amount: documentWeb.totalAmount,
+        recordDate: ms,
+      },
+    ],
+    clientId: Number(documentWeb.client.id),
+    declare: 1,
+    details,
+    dispatch: 0,
     sendEmail: 1,
+    // officeId: 1,
+    // priceListId: 1,
   };
 };
+
+// return {
+//   documentTypeId: 22,
+//   emissionDate: ms,
+//   expirationDate: ms,
+//   declare: 1,
+//   dispatch: 0,
+//   clientId: 42,
+//   details: [
+//     {
+//       detailId: 166,
+//       quantity: 1,
+//     },
+//   ],
+//   payments: [
+//     {
+//       paymentTypeId: 8,
+//       amount: 560,
+//       recordDate: ms,
+//     },
+//   ],
+//   sendEmail: 1,
+// };
+// };
 
 export { generateDocument };
