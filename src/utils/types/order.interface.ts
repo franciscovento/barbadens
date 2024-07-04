@@ -45,6 +45,7 @@ export interface Products {
   price: number;
   design_id: number;
   fabric_id: number;
+  bar_code?: string;
   created_at: Date;
 }
 
@@ -66,7 +67,6 @@ export interface Profiles {
   sleeve_long: number;
   profile_name: string;
   sleeve_width: number;
-  profile_lastname: null;
 }
 
 export interface CheckoutInfo {

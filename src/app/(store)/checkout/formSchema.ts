@@ -52,7 +52,6 @@ export const formCheckoutSchema = yup
     generateDocument: yup.number<0 | 1>().default(1).required(),
     payProcess: yup.string<PayProcess>().default('for_validate').required(),
     withdrawStore: yup.number().default(0).required(), // 0: delivery | 1: recojo en tienda
-    // documentType: yup.number().default(0).required(), // 0: boleta | 1: factura
     //? Datos dependientes de withdrawStore = 0
     clientStreet: yup.string().when('withdrawStore', {
       is: 0,
@@ -88,26 +87,5 @@ export const formCheckoutSchema = yup
       then: (schema) => schema.required('Elige la sucursal'),
     }),
     clientPostcode: yup.string().notRequired(),
-    // ? Datos dependientes de document_type = 1
-    // ruc: yup.string().when('documentType', {
-    //   is: 1,
-    //   then: (schema) => schema.required('Ingresa nro de RUC o DNI'),
-    // }),
-    // companyName: yup.string().when('documentType', {
-    //   is: 1,
-    //   then: (schema) => schema.required('Ingresa nombre de persona o empresa'),
-    // }),
-    // companyAddress: yup.string().when('documentType', {
-    //   is: 1,
-    //   then: (schema) => schema.required('Ingresa dirección'),
-    // }),
-    // companyCityZone: yup.string().when('documentType', {
-    //   is: 1,
-    //   then: (schema) => schema.required('Ingresa el distrito'),
-    // }),
-    // companyState: yup.string().when('documentType', {
-    //   is: 1,
-    //   then: (schema) => schema.required('Ingresa el estado'),
-    // }),
   })
   .required();

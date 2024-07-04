@@ -61,7 +61,7 @@ export interface Data {
   clientPhone: string;
   clientCountry: string;
   clientState: string;
-  extrasUserData: ExtrasUserData;
+  extrasUserData?: ExtrasUserData;
   clientStreet: string;
   clientCityZone: string;
   clientPostcode: string;
