@@ -1,13 +1,17 @@
+'use client';
 import { Button } from '@/ui/materialComponents';
 import { paymentOptions } from '@/utils/data/paymentOptions';
+import { OrderProduct } from '@/utils/types/order.interface';
 import Image from 'next/image';
 import { FC } from 'react';
+import makePayment, { MpProductItem } from './actions';
 
 interface Props {
   ptId: number;
+  orderProducts: OrderProduct[];
 }
 
-const PaymentSection: FC<Props> = ({ ptId }) => {
+const PaymentSection: FC<Props> = ({ ptId, orderProducts }) => {
   const paymentOptionSelected = paymentOptions.find((pt) => pt.id === ptId);
 
   if (paymentOptionSelected?.id === 2) {
@@ -23,7 +27,12 @@ const PaymentSection: FC<Props> = ({ ptId }) => {
     );
 
   if (paymentOptionSelected?.id === 8) {
-    return <MercadoPago image={paymentOptionSelected.icon} />;
+    return (
+      <MercadoPago
+        orderProducts={orderProducts}
+        image={paymentOptionSelected.icon}
+      />
+    );
   }
   return null;
 };
@@ -66,11 +75,29 @@ const Yape = ({ image, qr }: { image: string; qr: string }) => {
   );
 };
 
-const MercadoPago = ({ image }: { image: string }) => {
+const MercadoPago = ({
+  image,
+  orderProducts,
+}: {
+  image: string;
+  orderProducts: OrderProduct[];
+}) => {
+  const generatePayment = async () => {
+    const items: MpProductItem[] = orderProducts.map((item) => ({
+      id: `${item.design_id}${item.fabric_id}`,
+      quantity: item.quantity,
+      unit_price: item.unit_price,
+      title: item.products.name,
+    }));
+    makePayment(items);
+  };
+
   return (
     <div className="flex flex-col gap-4">
       <Image src={image} alt="logo mercadopago" width={120} height={40} />
-      <Button>Ir a pagar</Button>
+      <Button onClick={generatePayment} type="submit">
+        Ir a pagar
+      </Button>
     </div>
   );
 };

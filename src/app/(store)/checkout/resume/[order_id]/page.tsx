@@ -39,7 +39,10 @@ const Page: FC<Props> = async ({ params }) => {
         <div className="bg-app-background px-12 py-8 flex justify-center items-center flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           {order.status === 'pending' ? (
             order.checkout_info?.ptId && (
-              <PaymentSection ptId={order.checkout_info?.ptId} />
+              <PaymentSection
+                orderProducts={order.order_product}
+                ptId={order.checkout_info?.ptId}
+              />
             )
           ) : (
             <div className="text-xl font-semibold">

@@ -41,7 +41,7 @@ export interface OrderProduct {
 }
 
 export interface Products {
-  name: null;
+  name: string;
   price: number;
   design_id: number;
   fabric_id: number;
