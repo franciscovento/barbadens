@@ -21,26 +21,15 @@ export async function POST(request: Request) {
     });
   }
 
-  const { data: profileData, error: profileError } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('user_id', authUser.user.id);
-  if (profileError) {
-    return NextResponse.json({ error: profileError, data: profileData });
-  }
-
   const user = {
     email: authUser.user.email,
     id: authUser.user.id,
     type: authUser.user.user_metadata.type,
   };
 
-  const profiles = profileData;
-
   return NextResponse.json({
     data: {
       user,
-      profiles,
     },
     error: null,
   });

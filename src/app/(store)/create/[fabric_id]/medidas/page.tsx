@@ -1,11 +1,15 @@
-'use client';
-import useMeasuresStoreData from '@/utils/hooks/useMeasuresStoreData';
-import { FC } from 'react';
+import { createClient } from '@/utils/supabase/server';
 import MeasureForm from './MeasureForm';
 
-const Medidas: FC = () => {
-  const data = useMeasuresStoreData();
-  return <MeasureForm profileMeasures={data} />;
+const Medidas = async () => {
+  const supabase = createClient();
+  const { data } = await supabase.auth.getUser();
+  const { data: profiles } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('user_id', data.user?.id);
+
+  return <MeasureForm profiles={profiles || []} />;
 };
 
 export default Medidas;

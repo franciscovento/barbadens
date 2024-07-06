@@ -1,2 +1,2 @@
 export * from './design/design.store';
-export * from './measures/measures.store';
+export * from './supabase/supabase.store';

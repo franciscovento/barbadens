@@ -4,7 +4,6 @@ import {
   logout as logoutSupabase,
   signUpWithEmail as signUpWithEmailSupabase,
 } from '@/services/api/supabase/authentication.services';
-import { useMeasures } from '@/stores';
 import { useCartStore } from '@/stores/cart/cart.store';
 import { useUser } from '@/stores/user/user.store';
 
@@ -16,7 +15,6 @@ const useAuth = () => {
   const checkCart = useCartStore((state) => state.checkCart);
   const emptyCart = useCartStore((state) => state.emptyCart);
   const { setUserData, clearUserData } = useUser();
-  const { resetMeasuresStore } = useMeasures();
 
   const login = async ({ data }: AuthProps) => {
     const { data: authData, error: authError } = await loginSupabase(data);
@@ -31,7 +29,6 @@ const useAuth = () => {
       email: authData.user.email,
       id: authData.user.id,
       type: authData.user.type,
-      profiles: authData.profiles,
       isAuthenticated: true,
     });
 
@@ -53,7 +50,6 @@ const useAuth = () => {
     }
     clearUserData();
     emptyCart();
-    resetMeasuresStore();
 
     return {
       data: {

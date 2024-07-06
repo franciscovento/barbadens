@@ -3,16 +3,16 @@ export interface Profile {
   created_at: string;
   user_id: string;
   profile_name: string;
-  birth_date?: string | null;
-  long?: number | null;
-  collar?: number | null;
-  chest?: number | null;
-  waist?: number | null;
-  hip?: number | null;
-  back?: number | null;
-  sleeveWidth?: number | null;
-  sleeveLong?: number | null;
-  fist?: number | null;
-  shoulder?: number | null;
+  birth_date?: string;
+  long: number;
+  collar: number;
+  chest: number;
+  waist: number;
+  hip: number;
+  back: number;
+  sleeve_width: number;
+  sleeve_long: number;
+  fist: number;
+  shoulder: number;
   is_primary: boolean;
 }

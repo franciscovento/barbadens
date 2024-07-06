@@ -1,21 +1,22 @@
 'use client';
-
 import { addProductToCart } from '@/services/api/supabase/cart.services';
 import { updateOrCreateProfile } from '@/services/api/supabase/profile.services';
 import { appModal, errorToast, successToast } from '@/services/modals/appModal';
-import { MeasuresStore } from '@/stores';
 import { useCartStore } from '@/stores/cart/cart.store';
 import { useUser } from '@/stores/user/user.store';
 import StepTitle from '@/ui/atoms/stepTitle/StepTitle';
 import Tutorial from '@/ui/atoms/tutorial/Tutorial';
 import { Button } from '@/ui/materialComponents';
 import LoginRegisterCard from '@/ui/organisms/loginRegisterCard/LoginRegisterCard';
+import { Profile } from '@/utils/types/profile.interface';
 import { valuesMeasuresMap } from '@/utils/valuesMeasuresMap';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { Option, Select, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
+import { FC } from 'react';
 import { useForm } from 'react-hook-form';
+import { FormMeasuresSchema, formMeasuresSchema } from './formSchema';
 
 const tutorials = [
   {
@@ -60,10 +61,6 @@ const tutorials = [
   },
 ];
 
-interface Props {
-  profileMeasures: MeasuresStore;
-}
-
 const measures = [
   'long',
   'collar',
@@ -77,7 +74,11 @@ const measures = [
   'shoulder',
 ];
 
-const MeasureForm = ({ profileMeasures }: Props) => {
+interface Props {
+  profiles: Profile[];
+}
+
+const MeasureForm: FC<Props> = ({ profiles }) => {
   const { checkCart } = useCartStore();
 
   const router = useRouter();
@@ -85,33 +86,19 @@ const MeasureForm = ({ profileMeasures }: Props) => {
   const { fabric_id } = useParams();
   const shirt_design_id = params.get('shirt_design_id');
 
-  const { profiles, isAuthenticated, checkAuth } = useUser();
+  const { isAuthenticated } = useUser();
 
   const {
     register,
     reset,
     getValues,
     formState: { isValid, defaultValues },
-  } = useForm<MeasuresStore>({
-    defaultValues: {
-      id: profileMeasures.id || '',
-      profile_name: profileMeasures.profile_name || '',
-      back: profileMeasures.back || undefined,
-      chest: profileMeasures.chest || undefined,
-      collar: profileMeasures.collar || undefined,
-      waist: profileMeasures.waist || undefined,
-      hip: profileMeasures.hip || undefined,
-      sleeve_width: profileMeasures.sleeve_width || undefined,
-      sleeve_long: profileMeasures.sleeve_long || undefined,
-      fist: profileMeasures.fist || undefined,
-      shoulder: profileMeasures.shoulder || undefined,
-      long: profileMeasures.long || undefined,
-    },
+  } = useForm({
+    resolver: yupResolver(formMeasuresSchema),
   });
 
   const onSubmit = async (mode: 'go_to_checkout' | 'continue_shopping') => {
     const data = getValues();
-    // updateMeasures(data);
 
     if (!isAuthenticated) {
       return displayLoginModal();
@@ -139,7 +126,7 @@ const MeasureForm = ({ profileMeasures }: Props) => {
       }
     }
     checkCart();
-    checkAuth();
+    router.refresh();
     successToast('Se agregó el producto al carrito');
     if (mode === 'go_to_checkout') {
       // navigate to checkout
@@ -153,12 +140,22 @@ const MeasureForm = ({ profileMeasures }: Props) => {
   };
 
   const onSelectProfile = (profileId: string) => {
-    reset();
     const profile = profiles.find((p) => p.id === profileId);
 
     if (profile) {
       reset({
-        ...profile,
+        profile_name: profile.profile_name,
+        id: profile.id,
+        back: profile.back,
+        chest: profile.chest,
+        collar: profile.collar,
+        waist: profile.waist,
+        hip: profile.hip,
+        sleeve_width: profile.sleeve_width,
+        sleeve_long: profile.sleeve_long,
+        fist: profile.fist,
+        shoulder: profile.shoulder,
+        long: profile.long,
       });
     }
   };
@@ -167,7 +164,7 @@ const MeasureForm = ({ profileMeasures }: Props) => {
     const tutorial = tutorials.find((t) => t.key === key);
     if (tutorial) {
       appModal.fire({
-        title: valuesMeasuresMap[tutorial.key as keyof MeasuresStore],
+        title: valuesMeasuresMap[tutorial.key as keyof FormMeasuresSchema],
         html: (
           <Tutorial
             title={tutorial.key}
@@ -197,8 +194,6 @@ const MeasureForm = ({ profileMeasures }: Props) => {
   };
 
   const clearForm = async () => {
-    reset();
-    // resetMeasures();
     reset({
       profile_name: '',
       id: '',
@@ -214,10 +209,6 @@ const MeasureForm = ({ profileMeasures }: Props) => {
       long: undefined,
     });
   };
-
-  useEffect(() => {
-    reset(profileMeasures);
-  }, [profileMeasures]);
 
   return (
     <form className="grid md:grid-cols-2 md:py-8 gap-8 ">
@@ -269,7 +260,9 @@ const MeasureForm = ({ profileMeasures }: Props) => {
             return (
               <label key={index} className="flex justify-between">
                 <div className="flex flex-col">
-                  <span>{valuesMeasuresMap[value as keyof MeasuresStore]}</span>
+                  <span>
+                    {valuesMeasuresMap[value as keyof FormMeasuresSchema]}
+                  </span>
                   <span
                     onClick={() => displayTutorial(value)}
                     className="text-app-text text-sm hover:text-blue-600 cursor-pointer"
@@ -280,7 +273,7 @@ const MeasureForm = ({ profileMeasures }: Props) => {
                 <div>
                   <input
                     className="border border-gray-500 rounded-xl w-20 h-8 px-2"
-                    {...register(value as keyof MeasuresStore, {
+                    {...register(value as keyof FormMeasuresSchema, {
                       required: true,
                     })}
                     type="number"

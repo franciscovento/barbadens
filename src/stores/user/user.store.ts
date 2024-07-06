@@ -1,5 +1,4 @@
 import { getUser } from '@/services/api/supabase/authentication.services';
-import { Profile } from '@/utils/types/profile.interface';
 import { create } from 'zustand';
 
 export type User = {
@@ -7,7 +6,6 @@ export type User = {
   id: string | undefined;
   email: string | undefined;
   type: UserRoles;
-  profiles: Profile[];
 };
 
 export type UserRoles = 'client' | 'staff' | 'admin';
@@ -23,7 +21,6 @@ const initialState: User = {
   isAuthenticated: false,
   email: undefined,
   type: 'client',
-  profiles: [],
 };
 
 export const useUser = create<User & UserActions>()((set, get) => ({
@@ -33,7 +30,6 @@ export const useUser = create<User & UserActions>()((set, get) => ({
       id: undefined,
       email: undefined,
       type: 'client',
-      profiles: [],
       isAuthenticated: false,
     }),
   setUserData: (data) =>
@@ -41,7 +37,6 @@ export const useUser = create<User & UserActions>()((set, get) => ({
       id: data.id,
       email: data.email,
       type: data.type,
-      profiles: data.profiles,
       isAuthenticated: data.isAuthenticated,
     }),
   checkAuth: async () => {
@@ -53,7 +48,6 @@ export const useUser = create<User & UserActions>()((set, get) => ({
         id: data.user?.id,
         email: data.user?.email,
         type: data.user?.type,
-        profiles: data.profiles,
         isAuthenticated: true,
       });
     }
