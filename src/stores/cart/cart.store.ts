@@ -14,6 +14,7 @@ export interface CartStore {
   total?: number;
   cart_products?: CartProductWithFabricDesignProfile[];
   user_id?: string;
+  isLoading?: boolean;
 }
 
 export type CartActions = {
@@ -31,6 +32,7 @@ const initialState: CartStore = {
   total: undefined,
   cart_products: [],
   user_id: undefined,
+  isLoading: false,
 };
 
 export const useCartStore = create<CartStore & CartActions>()((set, get) => ({
@@ -57,23 +59,26 @@ export const useCartStore = create<CartStore & CartActions>()((set, get) => ({
     }
   },
   deleteItem: async (productId: CartProductId) => {
+    set({ isLoading: true });
     const { error } = await deleteProductFromCart(productId);
     if (!error) {
       get().checkCart();
     } else {
       alert('Ocurrió un error al eliminar el producto');
     }
+    set({ isLoading: false });
   },
   onChangueProductQuantity: async (
     productId: CartProductId,
     quantity: number
   ) => {
+    set({ isLoading: true });
     const { error } = await updatedQuantityFromProductCart(productId, quantity);
-
     if (!error) {
       get().checkCart();
     } else {
       alert('Ocurrió un error al actualizar la cantidad del producto');
     }
+    set({ isLoading: false });
   },
 }));

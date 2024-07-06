@@ -60,6 +60,8 @@ export async function POST(
 
     throw Error;
   } catch (error) {
+    console.log(error);
+
     if (axios.isAxiosError(error)) {
       return NextResponse.json(
         {

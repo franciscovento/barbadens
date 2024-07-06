@@ -15,12 +15,13 @@ import { createCheckout } from '@/services/api/bsale/checkout.services';
 import { errorToast } from '@/services/modals/appModal';
 import { useCartStore } from '@/stores/cart/cart.store';
 import { generateCheckout } from '@/utils/generateCheckout';
+import { getShippingCost } from '@/utils/getShippingCost';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/navigation';
 import { FormCheckoutSchema, formCheckoutSchema } from './formSchema';
 
 const CheckoutForm = () => {
-  const { cart_products = [] } = useCart();
+  const { cart_products = [], total = 0 } = useCart();
   const router = useRouter();
   const checkCart = useCartStore((state) => state.checkCart);
   const {
@@ -36,31 +37,25 @@ const CheckoutForm = () => {
       pickStoreId: 1,
       generateDocument: 1,
       marketId: 1,
-      // documentType: 0,
       withdrawStore: 0,
       shippingCost: 0,
+      discountCost: 0,
       payProcess: 'for_validate',
     },
     resolver: yupResolver(formCheckoutSchema),
     mode: 'all',
   });
   const watchWithdrawStore = watch('withdrawStore');
+  const watchShippingCost = watch('shippingCost');
   const watchPdId = watch('ptId');
-  // const watchDocumentType = watch('documentType');
 
   const onSelectDeliveryOption = (id: number) => {
     setValue('withdrawStore', id);
   };
 
-  // const onSelectDocumentType = (id: number) => {
-  //   setValue('documentType', id);
-  // };
-
   const onSubmit = async (data: FormCheckoutSchema) => {
     try {
       const checkout = generateCheckout(data, cart_products);
-      console.log(checkout);
-
       const { data: checkoutData, error: checkoutError } =
         await createCheckout(checkout);
       if (checkoutError) {
@@ -77,6 +72,7 @@ const CheckoutForm = () => {
 
   useEffect(() => {
     if (watchWithdrawStore == 1) {
+      setValue('shippingCost', 0);
       unregister('clientStreet');
       unregister('clientCityZone');
       unregister('clientBuildingNumber');
@@ -85,20 +81,15 @@ const CheckoutForm = () => {
     }
 
     if (watchWithdrawStore == 0) {
+      setValue('shippingCost', getShippingCost(total));
       unregister('pickCode');
       unregister('pickName');
     }
   }, [watchWithdrawStore, unregister]);
 
-  // useEffect(() => {
-  //   if (watchDocumentType == 0) {
-  //     unregister('ruc');
-  //     unregister('companyAddress');
-  //     unregister('companyCityZone');
-  //     unregister('companyName');
-  //     unregister('companyState');
-  //   }
-  // }, [watchDocumentType, unregister]);
+  useEffect(() => {
+    setValue('shippingCost', getShippingCost(total));
+  }, [total]);
 
   return (
     <form
@@ -220,7 +211,7 @@ const CheckoutForm = () => {
         </div> */}
       </div>
       <div>
-        <CartResume />
+        <CartResume shippingCost={watchShippingCost} />
         <div className="p-8">
           <h3 className="text-xl font-medium">Opciones de pago</h3>
           <div className="flex flex-col gap-4 py-4">

@@ -9,8 +9,6 @@ const generateDocument = (
   documentWeb.details.items.forEach((detail) => {
     details.push({
       detailId: detail.id,
-      // variantId: detail.variant.id,
-      // grossUnitValue: detail.totalAmount,
       quantity: detail.quantity,
       comment: ` - orden: ${order_id}`,
     });
@@ -40,29 +38,5 @@ const generateDocument = (
     // priceListId: 1,
   };
 };
-
-// return {
-//   documentTypeId: 22,
-//   emissionDate: ms,
-//   expirationDate: ms,
-//   declare: 1,
-//   dispatch: 0,
-//   clientId: 42,
-//   details: [
-//     {
-//       detailId: 166,
-//       quantity: 1,
-//     },
-//   ],
-//   payments: [
-//     {
-//       paymentTypeId: 8,
-//       amount: 560,
-//       recordDate: ms,
-//     },
-//   ],
-//   sendEmail: 1,
-// };
-// };
 
 export { generateDocument };

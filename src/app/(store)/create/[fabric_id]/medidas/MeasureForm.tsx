@@ -3,7 +3,7 @@
 import { addProductToCart } from '@/services/api/supabase/cart.services';
 import { updateOrCreateProfile } from '@/services/api/supabase/profile.services';
 import { appModal, errorToast, successToast } from '@/services/modals/appModal';
-import { MeasuresStore, useMeasures } from '@/stores';
+import { MeasuresStore } from '@/stores';
 import { useCartStore } from '@/stores/cart/cart.store';
 import { useUser } from '@/stores/user/user.store';
 import StepTitle from '@/ui/atoms/stepTitle/StepTitle';
@@ -79,14 +79,13 @@ const measures = [
 
 const MeasureForm = ({ profileMeasures }: Props) => {
   const { checkCart } = useCartStore();
+
   const router = useRouter();
   const params = useSearchParams();
   const { fabric_id } = useParams();
   const shirt_design_id = params.get('shirt_design_id');
 
-  const { profiles, isAuthenticated } = useUser();
-  const updateMeasures = useMeasures((state) => state.updateMeasures);
-  const updateProfileId = useMeasures((state) => state.updateProfileId);
+  const { profiles, isAuthenticated, checkAuth } = useUser();
 
   const {
     register,
@@ -112,7 +111,7 @@ const MeasureForm = ({ profileMeasures }: Props) => {
 
   const onSubmit = async (mode: 'go_to_checkout' | 'continue_shopping') => {
     const data = getValues();
-    updateMeasures(data);
+    // updateMeasures(data);
 
     if (!isAuthenticated) {
       return displayLoginModal();
@@ -138,9 +137,9 @@ const MeasureForm = ({ profileMeasures }: Props) => {
       if (error) {
         return errorToast('Hubo un error al agregar el producto al carrito');
       }
-      updateProfileId(profileData.id);
     }
     checkCart();
+    checkAuth();
     successToast('Se agregó el producto al carrito');
     if (mode === 'go_to_checkout') {
       // navigate to checkout

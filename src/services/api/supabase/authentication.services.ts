@@ -32,7 +32,7 @@ export const signUpWithEmail = async ({ email, password }: LoginProps) => {
     email,
     password,
     options: {
-      emailRedirectTo: 'http://localhost:3000/auth/verify-email',
+      emailRedirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/auth/verify-email`,
       data: {
         type: 'client',
       },

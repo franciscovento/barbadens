@@ -8,6 +8,7 @@ export interface Order {
   checkout_info: CheckoutInfo;
   payment_type_id: null;
   shipping_cost: number;
+  discount_cost: number;
   total_products: number;
   document_url: string | null;
 }

@@ -53,7 +53,10 @@ const Page: FC<Props> = async ({ params }) => {
           <div className="sm:text-right order-1 sm:order-2 text-center">
             <span className="text-sm text-app-text ">Monto a Pagar</span>
             <p className="font-semibold text-4xl py-2">
-              S/. {order?.total_products + order.shipping_cost}
+              S/.{' '}
+              {order?.total_products +
+                order.shipping_cost -
+                order.discount_cost}
             </p>
             <Chip
               value={orderStatus.text}

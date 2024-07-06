@@ -59,6 +59,7 @@ const LoginRegisterCard: FC<Props> = ({
       email: data.email,
       password: data.password,
     });
+
     if (error) {
       return setError('root', { message: error.message });
     }

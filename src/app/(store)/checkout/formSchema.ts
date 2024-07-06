@@ -14,6 +14,7 @@ export interface FormCheckoutSchema {
   marketId: number;
   shippingComment?: string;
   shippingCost: number;
+  discountCost: number;
   withdrawStore: number;
   clientStreet?: string;
   clientBuildingNumber?: string;
@@ -49,6 +50,7 @@ export const formCheckoutSchema = yup
     marketId: yup.number().default(1).required(),
     shippingComment: yup.string(),
     shippingCost: yup.number().default(0).required(),
+    discountCost: yup.number().default(0).required(),
     generateDocument: yup.number<0 | 1>().default(1).required(),
     payProcess: yup.string<PayProcess>().default('for_validate').required(),
     withdrawStore: yup.number().default(0).required(), // 0: delivery | 1: recojo en tienda
