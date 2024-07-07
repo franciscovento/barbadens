@@ -2,9 +2,13 @@
 import StepTitle from '@/ui/atoms/stepTitle/StepTitle';
 import { Button, Input } from '@/ui/materialComponents';
 import useAuth from '@/utils/hooks/useAuth.hooks';
+import Link from 'next/link';
 import { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
+
 interface LoginProps {
+  first_name?: string;
+  last_name?: string;
   email: string;
   password: string;
   repeatPassword?: string;
@@ -35,6 +39,8 @@ const LoginRegisterCard: FC<Props> = ({
     formState: { isSubmitting, isValid, touchedFields, errors },
   } = useForm<LoginProps>({
     defaultValues: {
+      first_name: '',
+      last_name: '',
       email: '',
       password: '',
       repeatPassword: '',
@@ -58,11 +64,14 @@ const LoginRegisterCard: FC<Props> = ({
     const { error } = await signUp({
       email: data.email,
       password: data.password,
+      first_name: data.first_name || '',
+      last_name: data.last_name || '',
     });
 
     if (error) {
       return setError('root', { message: error.message });
     }
+    reset();
     setSuccessMessage(SUCCESS_MESSAGE);
     return setFormType('login');
   };
@@ -108,6 +117,20 @@ const LoginRegisterCard: FC<Props> = ({
         </p>
       )}
       <form className="flex flex-col gap-2">
+        <div>
+          {formType === 'register' && (
+            <div className="flex gap-2">
+              <Input
+                label="Nombre"
+                {...register('first_name', { required: true })}
+              />
+              <Input
+                label="Apellido"
+                {...register('last_name', { required: true })}
+              />
+            </div>
+          )}
+        </div>
         <Input
           label="Ingresa tu correo electrónico"
           type="email"
@@ -250,6 +273,14 @@ const LoginRegisterCard: FC<Props> = ({
               Registrarse
             </Button>
           )}
+        </div>
+        <div className="text-center underline py-2 ">
+          <Link
+            href={'/auth/reset-password'}
+            className="text-xs hover:text-app-accent duration-300 cursor-pointer"
+          >
+            ¿Olvidaste tu contraseña?
+          </Link>
         </div>
       </form>
     </div>

@@ -2,6 +2,7 @@ import {
   LoginProps,
   login as loginSupabase,
   logout as logoutSupabase,
+  RegisterProps,
   signUpWithEmail as signUpWithEmailSupabase,
 } from '@/services/api/supabase/authentication.services';
 import { useCartStore } from '@/stores/cart/cart.store';
@@ -59,7 +60,7 @@ const useAuth = () => {
     };
   };
 
-  const signUp = async (data: LoginProps) => {
+  const signUp = async (data: RegisterProps) => {
     const { data: authData, error } = await signUpWithEmailSupabase(data);
     return {
       data: authData,
