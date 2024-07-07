@@ -2,6 +2,7 @@
 import StepTitle from '@/ui/atoms/stepTitle/StepTitle';
 import { Button, Input } from '@/ui/materialComponents';
 import useAuth from '@/utils/hooks/useAuth.hooks';
+import Link from 'next/link';
 import { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -272,6 +273,14 @@ const LoginRegisterCard: FC<Props> = ({
               Registrarse
             </Button>
           )}
+        </div>
+        <div className="text-center underline py-2 ">
+          <Link
+            href={'/auth/reset-password'}
+            className="text-xs hover:text-app-accent duration-300 cursor-pointer"
+          >
+            ¿Olvidaste tu contraseña?
+          </Link>
         </div>
       </form>
     </div>
