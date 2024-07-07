@@ -47,10 +47,10 @@ export const useUser = create<User & UserActions>()((set, get) => ({
       get().clearUserData();
     } else {
       set({
-        id: data.user?.id,
-        email: data.user?.email,
-        first_name: data.user.first_name,
-        last_name: data.user.last_name,
+        id: data?.user?.id,
+        email: data?.user?.email,
+        first_name: data?.user.first_name,
+        last_name: data?.user.last_name,
         isAuthenticated: true,
       });
     }

@@ -1,7 +1,5 @@
-import { User } from '@/stores/user/user.store';
 import { createClient } from '@/utils/supabase/client';
-import { AuthError, PostgrestError } from '@supabase/supabase-js';
-import axios from 'axios';
+import { AuthError } from '@supabase/supabase-js';
 
 export interface LoginProps {
   email: string;
@@ -18,14 +16,42 @@ export interface RegisterProps {
 const supabase = createClient();
 
 export const login = async ({ email, password }: LoginProps) => {
-  const { data } = await axios.post<{
-    data: { user: User };
-    error: PostgrestError;
-  }>('/api/auth', { email, password });
+  try {
+    const { data: authUser, error: authError } =
+      await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-  return {
-    ...data,
-  };
+    if (authError) throw authError;
+
+    const user = {
+      email: authUser.user?.email,
+      id: authUser.user?.id,
+      first_name: authUser.user?.user_metadata.first_name,
+      last_name: authUser.user?.user_metadata.last_name,
+    };
+
+    return {
+      data: {
+        user,
+      },
+      error: null,
+    };
+  } catch (error) {
+    if (error instanceof AuthError) {
+      return {
+        data: null,
+        error: error,
+      };
+    }
+    return {
+      data: null,
+      error: {
+        message: 'An error occurred. Please try again.',
+      },
+    };
+  }
 };
 
 export const logout = async (): Promise<{ error: AuthError | null }> => {
@@ -54,14 +80,26 @@ export const signUpWithEmail = async ({
 };
 
 export const getUser = async () => {
-  const { data } = await axios.get<{
-    data: { user: User };
-    error: PostgrestError;
-  }>('/api/user');
+  try {
+    const { data: userData, error: userError } = await supabase.auth.getUser();
+    if (userError) throw userError;
 
-  return {
-    ...data,
-  };
+    const user = {
+      email: userData.user.email,
+      id: userData.user.id,
+      first_name: userData.user.user_metadata.first_name,
+      last_name: userData.user.user_metadata.last_name,
+    };
+
+    return {
+      data: {
+        user,
+      },
+      error: null,
+    };
+  } catch (error) {
+    return { error: error, data: null };
+  }
 };
 
 export const isAuthenticated = async () => {

@@ -17,7 +17,8 @@ const HeaderLogin = () => {
   const path = usePathname();
   const checkAuth = useUser((state) => state.checkAuth);
   const checkCart = useCartStore((state) => state.checkCart);
-  const userFirstName = useUser((state) => state.first_name);
+  const isAuthenticated = useUser((state) => state.isAuthenticated);
+  const userName = useUser((state) => state.first_name);
   const { cart_products } = useCart();
   const { logout } = useAuth();
   const router = useRouter();
@@ -52,11 +53,11 @@ const HeaderLogin = () => {
 
   return !path.includes('checkout') ? (
     <div className="text-white text-right">
-      {userFirstName ? (
+      {isAuthenticated ? (
         <div className="flex items-center gap-4">
           <div>
             <p className="text-sm">
-              Hola, <span className="capitalize">{userFirstName}</span>
+              Hola, <span className="capitalize">{userName}</span>
             </p>
             <button onClick={handleLogout} className="text-sm underline">
               Cerrar sesión

@@ -27,10 +27,10 @@ const useAuth = () => {
     }
 
     setUserData({
-      email: authData.user.email,
-      id: authData.user.id,
-      first_name: authData.user.first_name,
-      last_name: authData.user.last_name,
+      email: authData?.user.email,
+      id: authData?.user.id,
+      first_name: authData?.user.first_name,
+      last_name: authData?.user.last_name,
       isAuthenticated: true,
     });
 
