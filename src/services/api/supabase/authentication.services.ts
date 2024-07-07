@@ -9,6 +9,13 @@ export interface LoginProps {
   password: string;
 }
 
+export interface RegisterProps {
+  email: string;
+  password: string;
+  first_name: string;
+  last_name: string;
+}
+
 const supabase = createClient();
 
 export const login = async ({ email, password }: LoginProps) => {
@@ -27,14 +34,20 @@ export const logout = async (): Promise<{ error: AuthError | null }> => {
   return { error };
 };
 
-export const signUpWithEmail = async ({ email, password }: LoginProps) => {
+export const signUpWithEmail = async ({
+  email,
+  password,
+  first_name,
+  last_name,
+}: RegisterProps) => {
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
       emailRedirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/auth/verify-email`,
       data: {
-        type: 'client',
+        first_name,
+        last_name,
       },
     },
   });

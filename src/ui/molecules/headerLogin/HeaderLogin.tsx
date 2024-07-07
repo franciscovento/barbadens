@@ -27,6 +27,7 @@ const HeaderLogin = () => {
       errorToast(response.error.message);
     }
     router.refresh();
+    router.push('/auth');
   };
 
   const redirectToCheckout = () => {
