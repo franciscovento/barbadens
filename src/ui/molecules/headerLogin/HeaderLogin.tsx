@@ -17,7 +17,7 @@ const HeaderLogin = () => {
   const path = usePathname();
   const checkAuth = useUser((state) => state.checkAuth);
   const checkCart = useCartStore((state) => state.checkCart);
-  const userEmail = useUser((state) => state.email);
+  const userFirstName = useUser((state) => state.first_name);
   const { cart_products } = useCart();
   const { logout } = useAuth();
   const router = useRouter();
@@ -52,10 +52,12 @@ const HeaderLogin = () => {
 
   return !path.includes('checkout') ? (
     <div className="text-white text-right">
-      {userEmail ? (
+      {userFirstName ? (
         <div className="flex items-center gap-4">
           <div>
-            <p className="text-sm">Hola, {userEmail}</p>
+            <p className="text-sm">
+              Hola, <span className="capitalize">{userFirstName}</span>
+            </p>
             <button onClick={handleLogout} className="text-sm underline">
               Cerrar sesión
             </button>

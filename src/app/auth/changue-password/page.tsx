@@ -12,7 +12,6 @@ const Page = () => {
     register,
     handleSubmit,
     setError,
-    watch,
     formState: { isSubmitting, isSubmitSuccessful, errors },
   } = useForm({
     defaultValues: {

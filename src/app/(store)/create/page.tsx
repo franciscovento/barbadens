@@ -1,6 +1,5 @@
 import StepTitle from '@/ui/atoms/stepTitle/StepTitle';
 import InfiniteScrollFabrics from '@/ui/organisms/infiniteScrollFabrics/InfiniteScrollFabrics';
-import Link from 'next/link';
 import { fetchFabrics } from './actions';
 
 const CreatePage = async () => {
@@ -8,7 +7,6 @@ const CreatePage = async () => {
 
   return (
     <>
-      <Link href="/test">TEST</Link>
       <div className="pb-8 text-center">
         <StepTitle title="Crea tu diseño" ribbon="center" />
         <p className="max-w-96 mx-auto pt-4 text-app text-balance">

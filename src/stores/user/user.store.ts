@@ -5,10 +5,9 @@ export type User = {
   isAuthenticated: boolean;
   id: string | undefined;
   email: string | undefined;
-  type: UserRoles;
+  first_name: string | undefined;
+  last_name: string | undefined;
 };
-
-export type UserRoles = 'client' | 'staff' | 'admin';
 
 export type UserActions = {
   setUserData: (data: User) => void;
@@ -20,7 +19,8 @@ const initialState: User = {
   id: undefined,
   isAuthenticated: false,
   email: undefined,
-  type: 'client',
+  first_name: undefined,
+  last_name: undefined,
 };
 
 export const useUser = create<User & UserActions>()((set, get) => ({
@@ -29,14 +29,16 @@ export const useUser = create<User & UserActions>()((set, get) => ({
     set({
       id: undefined,
       email: undefined,
-      type: 'client',
+      first_name: undefined,
+      last_name: undefined,
       isAuthenticated: false,
     }),
   setUserData: (data) =>
     set({
       id: data.id,
       email: data.email,
-      type: data.type,
+      first_name: data.first_name,
+      last_name: data.last_name,
       isAuthenticated: data.isAuthenticated,
     }),
   checkAuth: async () => {
@@ -47,7 +49,8 @@ export const useUser = create<User & UserActions>()((set, get) => ({
       set({
         id: data.user?.id,
         email: data.user?.email,
-        type: data.user?.type,
+        first_name: data.user.first_name,
+        last_name: data.user.last_name,
         isAuthenticated: true,
       });
     }
