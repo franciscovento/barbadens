@@ -7,6 +7,7 @@ export type User = {
   email: string | undefined;
   first_name: string | undefined;
   last_name: string | undefined;
+  client_id: string | undefined;
 };
 
 export type UserActions = {
@@ -21,6 +22,7 @@ const initialState: User = {
   email: undefined,
   first_name: undefined,
   last_name: undefined,
+  client_id: undefined,
 };
 
 export const useUser = create<User & UserActions>()((set, get) => ({
@@ -32,6 +34,7 @@ export const useUser = create<User & UserActions>()((set, get) => ({
       first_name: undefined,
       last_name: undefined,
       isAuthenticated: false,
+      client_id: undefined,
     }),
   setUserData: (data) =>
     set({
@@ -40,6 +43,7 @@ export const useUser = create<User & UserActions>()((set, get) => ({
       first_name: data.first_name,
       last_name: data.last_name,
       isAuthenticated: data.isAuthenticated,
+      client_id: data.client_id,
     }),
   checkAuth: async () => {
     const { data, error } = await getUser();
@@ -51,6 +55,7 @@ export const useUser = create<User & UserActions>()((set, get) => ({
         email: data?.user?.email,
         first_name: data?.user.first_name,
         last_name: data?.user.last_name,
+        client_id: data?.user.client_id,
         isAuthenticated: true,
       });
     }

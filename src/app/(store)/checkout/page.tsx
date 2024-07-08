@@ -9,18 +9,29 @@ export type DeliveryOptions = '0' | '1';
 
 async function Checkout() {
   const supabase = createClient();
-  const { data, error } = await supabase
+  const { data, error } = await supabase.auth.getUser();
+
+  const { data: cart, error: cartError } = await supabase
     .from('cart')
     .select('*, cart_product(*)')
     .returns<CartProductWithProduct[]>();
 
   if (
-    error ||
-    !data ||
-    data.length === 0 ||
-    data[0]?.cart_product.length === 0
+    cartError ||
+    !cart ||
+    cart.length === 0 ||
+    cart[0]?.cart_product.length === 0
   ) {
     redirect('/create');
+  }
+
+  if (error) {
+    return (
+      <div className="mt-20">
+        ocurrió un error al cargar la página, necesitas iniciar sesión para
+        continuar.
+      </div>
+    );
   }
 
   return (
@@ -33,7 +44,14 @@ async function Checkout() {
           <CheckoutStepper />
         </section>
         <Suspense>
-          <CheckoutForm />
+          <CheckoutForm
+            defaultValues={{
+              clientId: data.user.user_metadata.client_id,
+              email: data?.user?.email || '',
+              firstName: data.user.user_metadata.first_name || '',
+              lastName: data.user.user_metadata.last_name || '',
+            }}
+          />
         </Suspense>
       </main>
     </>

@@ -89,6 +89,7 @@ export const getUser = async () => {
       id: userData.user.id,
       first_name: userData.user.user_metadata.first_name,
       last_name: userData.user.user_metadata.last_name,
+      client_id: userData.user.user_metadata.client_id,
     };
 
     return {

@@ -6,7 +6,7 @@ import OptionsDeliveryRadio from '@/ui/molecules/OptionsDeliveryRadio/OptionsDel
 import SelectCard from '@/ui/atoms/selectCard/SelectCard';
 import { paymentOptions } from '@/utils/data/paymentOptions';
 import useCart from '@/utils/hooks/useCart.hooks';
-import { useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import CartResume from './CartResume';
 import OptionsPayments from './OptionsPayments';
@@ -20,7 +20,16 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/navigation';
 import { FormCheckoutSchema, formCheckoutSchema } from './formSchema';
 
-const CheckoutForm = () => {
+interface Props {
+  defaultValues: {
+    firstName: string;
+    email: string;
+    lastName: string;
+    clientId: number;
+  };
+}
+
+const CheckoutForm: FC<Props> = ({ defaultValues }) => {
   const { cart_products = [], total = 0 } = useCart();
   const router = useRouter();
   const checkCart = useCartStore((state) => state.checkCart);
@@ -33,6 +42,9 @@ const CheckoutForm = () => {
     formState: { isValid, isSubmitSuccessful, isSubmitting },
   } = useForm({
     defaultValues: {
+      clientEmail: defaultValues.email,
+      clientName: defaultValues.firstName,
+      clientLastName: defaultValues.lastName,
       ptId: 2,
       pickStoreId: 1,
       generateDocument: 1,
@@ -54,7 +66,11 @@ const CheckoutForm = () => {
 
   const onSubmit = async (data: FormCheckoutSchema) => {
     try {
-      const checkout = generateCheckout(data, cart_products);
+      const checkout = generateCheckout(
+        data,
+        cart_products,
+        defaultValues.clientId
+      );
       const { data: checkoutData, error: checkoutError } =
         await createCheckout(checkout);
       if (checkoutError) {
