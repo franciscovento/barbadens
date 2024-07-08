@@ -16,6 +16,7 @@ const getOrCreateProduct = async (
     data: Product[] | null;
     error: PostgrestError | null;
   }>('/api/products', data);
+
   return {
     data: response.data?.[0],
     error: response.error,

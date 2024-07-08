@@ -1,6 +1,6 @@
 'use client';
 
-import { errorToast } from '@/services/modals/appModal';
+import { appModal, errorToast } from '@/services/modals/appModal';
 import { appSidebar } from '@/services/sidebar/appSidebar';
 import { useCartStore } from '@/stores/cart/cart.store';
 import { useUser } from '@/stores/user/user.store';
@@ -38,7 +38,12 @@ const HeaderLogin = () => {
 
   const displayCart = () => {
     appSidebar.fire({
-      html: <Cart onCheckoutRedirect={() => redirectToCheckout()} />,
+      html: (
+        <Cart
+          onCheckoutRedirect={() => redirectToCheckout()}
+          onContinueShoppingRedirect={() => appModal.close()}
+        />
+      ),
       width: 'fit-content',
     });
   };

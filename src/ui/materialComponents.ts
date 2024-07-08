@@ -9,6 +9,7 @@ import {
   CardHeader,
   Chip,
   Input,
+  Spinner,
   ThemeProvider,
   Typography,
 } from '@material-tailwind/react';
@@ -22,6 +23,7 @@ export {
   CardHeader,
   Chip,
   Input,
+  Spinner,
   ThemeProvider,
   Typography,
 };

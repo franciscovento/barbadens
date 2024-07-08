@@ -1,17 +1,18 @@
 'use client';
 import { addProductToCart } from '@/services/api/supabase/cart.services';
 import { updateOrCreateProfile } from '@/services/api/supabase/profile.services';
-import { appModal, errorToast, successToast } from '@/services/modals/appModal';
+import { appModal, errorToast } from '@/services/modals/appModal';
 import { useCartStore } from '@/stores/cart/cart.store';
 import { useUser } from '@/stores/user/user.store';
 import StepTitle from '@/ui/atoms/stepTitle/StepTitle';
 import Tutorial from '@/ui/atoms/tutorial/Tutorial';
 import { Button } from '@/ui/materialComponents';
+import Cart from '@/ui/organisms/cart/Cart';
 import LoginRegisterCard from '@/ui/organisms/loginRegisterCard/LoginRegisterCard';
 import { Profile } from '@/utils/types/profile.interface';
 import { valuesMeasuresMap } from '@/utils/valuesMeasuresMap';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Option, Select, Typography } from '@material-tailwind/react';
+import { Option, Select, Spinner, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { FC } from 'react';
@@ -91,51 +92,56 @@ const MeasureForm: FC<Props> = ({ profiles }) => {
   const {
     register,
     reset,
-    getValues,
-    formState: { isValid, defaultValues },
+
+    handleSubmit,
+    formState: { isValid, defaultValues, isSubmitting },
   } = useForm({
     resolver: yupResolver(formMeasuresSchema),
+    mode: 'all',
   });
 
-  const onSubmit = async (mode: 'go_to_checkout' | 'continue_shopping') => {
-    const data = getValues();
-
-    if (!isAuthenticated) {
-      return displayLoginModal();
-    }
-
-    const { data: profileData, error: profileError } =
-      await updateOrCreateProfile(data);
-
-    if (profileError) {
-      return errorToast('Hubo un error al guardar las medidas');
-    }
-
-    if (!profileData) {
-      errorToast('Ocurrió un error, limpia el formulario y vuelve a empezar');
-    }
-
-    if (profileData) {
-      const { error } = await addProductToCart({
-        design_id: Number(shirt_design_id),
-        fabric_id: Number(fabric_id),
-        profile_id: profileData.id,
-      });
-      if (error) {
-        return errorToast('Hubo un error al agregar el producto al carrito');
+  const onSubmit = async (data: FormMeasuresSchema) => {
+    try {
+      if (!isAuthenticated) {
+        return displayLoginModal();
       }
-    }
-    checkCart();
-    router.refresh();
-    successToast('Se agregó el producto al carrito');
-    if (mode === 'go_to_checkout') {
-      // navigate to checkout
-      return router.push(`/checkout`);
-    }
 
-    if (mode === 'continue_shopping') {
-      // navigate to continue shopping
-      return router.push(`/create`);
+      const { data: profileData, error: profileError } =
+        await updateOrCreateProfile(data);
+
+      if (profileError) throw profileError;
+
+      if (!profileData) throw new Error('No se pudo crear el perfil');
+
+      if (profileData) {
+        const { error } = await addProductToCart({
+          design_id: Number(shirt_design_id),
+          fabric_id: Number(fabric_id),
+          profile_id: profileData.id,
+        });
+        if (error) throw new Error(error.message);
+      }
+      checkCart();
+      router.refresh();
+      return appModal.fire({
+        html: (
+          <Cart
+            onCheckoutRedirect={() => {
+              router.push('/checkout');
+              appModal.close();
+            }}
+            onContinueShoppingRedirect={() => {
+              router.push('/create');
+              appModal.close();
+            }}
+          />
+        ),
+        allowEnterKey: false,
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+      });
+    } catch (error: any) {
+      errorToast(error?.message || 'Ocurrió un error, inténtalo más tarde.');
     }
   };
 
@@ -194,6 +200,7 @@ const MeasureForm: FC<Props> = ({ profiles }) => {
   };
 
   const clearForm = async () => {
+    reset();
     reset({
       profile_name: '',
       id: '',
@@ -211,7 +218,10 @@ const MeasureForm: FC<Props> = ({ profiles }) => {
   };
 
   return (
-    <form className="grid md:grid-cols-2 md:py-8 gap-8 ">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="grid md:grid-cols-2 md:py-8 gap-8 "
+    >
       <div className="flex flex-col gap-4">
         <StepTitle title="Ingresa tus medidas" />
         <div className="flex flex-col gap-2 ">
@@ -314,20 +324,12 @@ const MeasureForm: FC<Props> = ({ profiles }) => {
               </span>
             </label>
             <div className="flex flex-col gap-4">
-              <Button
-                onClick={() => onSubmit('continue_shopping')}
-                type="button"
-                disabled={!isValid}
-                variant="outlined"
-              >
-                Agregar y seguir comprando
-              </Button>
-              <Button
-                onClick={() => onSubmit('go_to_checkout')}
-                type="button"
-                disabled={!isValid}
-              >
-                Agregar e ir al checkout
+              <Button type="submit" disabled={!isValid || isSubmitting}>
+                {isSubmitting ? (
+                  <Spinner className="mx-auto" width={16} height={16} />
+                ) : (
+                  ' Agregar producto'
+                )}
               </Button>
             </div>
           </div>

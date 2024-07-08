@@ -1,4 +1,3 @@
-import { appSidebar } from '@/services/sidebar/appSidebar';
 import { useCartStore } from '@/stores/cart/cart.store';
 import StepTitle from '@/ui/atoms/stepTitle/StepTitle';
 import useCart from '@/utils/hooks/useCart.hooks';
@@ -8,9 +7,13 @@ import CartItem from './CartItem';
 
 interface Props {
   onCheckoutRedirect: () => void;
+  onContinueShoppingRedirect: () => void;
 }
 
-const Cart: FC<Props> = ({ onCheckoutRedirect }) => {
+const Cart: FC<Props> = ({
+  onCheckoutRedirect,
+  onContinueShoppingRedirect,
+}) => {
   const { cart_products, total } = useCart();
 
   const deleteItem = useCartStore((state) => state.deleteItem);
@@ -40,7 +43,7 @@ const Cart: FC<Props> = ({ onCheckoutRedirect }) => {
         <div className="flex items-center justify-between pb-3">
           Total: <span className="font-bold">S/.{total} PEN</span>
         </div>
-        <Button onClick={() => appSidebar.close()} variant="outlined">
+        <Button onClick={onContinueShoppingRedirect} variant="outlined">
           Continuar comprando
         </Button>
         {cart_products && cart_products?.length > 0 && (
