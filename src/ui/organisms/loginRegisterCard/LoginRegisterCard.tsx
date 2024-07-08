@@ -1,10 +1,12 @@
 'use client';
+import { createNewClient } from '@/app/auth/actions';
 import StepTitle from '@/ui/atoms/stepTitle/StepTitle';
 import { Button, Input } from '@/ui/materialComponents';
 import useAuth from '@/utils/hooks/useAuth.hooks';
 import Link from 'next/link';
 import { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import Swal from 'sweetalert2';
 
 interface LoginProps {
   first_name?: string;
@@ -25,18 +27,24 @@ const LoginRegisterCard: FC<Props> = ({
 }) => {
   const SUCCESS_MESSAGE =
     'Se creó la cuenta, confirma tu correo e inicia sesión';
-  const { login, signUp } = useAuth();
+
+  const { login } = useAuth();
   const [formType, setFormType] = useState<'login' | 'register'>(defaultForm);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState<boolean>(false);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const {
     register,
     watch,
     reset,
     handleSubmit,
     setError,
-    formState: { isSubmitting, isValid, touchedFields, errors },
+    formState: {
+      isSubmitting,
+      isValid,
+      touchedFields,
+      errors,
+      isSubmitSuccessful,
+    },
   } = useForm<LoginProps>({
     defaultValues: {
       first_name: '',
@@ -53,27 +61,42 @@ const LoginRegisterCard: FC<Props> = ({
   const passwordsMatch = watchPassword === watchRepeatPassword;
 
   const loginUser = async (data: LoginProps) => {
-    const { error } = await login({ data });
-    if (error) {
-      return setError('root', { message: error.message });
+    try {
+      const { error } = await login({ data });
+      if (error) throw error;
+      return onLoginSuccess();
+    } catch (error: any) {
+      return setError('root', {
+        message: error.message || 'Ocurrió un error inesperado',
+      });
     }
-    return onLoginSuccess();
   };
 
   const registerUser = async (data: LoginProps) => {
-    const { error } = await signUp({
-      email: data.email,
-      password: data.password,
-      first_name: data.first_name || '',
-      last_name: data.last_name || '',
-    });
+    try {
+      const { email, password, first_name = '', last_name = '' } = data;
+      const { error: authError } = await createNewClient({
+        email,
+        password,
+        first_name,
+        last_name,
+      });
 
-    if (error) {
-      return setError('root', { message: error.message });
+      if (authError) throw authError;
+
+      reset();
+      setFormType('login');
+      await Swal.fire({
+        toast: true,
+        text: SUCCESS_MESSAGE,
+        icon: 'success',
+        position: 'center',
+      });
+    } catch (error: any) {
+      setError('root', {
+        message: error?.message || 'Ocurrió un error inesperado',
+      });
     }
-    reset();
-    setSuccessMessage(SUCCESS_MESSAGE);
-    return setFormType('login');
   };
 
   const changueFormType = (value: 'login' | 'register') => {
@@ -83,7 +106,6 @@ const LoginRegisterCard: FC<Props> = ({
     if (value === 'register') {
       setFormType('register');
     }
-    setSuccessMessage(null);
     reset();
   };
 
@@ -246,18 +268,15 @@ const LoginRegisterCard: FC<Props> = ({
             {errors.root.message}
           </div>
         )}
-        {successMessage && (
-          <div className="text-sm text-center bg-green-500 text-white rounded-md p-1">
-            {successMessage}
-          </div>
-        )}
-        <div className="text-center pt-2">
+
+        <div className="text-center pt-2 flex items-center justify-center">
           {formType === 'login' && (
             <Button
               className="normal-case font-normal font-sans px-12"
               size="md"
               disabled={!isValid || isSubmitting}
               onClick={handleSubmit(loginUser)}
+              loading={isSubmitting || isSubmitSuccessful}
             >
               Iniciar sesión
             </Button>
@@ -269,6 +288,7 @@ const LoginRegisterCard: FC<Props> = ({
               size="md"
               disabled={!isValid || isSubmitting}
               onClick={handleSubmit(registerUser)}
+              loading={isSubmitting}
             >
               Registrarse
             </Button>

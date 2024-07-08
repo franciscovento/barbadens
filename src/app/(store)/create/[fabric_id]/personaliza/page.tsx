@@ -22,6 +22,7 @@ interface Props {
 }
 
 const Personaliza: FC<Props> = ({ params }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [designs, setDesigns] = useState<Design[]>([]);
 
   const { shirt_collar_id, shirt_cuff_id, shirt_pocket_id, sleeve_type } =
@@ -35,6 +36,7 @@ const Personaliza: FC<Props> = ({ params }) => {
   const router = useRouter();
 
   const completeStep = () => {
+    setIsLoading(true);
     router.push(
       `/create/${params.fabric_id}/medidas?shirt_design_id=${currentDesign?.id}`
     );
@@ -100,7 +102,13 @@ const Personaliza: FC<Props> = ({ params }) => {
             height={250}
           />
           <div className="flex gap-2 flex-col">
-            <Button onClick={completeStep}>Completar paso</Button>
+            <Button
+              loading={isLoading}
+              disabled={isLoading}
+              onClick={completeStep}
+            >
+              Completar paso
+            </Button>
           </div>
         </div>
       </div>

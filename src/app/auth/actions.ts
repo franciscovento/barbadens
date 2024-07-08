@@ -1,26 +1,28 @@
+'use server';
+
+import { RegisterProps } from '@/services/api/supabase/authentication.services';
 import bsaleApi from '@/utils/axios/bsaleApi.utils';
 import { createClient } from '@/utils/supabase/server';
 import {
   CreateClientResponse,
   GetClientsResponse,
 } from '@/utils/types/bsale/client.interface';
-import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(req: NextRequest) {
+const createNewClient = async (client: RegisterProps) => {
   try {
-    const { email, first_name, last_name, password } = await req.json();
+    const { email, first_name, last_name, password } = client;
     const supabase = createClient();
     let clientId;
     const { data } = await bsaleApi.get<GetClientsResponse>(
-      `/v1/clients.json?email=${email}`
+      `/v1/clients.json?email=${client.email}`
     );
     if (data.items.length === 0) {
       const { data: newClient } = await bsaleApi.post<CreateClientResponse>(
         '/v1/clients.json',
         {
-          firstName: first_name,
-          lastName: last_name,
-          email: email,
+          firstName: client.first_name,
+          lastName: client.last_name,
+          email: client.email,
         }
       );
       clientId = newClient.id;
@@ -43,16 +45,18 @@ export async function POST(req: NextRequest) {
 
     if (authError) throw authError;
 
-    return NextResponse.json({
+    return {
       data: authData,
       error: authError,
-    });
+    };
   } catch (error: any) {
-    return NextResponse.json({
+    return {
       data: null,
       error: {
         message: error?.message || 'An error occurred. Please try again.',
       },
-    });
+    };
   }
-}
+};
+
+export { createNewClient };

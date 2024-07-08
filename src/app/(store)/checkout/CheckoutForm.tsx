@@ -43,7 +43,6 @@ const CheckoutForm = () => {
       payProcess: 'for_validate',
     },
     resolver: yupResolver(formCheckoutSchema),
-    mode: 'all',
   });
   const watchWithdrawStore = watch('withdrawStore');
   const watchShippingCost = watch('shippingCost');
@@ -224,6 +223,7 @@ const CheckoutForm = () => {
         </div>
         <div className="flex items-center justify-end">
           <Button
+            loading={isSubmitting}
             disabled={!isValid || isSubmitting || isSubmitSuccessful}
             type="submit"
           >

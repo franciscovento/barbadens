@@ -12,7 +12,7 @@ import LoginRegisterCard from '@/ui/organisms/loginRegisterCard/LoginRegisterCar
 import { Profile } from '@/utils/types/profile.interface';
 import { valuesMeasuresMap } from '@/utils/valuesMeasuresMap';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Option, Select, Spinner, Typography } from '@material-tailwind/react';
+import { Option, Select, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { FC } from 'react';
@@ -323,13 +323,13 @@ const MeasureForm: FC<Props> = ({ profiles }) => {
                 />
               </span>
             </label>
-            <div className="flex flex-col gap-4">
-              <Button type="submit" disabled={!isValid || isSubmitting}>
-                {isSubmitting ? (
-                  <Spinner className="mx-auto" width={16} height={16} />
-                ) : (
-                  ' Agregar producto'
-                )}
+            <div className="flex flex-col gap-4 items-center justify-center">
+              <Button
+                loading={isSubmitting}
+                type="submit"
+                disabled={!isValid || isSubmitting}
+              >
+                Agregar producto
               </Button>
             </div>
           </div>
