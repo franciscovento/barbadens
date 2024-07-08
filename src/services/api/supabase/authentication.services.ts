@@ -30,6 +30,7 @@ export const login = async ({ email, password }: LoginProps) => {
       id: authUser.user?.id,
       first_name: authUser.user?.user_metadata.first_name,
       last_name: authUser.user?.user_metadata.last_name,
+      client_id: authUser.user?.user_metadata.client_id,
     };
 
     return {

@@ -31,6 +31,7 @@ const useAuth = () => {
       id: authData?.user.id,
       first_name: authData?.user.first_name,
       last_name: authData?.user.last_name,
+      client_id: authData?.user.client_id,
       isAuthenticated: true,
     });
 

@@ -7,7 +7,8 @@ import { CartProductWithFabricDesignProfile } from './types/cart.interface';
 
 export function generateCheckout(
   checkoutInfo: FormCheckoutSchema,
-  cartProducts: CartProductWithFabricDesignProfile[]
+  cartProducts: CartProductWithFabricDesignProfile[],
+  clientId: number
 ): Checkout {
   let cartDetails: CartDetail[] = [];
 
@@ -25,6 +26,7 @@ export function generateCheckout(
 
   return {
     documentData: {
+      clientId,
       declareSii: 1,
       officeId: 1,
       emissionDate: ms,
