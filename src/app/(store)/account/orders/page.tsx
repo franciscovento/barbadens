@@ -1,13 +1,10 @@
 'use client';
-import { successToast } from '@/services/modals/appModal';
 import StepTitle from '@/ui/atoms/stepTitle/StepTitle';
 import BasicTable from '@/ui/organisms/table/BasicTable';
 import FilterMenu from '@/ui/organisms/table/FilterMenu';
 import Pagination from '@/ui/organisms/table/Pagination';
 import useOrders from '@/utils/hooks/useOrders.hooks';
-import { createClient } from '@/utils/supabase/client';
-import { ChannelResponse } from '@/utils/types/channelResponse.interface';
-import { Order, OrderStatus } from '@/utils/types/order.interface';
+import { OrderStatus } from '@/utils/types/order.interface';
 
 interface Props {
   searchParams: {
@@ -17,9 +14,9 @@ interface Props {
   };
 }
 const Page = ({ searchParams }: Props) => {
-  const GAP = 4;
+  const GAP = 10;
   const offset = Number(searchParams?.offset) || 0;
-  const limit = Number(searchParams?.limit) || 4;
+  const limit = Number(searchParams?.limit) || 10;
   const status = (searchParams.status as OrderStatus) || null;
 
   const {
@@ -29,26 +26,26 @@ const Page = ({ searchParams }: Props) => {
     mutate,
   } = useOrders(offset, limit, status);
 
-  const supabase = createClient();
+  // const supabase = createClient();
 
-  const handleInserts = (payload: any) => {
-    const response = payload as ChannelResponse<Order>;
-    mutate();
-    successToast('Nueva orden recibida!');
-  };
+  // const handleInserts = (payload: any) => {
+  //   const response = payload as ChannelResponse<Order>;
+  //   mutate();
+  //   successToast('Nueva orden recibida!');
+  // };
 
-  supabase
-    .channel('orders')
-    .on(
-      'postgres_changes',
-      { event: 'INSERT', schema: 'public', table: 'orders' },
-      handleInserts
-    )
-    .subscribe();
+  // supabase
+  //   .channel('orders')
+  //   .on(
+  //     'postgres_changes',
+  //     { event: 'INSERT', schema: 'public', table: 'orders' },
+  //     handleInserts
+  //   )
+  //   .subscribe();
 
   return (
     <>
-      <StepTitle title="Últimas ordenes" />
+      <StepTitle title="Últimos pedidos" />
       {isLoading && <div>Cargando....</div>}
       {error && <div>Ocurrió un error...</div>}
 

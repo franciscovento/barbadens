@@ -9,12 +9,12 @@ export default function Error({
 }) {
   return (
     <div className="bg-black flex items-center justify-center gap-4 flex-col w-screen h-[calc(100vh_-_4rem)] text-white">
-      <h2>Something went wrong!</h2>
+      <h2>Ocurrió un error, por favor inténtalo nuevamente</h2>
       <button
         className="bg-app-secondary text-app-primary p-2"
         onClick={() => reset()}
       >
-        Try again
+        Intentar de nuevo
       </button>
     </div>
   );

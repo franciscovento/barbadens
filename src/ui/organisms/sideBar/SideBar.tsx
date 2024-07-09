@@ -1,15 +1,11 @@
 'use client';
+import useAuth from '@/utils/hooks/useAuth.hooks';
 import {
   Bars3Icon,
   ChevronDownIcon,
   ChevronRightIcon,
 } from '@heroicons/react/24/outline';
-import {
-  Cog6ToothIcon,
-  PowerIcon,
-  ShoppingBagIcon,
-  UserCircleIcon,
-} from '@heroicons/react/24/solid';
+import { PowerIcon, ShoppingBagIcon } from '@heroicons/react/24/solid';
 import {
   Accordion,
   AccordionBody,
@@ -24,9 +20,12 @@ import {
 } from '@material-tailwind/react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 function Sidebar() {
+  const router = useRouter();
+  const { logout } = useAuth();
   const [open, setOpen] = React.useState(0);
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
 
@@ -36,6 +35,18 @@ function Sidebar() {
 
   const openDrawer = () => setIsDrawerOpen(true);
   const closeDrawer = () => setIsDrawerOpen(false);
+
+  const handleLogout = async () => {
+    try {
+      const { error } = await logout();
+      if (error) throw error;
+
+      router.refresh();
+      router.push('/auth');
+    } catch (error) {
+      alert('Error cerrando sesión');
+    }
+  };
 
   return (
     <>
@@ -98,7 +109,7 @@ function Sidebar() {
                       Orders
                     </ListItem>
                   </Link>
-                  <Link
+                  {/* <Link
                     href={'/account/products'}
                     onClick={() => setIsDrawerOpen(false)}
                   >
@@ -108,24 +119,24 @@ function Sidebar() {
                       </ListItemPrefix>
                       Products
                     </ListItem>
-                  </Link>
+                  </Link> */}
                 </List>
               </AccordionBody>
             </Accordion>
             <hr className="my-2 border-blue-gray-50" />
-            <ListItem>
+            {/* <ListItem>
               <ListItemPrefix>
                 <UserCircleIcon className="h-5 w-5" />
               </ListItemPrefix>
               Profile
-            </ListItem>
-            <ListItem>
+            </ListItem> */}
+            {/* <ListItem>
               <ListItemPrefix>
                 <Cog6ToothIcon className="h-5 w-5" />
               </ListItemPrefix>
               Settings
-            </ListItem>
-            <ListItem>
+            </ListItem> */}
+            <ListItem onClick={handleLogout}>
               <ListItemPrefix>
                 <PowerIcon className="h-5 w-5" />
               </ListItemPrefix>

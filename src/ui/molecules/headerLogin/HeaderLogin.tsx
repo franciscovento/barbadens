@@ -8,13 +8,20 @@ import SgvCart from '@/ui/atoms/svgs/SgvCart';
 import Cart from '@/ui/organisms/cart/Cart';
 import useAuth from '@/utils/hooks/useAuth.hooks';
 import useCart from '@/utils/hooks/useCart.hooks';
-import { Badge, IconButton } from '@material-tailwind/react';
+import { UserIcon } from '@heroicons/react/24/outline';
+import {
+  Badge,
+  IconButton,
+  Menu,
+  MenuHandler,
+  MenuItem,
+  MenuList,
+} from '@material-tailwind/react';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 const HeaderLogin = () => {
-  const path = usePathname();
   const checkAuth = useUser((state) => state.checkAuth);
   const checkCart = useCartStore((state) => state.checkCart);
   const isAuthenticated = useUser((state) => state.isAuthenticated);
@@ -56,17 +63,25 @@ const HeaderLogin = () => {
     checkCart();
   }, [checkCart]);
 
-  return !path.includes('checkout') ? (
+  return (
     <div className="text-white text-right">
       {isAuthenticated ? (
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
           <div>
-            <p className="text-sm">
-              Hola, <span className="capitalize">{userName}</span>
-            </p>
-            <button onClick={handleLogout} className="text-sm underline">
-              Cerrar sesión
-            </button>
+            <Menu>
+              <MenuHandler>
+                <UserIcon className="w-6  h-6 cursor-pointer" />
+              </MenuHandler>
+              <MenuList>
+                <div className="px-3 pb-2 border-b border-app-background">
+                  Hola, {userName}
+                </div>
+                <Link href={'/account/orders'}>
+                  <MenuItem>Ver mis ordenes</MenuItem>
+                </Link>
+                <MenuItem onClick={handleLogout}>Cerrar sesión</MenuItem>
+              </MenuList>
+            </Menu>
           </div>
           <Badge content={cart_products?.length}>
             <IconButton onClick={displayCart}>
@@ -80,8 +95,6 @@ const HeaderLogin = () => {
         </Link>
       )}
     </div>
-  ) : (
-    <div></div>
   );
 };
 
