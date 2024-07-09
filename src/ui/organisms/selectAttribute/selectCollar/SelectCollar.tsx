@@ -1,14 +1,15 @@
 'use client';
-import { getShirtCollarOptions } from '@/services/api/supabase/design.services';
-import { appModal, errorToast } from '@/services/modals/appModal';
+import { appModal } from '@/services/modals/appModal';
 import { useCustomShirt } from '@/stores/design/design.store';
 import { Collar } from '@/utils/types/design.interface';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { FC } from 'react';
 import SelectAttribute from '../SelectAttribute';
 
-const SelectCollar = () => {
-  const [collarOptions, setCollarOptions] = useState<Collar[]>([]);
+interface Props {
+  collarOptions: Collar[];
+}
+const SelectCollar: FC<Props> = ({ collarOptions }) => {
   const collarId = useCustomShirt((state) => state.shirt_collar_id);
   const currentCollar = collarOptions.find((p) => p.id === collarId);
 
@@ -18,17 +19,6 @@ const SelectCollar = () => {
       html: <Options options={collarOptions} />,
     });
   };
-
-  useEffect(() => {
-    const fetchCollarOptions = async () => {
-      const response = await getShirtCollarOptions();
-      if (response.error) {
-        return errorToast(response.error.message);
-      }
-      setCollarOptions(response?.data || []);
-    };
-    fetchCollarOptions();
-  }, []);
 
   return (
     <SelectAttribute

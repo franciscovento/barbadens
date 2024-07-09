@@ -1,6 +1,6 @@
 import { ShirtDesign } from '@/stores';
 import { createClient } from '@/utils/supabase/client';
-import { Collar, Cuff, Design } from '@/utils/types/design.interface';
+import { Collar, Cuff, Design, Pocket } from '@/utils/types/design.interface';
 
 const supabase = createClient();
 async function getShirtCuffOptions() {
@@ -29,7 +29,7 @@ async function getShirtPocketOptions() {
   const { data, error } = await supabase
     .from('shirt_pockets')
     .select('*')
-    .returns<Cuff[]>();
+    .returns<Pocket[]>();
   return {
     data,
     error,
@@ -37,9 +37,12 @@ async function getShirtPocketOptions() {
 }
 
 async function getShirtDesigns() {
-  const { data, error } = await supabase.from('shirt_designs').select('*');
+  const { data, error } = await supabase
+    .from('shirt_designs')
+    .select('*')
+    .returns<Design[]>();
   return {
-    data,
+    data: data || [],
     error,
   };
 }

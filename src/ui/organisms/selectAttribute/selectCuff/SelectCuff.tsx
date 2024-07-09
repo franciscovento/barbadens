@@ -1,14 +1,15 @@
 'use client';
-import { getShirtCuffOptions } from '@/services/api/supabase/design.services';
-import { appModal, errorToast } from '@/services/modals/appModal';
+import { appModal } from '@/services/modals/appModal';
 import { useCustomShirt } from '@/stores/design/design.store';
 import { Cuff } from '@/utils/types/design.interface';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { FC } from 'react';
 import SelectAttribute from '../SelectAttribute';
 
-const SelectCuff = () => {
-  const [cuffOptions, setCuffOptions] = useState<Cuff[] | null>([]);
+interface Props {
+  cuffOptions: Cuff[];
+}
+const SelectCuff: FC<Props> = ({ cuffOptions }) => {
   const cuffId = useCustomShirt((state) => state.shirt_cuff_id);
   const cuffSelected = cuffOptions?.find((c) => c.id === cuffId);
   const openModal = () => {
@@ -17,17 +18,6 @@ const SelectCuff = () => {
       html: <Options cuffOptions={cuffOptions || []} />,
     });
   };
-
-  useEffect(() => {
-    const fetchCuffOptions = async () => {
-      const response = await getShirtCuffOptions();
-      if (response.error) {
-        return errorToast(response.error.message);
-      }
-      setCuffOptions(response.data);
-    };
-    fetchCuffOptions();
-  }, []);
 
   if (!cuffId) {
     return (

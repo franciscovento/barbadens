@@ -1,19 +1,12 @@
-'use client';
 import { getShirtDesigns } from '@/services/api/supabase/design.services';
-import { errorToast } from '@/services/modals/appModal';
 import FabricDetails from '@/ui/atoms/fabricDetails/FabricDetails';
 import StepTitle from '@/ui/atoms/stepTitle/StepTitle';
-import { Button, Typography } from '@/ui/materialComponents';
-import SelectCollar from '@/ui/organisms/selectAttribute/selectCollar/SelectCollar';
-import SelectCuff from '@/ui/organisms/selectAttribute/selectCuff/SelectCuff';
-import SelectPocket from '@/ui/organisms/selectAttribute/selectPocket/SelectPocket';
-import SelectSleeve from '@/ui/organisms/selectAttribute/selectSleeve/SelectSleeve';
-import { getCurrentDesign } from '@/utils/getCurrentDesing';
-import useShirtDesign from '@/utils/hooks/useShirtDesign.hooks';
-import { Design } from '@/utils/types/design.interface';
+import { Typography } from '@/ui/materialComponents';
+import CurrentDesign from '@/ui/templates/currentDesign/CurrentDesign';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
+import DesignItems from './DesignItems';
+import PersonalizeButton from './PersonalizeButton';
 
 interface Props {
   params: {
@@ -21,37 +14,8 @@ interface Props {
   };
 }
 
-const Personaliza: FC<Props> = ({ params }) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [designs, setDesigns] = useState<Design[]>([]);
-
-  const { shirt_collar_id, shirt_cuff_id, shirt_pocket_id, sleeve_type } =
-    useShirtDesign();
-  const currentDesign = getCurrentDesign(designs, {
-    shirt_collar_id,
-    shirt_cuff_id,
-    shirt_pocket_id,
-    sleeve_type,
-  });
-  const router = useRouter();
-
-  const completeStep = () => {
-    setIsLoading(true);
-    router.push(
-      `/create/${params.fabric_id}/medidas?shirt_design_id=${currentDesign?.id}`
-    );
-  };
-
-  useEffect(() => {
-    const fetchDesigns = async () => {
-      const { data, error } = await getShirtDesigns();
-      if (error) {
-        errorToast(error.message);
-      }
-      setDesigns(data || []);
-    };
-    fetchDesigns();
-  }, []);
+const Personaliza: FC<Props> = async ({ params }) => {
+  const { data: designs } = await getShirtDesigns();
 
   return (
     <div className="grid md:grid-cols-2 md:py-8 gap-8 ">
@@ -79,13 +43,7 @@ const Personaliza: FC<Props> = ({ params }) => {
           />
         </div>
         <div className="py-8">
-          <h3 className="font-semibold pb-4">Características del modelo</h3>
-          <div className="flex flex-wrap gap-8">
-            <SelectSleeve />
-            <SelectCuff />
-            <SelectPocket />
-            <SelectCollar />
-          </div>
+          <DesignItems />
         </div>
       </div>
       <div className=" bg-app-background">
@@ -95,20 +53,9 @@ const Personaliza: FC<Props> = ({ params }) => {
             Su camisa perfecta está casi lista. Por favor, compruebe todos los
             detalles y proceda a insertar sus medidas.
           </Typography>
-          <Image
-            src={currentDesign?.image || '/images/camisa-test.png'}
-            alt="camisa a la medida"
-            width={370}
-            height={250}
-          />
+          <CurrentDesign designs={designs} />
           <div className="flex gap-2 flex-col">
-            <Button
-              loading={isLoading}
-              disabled={isLoading}
-              onClick={completeStep}
-            >
-              Completar paso
-            </Button>
+            <PersonalizeButton fabric_id={params.fabric_id} designs={designs} />
           </div>
         </div>
       </div>

@@ -9,11 +9,12 @@ import Tutorial from '@/ui/atoms/tutorial/Tutorial';
 import { Button } from '@/ui/materialComponents';
 import Cart from '@/ui/organisms/cart/Cart';
 import LoginRegisterCard from '@/ui/organisms/loginRegisterCard/LoginRegisterCard';
+import CurrentDesign from '@/ui/templates/currentDesign/CurrentDesign';
+import { Design } from '@/utils/types/design.interface';
 import { Profile } from '@/utils/types/profile.interface';
 import { valuesMeasuresMap } from '@/utils/valuesMeasuresMap';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Option, Select, Typography } from '@material-tailwind/react';
-import Image from 'next/image';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { FC } from 'react';
 import { useForm } from 'react-hook-form';
@@ -77,9 +78,10 @@ const measures = [
 
 interface Props {
   profiles: Profile[];
+  designs: Design[];
 }
 
-const MeasureForm: FC<Props> = ({ profiles }) => {
+const MeasureForm: FC<Props> = ({ profiles, designs }) => {
   const { checkCart } = useCartStore();
 
   const router = useRouter();
@@ -303,12 +305,7 @@ const MeasureForm: FC<Props> = ({ profiles }) => {
             Su camisa perfecta está casi lista. Por favor, compruebe todos los
             detalles y proceda a insertar sus medidas.
           </Typography>
-          <Image
-            src={'/images/camisa-test.png'}
-            alt="camisa a la medida"
-            width={370}
-            height={250}
-          />
+          <CurrentDesign designs={designs} />
           <div className="text-center">
             <label className="block pb-4 text-center">
               <span className="text-sm">

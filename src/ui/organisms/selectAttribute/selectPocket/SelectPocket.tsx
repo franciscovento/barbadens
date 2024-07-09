@@ -1,14 +1,15 @@
 'use client';
-import { getShirtPocketOptions } from '@/services/api/supabase/design.services';
-import { appModal, errorToast } from '@/services/modals/appModal';
+import { appModal } from '@/services/modals/appModal';
 import { useCustomShirt } from '@/stores/design/design.store';
 import { Pocket } from '@/utils/types/design.interface';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { FC } from 'react';
 import SelectAttribute from '../SelectAttribute';
 
-const SelectPocket = () => {
-  const [pocketOptions, setPocketOptions] = useState<Pocket[]>([]);
+interface Props {
+  pocketOptions: Pocket[];
+}
+const SelectPocket: FC<Props> = ({ pocketOptions }) => {
   const pocketId = useCustomShirt((state) => state.shirt_pocket_id);
   const currentPocket = pocketOptions.find((p) => p.id === pocketId);
   const openModel = () => {
@@ -17,17 +18,6 @@ const SelectPocket = () => {
       html: <Options options={pocketOptions} />,
     });
   };
-
-  useEffect(() => {
-    const fetchPocketOptions = async () => {
-      const { data, error } = await getShirtPocketOptions();
-      if (error) {
-        return errorToast(error.message);
-      }
-      setPocketOptions(data || []);
-    };
-    fetchPocketOptions();
-  }, []);
 
   return (
     <SelectAttribute
