@@ -16,6 +16,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+import Link from 'next/link';
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 interface Props {
@@ -82,6 +83,12 @@ const BasicTable: FC<Props> = ({ orders, mutate }) => {
                 <MenuItem onClick={() => viewCheckOut(row.original)}>
                   Ver checkout
                 </MenuItem>
+                <Link
+                  href={`/checkout/resume/${row.original.id}`}
+                  target="_blank"
+                >
+                  <MenuItem>Ver resumen</MenuItem>
+                </Link>
               </MenuList>
             </Menu>
           );
