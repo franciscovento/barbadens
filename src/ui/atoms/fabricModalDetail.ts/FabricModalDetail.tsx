@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { FC } from 'react';
+import { routes } from '../../../../routes';
 import { Chip } from '../../materialComponents';
 
 interface Props {
@@ -75,7 +76,11 @@ const FabricModalDetail: FC<Props> = ({
             </svg>
             {fabricType}
           </span>
-          <Link className="w-full flex-1" href={`/create/${id}/personaliza`}>
+          {/* <Link className="w-full flex-1" href={`/create/${id}/personaliza`}> */}
+          <Link
+            className="w-full flex-1"
+            href={routes.create.fabric.personalize.replace('[fabric_id]', id)}
+          >
             <button className="w-full sm:w-[221px] rounded-3xl p-2 duration-700 hover:bg-black hover:opacity-60 text-sm px-8 bg-black text-white">
               {' '}
               Seleccionar

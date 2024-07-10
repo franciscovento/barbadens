@@ -18,6 +18,7 @@ import { Option, Select, Typography } from '@material-tailwind/react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { FC } from 'react';
 import { useForm } from 'react-hook-form';
+import { routes } from '../../../../../../routes';
 import { FormMeasuresSchema, formMeasuresSchema } from './formSchema';
 
 const tutorials = [
@@ -129,7 +130,7 @@ const MeasureForm: FC<Props> = ({ profiles, designs }) => {
         html: (
           <Cart
             onCheckoutRedirect={() => {
-              router.push('/checkout');
+              router.push(routes.checkout.home);
               appModal.close();
             }}
             onContinueShoppingRedirect={() => {

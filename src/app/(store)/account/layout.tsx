@@ -2,6 +2,7 @@ import Sidebar from '@/ui/organisms/sideBar/SideBar';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import React, { FC } from 'react';
+import { routes } from '../../../../routes';
 
 interface Props {
   children: React.ReactNode;
@@ -11,7 +12,7 @@ const layout: FC<Props> = async ({ children }) => {
   const { data, error } = await supabase.auth.getUser();
 
   if (error) {
-    return redirect('/auth');
+    return redirect(routes.auth.login);
   }
 
   // return redirect('/create');

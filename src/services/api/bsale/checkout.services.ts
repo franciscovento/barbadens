@@ -3,10 +3,11 @@ import { Order } from '@/utils/types/order.interface';
 
 import { ApiResponse } from '@/utils/types/response.interface';
 import axios from 'axios';
+import { routes } from '../../../../routes';
 
 async function createCheckout(checkout: Checkout) {
   const response = await axios.post<ApiResponse<Order>>(
-    '/api/checkout',
+    routes.api.checkout,
     checkout
   );
   return {

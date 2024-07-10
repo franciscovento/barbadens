@@ -1,5 +1,7 @@
 import { createClient } from '@/utils/supabase/client';
 import { AuthError } from '@supabase/supabase-js';
+import axios from 'axios';
+import { routes } from '../../../../routes';
 
 export interface LoginProps {
   email: string;
@@ -60,24 +62,31 @@ export const logout = async (): Promise<{ error: AuthError | null }> => {
   return { error };
 };
 
-export const signUpWithEmail = async ({
-  email,
-  password,
-  first_name,
-  last_name,
-}: RegisterProps) => {
-  const { data, error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/auth/verify-email`,
-      data: {
-        first_name,
-        last_name,
-      },
-    },
-  });
-  return { data, error };
+export const signUpWithEmail = async (data: RegisterProps) => {
+  try {
+    const response = await axios.post(routes.api.clients, data);
+    return {
+      data: response.data,
+      error: null,
+    };
+  } catch (error: any) {
+    return {
+      data: null,
+      error: error.message || 'ocurrió un error inesperado',
+    };
+  }
+  // const { data, error } = await supabase.auth.signUp({
+  //   email,
+  //   password,
+  //   options: {
+  //     emailRedirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/auth/verify-email`,
+  //     data: {
+  //       first_name,
+  //       last_name,
+  //     },
+  //   },
+  // });
+  // return { data, error };
 };
 
 export const getUser = async () => {

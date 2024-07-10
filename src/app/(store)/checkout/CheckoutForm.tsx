@@ -18,6 +18,7 @@ import { generateCheckout } from '@/utils/generateCheckout';
 import { getShippingCost } from '@/utils/getShippingCost';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/navigation';
+import { routes } from '../../../../routes';
 import { FormCheckoutSchema, formCheckoutSchema } from './formSchema';
 
 interface Props {
@@ -77,7 +78,13 @@ const CheckoutForm: FC<Props> = ({ defaultValues }) => {
         throw checkoutError;
       }
       checkCart();
-      return router.push(`/checkout/resume/${checkoutData?.id}`);
+      // return router.push(`/checkout/resume/${checkoutData?.id}`);
+      return router.push(
+        routes.checkout.resume.replace(
+          '[order_id]',
+          checkoutData!.id.toString()
+        )
+      );
     } catch (error) {
       return errorToast(
         'Ocurrió un error creando el pedido, por favor inténtalo nuevamente'

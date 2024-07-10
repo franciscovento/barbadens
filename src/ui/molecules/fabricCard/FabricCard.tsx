@@ -3,6 +3,7 @@ import { appModal } from '@/services/modals/appModal';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FC } from 'react';
+import { routes } from '../../../../routes';
 import FabricModalDetail from '../../atoms/fabricModalDetail.ts/FabricModalDetail';
 import { Chip } from '../../materialComponents';
 
@@ -97,7 +98,10 @@ const FabricCard: FC<Props> = ({
             {fabricType}
           </span>
         </div>
-        <Link href={`/create/${id}/personaliza`}>
+        {/* <Link href={`/create/${id}/personaliza`}> */}
+        <Link
+          href={routes.create.fabric.personalize.replace('[fabric_id]', id)}
+        >
           <button className="w-full rounded-3xl mt-5 bg-[#ECEDF1] text-black p-2 font-medium duration-700 hover:bg-black hover:text-white">
             {' '}
             Seleccionar

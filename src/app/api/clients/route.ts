@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
       clientId = data.items[0].id;
     }
 
-    const { data: authData, error: authError } = await supabase.auth.signUp({
+    const { error: authError } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -44,8 +44,10 @@ export async function POST(req: NextRequest) {
     if (authError) throw authError;
 
     return NextResponse.json({
-      data: authData,
-      error: authError,
+      data: {
+        message: 'User created, please confirm your email to continue',
+      },
+      error: null,
     });
   } catch (error: any) {
     return NextResponse.json({

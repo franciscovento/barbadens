@@ -22,6 +22,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React from 'react';
+import { routes } from '../../../../routes';
 
 function Sidebar() {
   const router = useRouter();
@@ -42,7 +43,7 @@ function Sidebar() {
       if (error) throw error;
 
       router.refresh();
-      router.push('/auth');
+      router.push(routes.auth.login);
     } catch (error) {
       alert('Error cerrando sesión');
     }
@@ -99,7 +100,7 @@ function Sidebar() {
               <AccordionBody className="py-1">
                 <List className="p-0">
                   <Link
-                    href={'/account/orders'}
+                    href={routes.account.orders}
                     onClick={() => setIsDrawerOpen(false)}
                   >
                     <ListItem>
@@ -109,17 +110,6 @@ function Sidebar() {
                       Orders
                     </ListItem>
                   </Link>
-                  {/* <Link
-                    href={'/account/products'}
-                    onClick={() => setIsDrawerOpen(false)}
-                  >
-                    <ListItem>
-                      <ListItemPrefix>
-                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                      </ListItemPrefix>
-                      Products
-                    </ListItem>
-                  </Link> */}
                 </List>
               </AccordionBody>
             </Accordion>

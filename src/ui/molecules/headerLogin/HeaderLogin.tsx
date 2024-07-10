@@ -19,6 +19,7 @@ import {
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { routes } from '../../../../routes';
 
 const HeaderLogin = () => {
   const pathName = usePathname();
@@ -35,12 +36,12 @@ const HeaderLogin = () => {
       errorToast(response.error.message);
     }
     router.refresh();
-    router.push('/auth');
+    router.push(routes.auth.login);
   };
 
   const redirectToCheckout = () => {
     appSidebar.close();
-    router.push('/checkout');
+    router.push(routes.checkout.home);
   };
 
   const displayCart = () => {
@@ -76,7 +77,7 @@ const HeaderLogin = () => {
                 <div className="px-3 pb-2 border-b border-app-background">
                   Hola, {userName}
                 </div>
-                <Link href={'/account/orders'}>
+                <Link href={routes.account.orders}>
                   <MenuItem>Ver mis ordenes</MenuItem>
                 </Link>
                 <MenuItem onClick={handleLogout}>Cerrar sesión</MenuItem>
@@ -92,7 +93,7 @@ const HeaderLogin = () => {
           )}
         </div>
       ) : (
-        <Link className="text-sm underline" href={'/auth'}>
+        <Link className="text-sm underline" href={routes.auth.login}>
           Iniciar sesión
         </Link>
       )}

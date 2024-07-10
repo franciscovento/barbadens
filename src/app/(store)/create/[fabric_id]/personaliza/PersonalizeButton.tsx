@@ -5,6 +5,7 @@ import { Design } from '@/utils/types/design.interface';
 import { Button } from '@material-tailwind/react';
 import { useRouter } from 'next/navigation';
 import { FC, useState } from 'react';
+import { routes } from '../../../../../../routes';
 
 interface Props {
   designs: Design[];
@@ -24,8 +25,12 @@ const PersonalizeButton: FC<Props> = ({ designs, fabric_id }) => {
   const [isLoading, setIsLoading] = useState(false);
   const completeStep = () => {
     setIsLoading(true);
+    // router.push(
+    //   `/create/${fabric_id}/medidas?shirt_design_id=${currentDesign?.id}`
+    // );
     router.push(
-      `/create/${fabric_id}/medidas?shirt_design_id=${currentDesign?.id}`
+      routes.create.fabric.measures.replace('[fabric_id]', fabric_id) +
+        `?shirt_design_id=${currentDesign?.id}`
     );
   };
 

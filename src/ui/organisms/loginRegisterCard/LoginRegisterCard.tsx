@@ -1,12 +1,12 @@
 'use client';
-import { createNewClient } from '@/app/auth/actions';
+import { signUpWithEmail } from '@/services/api/supabase/authentication.services';
 import StepTitle from '@/ui/atoms/stepTitle/StepTitle';
 import { Button, Input } from '@/ui/materialComponents';
 import useAuth from '@/utils/hooks/useAuth.hooks';
 import Link from 'next/link';
 import { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import Swal from 'sweetalert2';
+import { routes } from '../../../../routes';
 
 interface LoginProps {
   first_name?: string;
@@ -26,10 +26,11 @@ const LoginRegisterCard: FC<Props> = ({
   defaultForm = 'register',
 }) => {
   const SUCCESS_MESSAGE =
-    'Se creó la cuenta, confirma tu correo e inicia sesión';
+    'Se creó la cuenta correctamente, confirma tu correo y vuelve para iniciar sesión';
 
   const { login } = useAuth();
   const [formType, setFormType] = useState<'login' | 'register'>(defaultForm);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState<boolean>(false);
   const {
@@ -38,13 +39,8 @@ const LoginRegisterCard: FC<Props> = ({
     reset,
     handleSubmit,
     setError,
-    formState: {
-      isSubmitting,
-      isValid,
-      touchedFields,
-      errors,
-      isSubmitSuccessful,
-    },
+
+    formState: { isSubmitting, isValid, touchedFields, errors },
   } = useForm<LoginProps>({
     defaultValues: {
       first_name: '',
@@ -75,7 +71,7 @@ const LoginRegisterCard: FC<Props> = ({
   const registerUser = async (data: LoginProps) => {
     try {
       const { email, password, first_name = '', last_name = '' } = data;
-      const { error: authError } = await createNewClient({
+      const { error: authError } = await signUpWithEmail({
         email,
         password,
         first_name,
@@ -86,12 +82,7 @@ const LoginRegisterCard: FC<Props> = ({
 
       reset();
       setFormType('login');
-      await Swal.fire({
-        toast: true,
-        text: SUCCESS_MESSAGE,
-        icon: 'success',
-        position: 'center',
-      });
+      setSuccessMessage(SUCCESS_MESSAGE);
     } catch (error: any) {
       setError('root', {
         message: error?.message || 'Ocurrió un error inesperado',
@@ -106,6 +97,7 @@ const LoginRegisterCard: FC<Props> = ({
     if (value === 'register') {
       setFormType('register');
     }
+    setSuccessMessage(null);
     reset();
   };
 
@@ -268,6 +260,11 @@ const LoginRegisterCard: FC<Props> = ({
             {errors.root.message}
           </div>
         )}
+        {successMessage && (
+          <div className="text-sm text-center bg-green-400 text-white rounded-md px-2 py-1">
+            {successMessage}
+          </div>
+        )}
 
         <div className="text-center pt-2 flex items-center justify-center">
           {formType === 'login' && (
@@ -276,7 +273,7 @@ const LoginRegisterCard: FC<Props> = ({
               size="md"
               disabled={!isValid || isSubmitting}
               onClick={handleSubmit(loginUser)}
-              loading={isSubmitting || isSubmitSuccessful}
+              loading={isSubmitting}
             >
               Iniciar sesión
             </Button>
@@ -296,7 +293,7 @@ const LoginRegisterCard: FC<Props> = ({
         </div>
         <div className="text-center underline py-2 ">
           <Link
-            href={'/auth/reset-password'}
+            href={routes.auth.forgotPassword}
             className="text-xs hover:text-app-accent duration-300 cursor-pointer"
           >
             ¿Olvidaste tu contraseña?

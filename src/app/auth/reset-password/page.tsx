@@ -4,6 +4,7 @@ import { LockClosedIcon } from '@heroicons/react/24/outline';
 import { AuthError } from '@supabase/supabase-js';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
+import { routes } from '../../../../routes';
 
 const Page = () => {
   const {
@@ -74,7 +75,7 @@ const Page = () => {
           </p>
         )}
         <div className="pt-4 text-sm underline duration-300 hover:text-white/">
-          <Link href={'/auth'}>Volver al inicio de sesión</Link>
+          <Link href={routes.auth.login}>Volver al inicio de sesión</Link>
         </div>
       </form>
     </div>
