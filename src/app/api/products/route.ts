@@ -14,10 +14,10 @@ export async function POST(request: NextRequest) {
     const { data } = await bsaleApi.get<GetVariantResponse>(
       `/v1/variants/${fabric_id}.json?expand=[product]`
     );
-    name = `${data.product.name} - Diseño:${design_id}`;
+    name = `${data.product.name} - Diseño: ${design_id}`;
     barCode = data.barCode;
   } catch (error) {
-    name = `Tela ${fabric_id} - Diseño ${design_id}`;
+    name = `Tela ${fabric_id} - Diseño: ${design_id}`;
   }
 
   const { data: productData, error: productError } = await supabase

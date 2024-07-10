@@ -7,6 +7,7 @@ import { colors } from '@material-tailwind/react/types/generic';
 import Link from 'next/link';
 import { FC } from 'react';
 import PaymentSection from './PaymentSection';
+import SeeDetail from './SeeDetail';
 
 interface Props {
   params: {
@@ -77,6 +78,10 @@ const Page: FC<Props> = async ({ params }) => {
                     Camisa para {cartItem?.profiles?.profile_name}
                   </h3>
                   <p>{cartItem?.products?.name}</p>
+                  <SeeDetail
+                    designId={cartItem.design_id}
+                    profileId={cartItem.profile_id}
+                  />
                 </div>
                 <div className="text-center">
                   <p className="font-bold">Cantidad:</p>
