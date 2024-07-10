@@ -141,7 +141,7 @@ const LoginRegisterCard: FC<Props> = ({
       <form className="flex flex-col gap-2">
         <div>
           {formType === 'register' && (
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-col sm:flex-row">
               <Input
                 label="Nombre"
                 {...register('first_name', { required: true })}

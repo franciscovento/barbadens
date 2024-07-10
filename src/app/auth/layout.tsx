@@ -1,5 +1,3 @@
-import Image from 'next/image';
-import Link from 'next/link';
 import React, { FC } from 'react';
 
 interface Props {
@@ -8,7 +6,7 @@ interface Props {
 const layout: FC<Props> = ({ children }) => {
   return (
     <>
-      <header className="h-16 px-8 bg-app-primary flex items-center">
+      {/* <header className="h-16 px-8 bg-app-primary flex items-center">
         <Link href={'/create'}>
           <Image
             width={160}
@@ -17,7 +15,7 @@ const layout: FC<Props> = ({ children }) => {
             alt="logo barbadens"
           />
         </Link>
-      </header>
+      </header> */}
       {children}
     </>
   );

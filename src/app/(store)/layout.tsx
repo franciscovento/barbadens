@@ -1,4 +1,3 @@
-import Header from '@/ui/organisms/header/Header';
 import React, { FC } from 'react';
 
 interface Props {
@@ -6,12 +5,7 @@ interface Props {
 }
 
 const layout: FC<Props> = ({ children }) => {
-  return (
-    <>
-      <Header />
-      {children}
-    </>
-  );
+  return <>{children}</>;
 };
 
 export default layout;
