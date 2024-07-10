@@ -1,5 +1,4 @@
 'use client';
-
 import { appModal, errorToast } from '@/services/modals/appModal';
 import { appSidebar } from '@/services/sidebar/appSidebar';
 import { useCartStore } from '@/stores/cart/cart.store';
@@ -18,10 +17,11 @@ import {
   MenuList,
 } from '@material-tailwind/react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 const HeaderLogin = () => {
+  const pathName = usePathname();
   const checkAuth = useUser((state) => state.checkAuth);
   const checkCart = useCartStore((state) => state.checkCart);
   const isAuthenticated = useUser((state) => state.isAuthenticated);
@@ -83,11 +83,13 @@ const HeaderLogin = () => {
               </MenuList>
             </Menu>
           </div>
-          <Badge content={cart_products?.length}>
-            <IconButton onClick={displayCart}>
-              <SgvCart className="w-6 h-6" />
-            </IconButton>
-          </Badge>
+          {!pathName.includes('checkout') && (
+            <Badge content={cart_products?.length}>
+              <IconButton onClick={displayCart}>
+                <SgvCart className="w-6 h-6" />
+              </IconButton>
+            </Badge>
+          )}
         </div>
       ) : (
         <Link className="text-sm underline" href={'/auth'}>
