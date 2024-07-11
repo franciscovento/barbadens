@@ -36,7 +36,7 @@ const HeaderLogin = () => {
       errorToast(response.error.message);
     }
     router.refresh();
-    router.push(routes.auth.login);
+    // router.push(routes.auth.login);
   };
 
   const redirectToCheckout = () => {

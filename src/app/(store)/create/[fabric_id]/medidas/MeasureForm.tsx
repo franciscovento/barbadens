@@ -3,6 +3,7 @@ import { addProductToCart } from '@/services/api/supabase/cart.services';
 import { updateOrCreateProfile } from '@/services/api/supabase/profile.services';
 import { appModal, errorToast } from '@/services/modals/appModal';
 import { useCartStore } from '@/stores/cart/cart.store';
+import { useMeasures } from '@/stores/measures/measures.store';
 import { useUser } from '@/stores/user/user.store';
 import StepTitle from '@/ui/atoms/stepTitle/StepTitle';
 import Tutorial from '@/ui/atoms/tutorial/Tutorial';
@@ -16,7 +17,7 @@ import { valuesMeasuresMap } from '@/utils/valuesMeasuresMap';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Option, Select, Typography } from '@material-tailwind/react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { routes } from '../../../../../../routes';
 import { FormMeasuresSchema, formMeasuresSchema } from './formSchema';
@@ -84,7 +85,7 @@ interface Props {
 
 const MeasureForm: FC<Props> = ({ profiles, designs }) => {
   const { checkCart } = useCartStore();
-
+  const { getMeasures, setMeasures, clearMeasures } = useMeasures();
   const router = useRouter();
   const params = useSearchParams();
   const { fabric_id } = useParams();
@@ -104,6 +105,7 @@ const MeasureForm: FC<Props> = ({ profiles, designs }) => {
   });
 
   const onSubmit = async (data: FormMeasuresSchema) => {
+    setMeasures(data);
     try {
       if (!isAuthenticated) {
         return displayLoginModal();
@@ -203,6 +205,7 @@ const MeasureForm: FC<Props> = ({ profiles, designs }) => {
   };
 
   const clearForm = async () => {
+    clearMeasures();
     reset();
     reset({
       profile_name: '',
@@ -219,6 +222,10 @@ const MeasureForm: FC<Props> = ({ profiles, designs }) => {
       long: undefined,
     });
   };
+
+  useEffect(() => {
+    reset(getMeasures());
+  }, [reset, getMeasures]);
 
   return (
     <form
