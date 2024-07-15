@@ -14,7 +14,7 @@ const CreatePage = async () => {
           tela.{' '}
         </p>
       </div>
-      <div className="grid grid-cols-2 gap-8 sm:grid-cols-[repeat(auto-fill,_minmax(220px,_1fr))] ">
+      <div className="grid grid-cols-2 gap-8 sm:grid-cols-[repeat(auto-fit,_minmax(220px,_1fr))] ">
         {data.data && (
           <InfiniteScrollFabrics initialData={data.data} nextPage={data.next} />
         )}

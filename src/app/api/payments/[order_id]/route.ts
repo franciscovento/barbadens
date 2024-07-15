@@ -44,7 +44,6 @@ export async function POST(
         `/v1/documents/${order?.checkout_info.id_venta_documento_tributario}.json?expand=[details]`
       );
       const document = generateDocument(response.data, {
-        order_id: order.id,
         payment_type_id: order.payment_type_id || 14,
       });
 

@@ -1,11 +1,11 @@
 import { getShirtDesigns } from '@/services/api/supabase/design.services';
-import FabricDetails from '@/ui/atoms/fabricDetails/FabricDetails';
 import StepTitle from '@/ui/atoms/stepTitle/StepTitle';
 import { Typography } from '@/ui/materialComponents';
 import CurrentDesign from '@/ui/templates/currentDesign/CurrentDesign';
-import Image from 'next/image';
-import { FC } from 'react';
+import { FC, Suspense } from 'react';
 import DesignItems from './DesignItems';
+import FabricInfo from './FabricInfo';
+import FabricInfoSkeleton from './FabricInfoSkeleton';
 import PersonalizeButton from './PersonalizeButton';
 
 interface Props {
@@ -15,6 +15,7 @@ interface Props {
 }
 
 const Personaliza: FC<Props> = async ({ params }) => {
+  const fabric_id = Number(params.fabric_id);
   const { data: designs } = await getShirtDesigns();
 
   return (
@@ -23,25 +24,9 @@ const Personaliza: FC<Props> = async ({ params }) => {
         <StepTitle title="Crea tu diseño" />
         {/* TELA CAMISA */}
 
-        <div className="pt-5 grid grid-cols-2 gap-4 sm:gap-8">
-          <div className="relative flex-shrink-0 ">
-            <Image
-              src={`/images/tela1.png`}
-              fill
-              alt="tela"
-              className="object-cover"
-            />
-          </div>
-          <FabricDetails
-            title="100% algodón Popelina"
-            attributes={[
-              { title: 'Nombre de tejido', value: 'Barbadens' },
-              { title: 'Composición', value: '100% Algodón' },
-              { title: 'Peso', value: '100 gr/m2' },
-              { title: 'Tono', value: 'Azul' },
-            ]}
-          />
-        </div>
+        <Suspense fallback={<FabricInfoSkeleton />}>
+          <FabricInfo fabric_id={fabric_id} />
+        </Suspense>
         <div className="py-8">
           <DesignItems />
         </div>

@@ -11,20 +11,19 @@ export interface MpProductItem {
 }
 
 const client = mpClient();
-const makePayment = async (items: MpProductItem[]) => {
+const makePayment = async (items: MpProductItem[], order_id: number) => {
   'use server';
 
   const preference = new Preference(client);
   const { sandbox_init_point } = await preference.create({
     body: {
       items,
-      back_urls: {
-        success: 'http://localhost:3000/checkout/resume/50?status=success',
-        failure: 'http://localhost:3000/checkout/resume/50?status=fail',
-        pending: 'http://localhost:3000/checkout/resume/50?status=pending',
-      },
-      notification_url:
-        'https://deemed-tommy-mississippi-moderate.trycloudflare.com/api/payments?source_news=webhooks&order=50',
+      // back_urls: {
+      //   success: `http://localhost:3000/checkout/resume/${order_id}?status=success`,
+      //   failure: `http://localhost:3000/checkout/resume/${order_id}?status=failure`,
+      //   pending: `http://localhost:3000/checkout/resume/${order_id}?status=pending`,
+      // },
+      notification_url: `https://species-least-pools-faced.trycloudflare.com/api/payments?source_news=webhooks&order=${order_id}`,
       // shipments: {
       //   cost: 20,
       //   free_shipping: true,

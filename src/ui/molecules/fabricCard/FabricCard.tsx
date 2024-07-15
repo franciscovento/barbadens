@@ -3,64 +3,62 @@ import { appModal } from '@/services/modals/appModal';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FC } from 'react';
+import { STOCK_COST } from '../../../../constants';
 import { routes } from '../../../../routes';
 import FabricModalDetail from '../../atoms/fabricModalDetail.ts/FabricModalDetail';
 import { Chip } from '../../materialComponents';
 
 interface Props {
-  id: string;
+  productId: number;
   name: string;
-  price: number;
-  description: string;
-  image: string;
-  isNew?: boolean;
-  discount?: number;
-  fabricType: string;
+  totalStock: number;
+  displayNotice: string;
+  urlImg: string;
+  finalPrice: number;
+  order: number;
 }
 
 const FabricCard: FC<Props> = ({
-  id,
-  description,
-  discount,
-  image,
-  isNew,
+  displayNotice,
+  finalPrice,
   name,
-  price,
-  fabricType,
+  order,
+  productId,
+  totalStock,
+  urlImg,
 }) => {
   const showFabricModal = () => {
     appModal.fire({
       width: 900,
       html: (
         <FabricModalDetail
-          title={name}
-          description={description}
-          image={image}
-          isNew={isNew}
-          discount={discount}
-          id={id}
-          fabricType={fabricType}
-          price={price}
+          displayNotice={displayNotice}
+          finalPrice={finalPrice}
+          name={name}
+          order={order}
+          productId={productId}
+          totalStock={totalStock}
+          urlImg={urlImg}
         />
       ),
     });
   };
 
   return (
-    <article className="grid">
+    <article className="grid relative">
       <div
         onClick={showFabricModal}
         className="relative group overflow-hidden rounded-xl"
       >
         <Image
-          src={image}
+          src={urlImg}
           width={176}
           height={176}
           alt="tela1"
-          className="w-full h-52 object-cover cursor-pointer rounded-xl duration-300 group-hover:scale-125"
+          className="w-full min-h-52 object-cover cursor-pointer rounded-xl duration-300 group-hover:scale-125"
         />
         <div className="flex items-center gap-1 absolute bottom-2 left-2">
-          {isNew && (
+          {order < 5 && (
             <Chip
               value="nuevo"
               variant="outlined"
@@ -68,21 +66,23 @@ const FabricCard: FC<Props> = ({
               className="text-[11px] leading-none border-none bg-white"
             />
           )}
-          {discount && (
+          {/* {discount && (
             <Chip
               value={`-${discount}%`}
               size="sm"
               className="text-[11px] leading-none  "
             />
-          )}
+          )} */}
         </div>
       </div>
       <div className="pt-4">
         <h4 className="font-semibold">{name}</h4>
-        <span className="block text-xl font-semibold py-1">s/. {price}.00</span>
+        <span className="block text-xl font-semibold py-1 ">
+          s/. {finalPrice}.00
+        </span>
         <div className="flex items-center justify-between">
-          <p className="text-app-text text-sm">{description}</p>
-          <span className="text-app-text flex gap-1 items-center text-sm">
+          <p className="text-app-text text-xs">stock: {totalStock}</p>
+          <span className="text-app-text flex gap-1 items-center text-xs ">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="13"
@@ -95,12 +95,15 @@ const FabricCard: FC<Props> = ({
                 fill="#787878"
               />
             </svg>
-            {fabricType}
+            {displayNotice}
           </span>
         </div>
         {/* <Link href={`/create/${id}/personaliza`}> */}
         <Link
-          href={routes.create.fabric.personalize.replace('[fabric_id]', id)}
+          href={routes.create.fabric.personalize.replace(
+            '[fabric_id]',
+            productId.toString()
+          )}
         >
           <button className="w-full rounded-3xl mt-5 bg-[#ECEDF1] text-black p-2 font-medium duration-700 hover:bg-black hover:text-white">
             {' '}
@@ -108,6 +111,13 @@ const FabricCard: FC<Props> = ({
           </button>
         </Link>
       </div>
+      {totalStock < STOCK_COST && (
+        <div className="backdrop-grayscale select-none absolute w-full h-full top-0 left-0 flex items-center justify-center">
+          <span className="-rotate-45 relative bottom-14 bg-white px-1 rounded-lg text-sm">
+            Sin stock
+          </span>
+        </div>
+      )}
     </article>
   );
 };

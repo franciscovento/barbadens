@@ -103,6 +103,7 @@ import { fetchFabrics } from '@/app/(store)/create/actions';
 import { Fabric } from '@/utils/types/bsale/fabrics.interface';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
+import { STOCK_COST } from '../../../../constants';
 import FabricCard from '../../molecules/fabricCard/FabricCard';
 
 interface Props {
@@ -135,19 +136,14 @@ const InfiniteScrollFabrics: FC<Props> = ({ initialData, nextPage }) => {
     <>
       {data.map((fabric) => (
         <FabricCard
-          key={fabric.id}
-          description={`Disponibilidad: ${fabric.totalStock.toString()}`}
-          fabricType={fabric.displayNotice}
-          image={fabric.urlImg}
+          key={fabric.idVariantDefault}
+          displayNotice={fabric.displayNotice}
+          finalPrice={fabric.variant.finalPrice * STOCK_COST}
           name={fabric.name}
-          price={fabric.variant.finalPrice}
-          discount={
-            fabric.variant.discount.percent > 0
-              ? fabric.variant.discount.percent
-              : undefined
-          }
-          isNew={fabric.order < 6}
-          id={fabric.idVariantDefault.toString()}
+          order={fabric.order}
+          productId={fabric.productId}
+          totalStock={fabric.totalStock}
+          urlImg={fabric.urlImg}
         />
       ))}
       {next && (

@@ -26,6 +26,10 @@ export async function POST(req: NextRequest, config: any) {
 
     if (isRequestFromMercadoPago(xSignature, xRequestId, body.data.id)) {
       console.log('es de mercadopago', { order_id });
+
+      // const payment = await new Payment(client).get({ id: body.data.id });
+
+      console.log('payment', body);
     } else {
       console.log('no es de mercadopago');
     }
@@ -33,11 +37,13 @@ export async function POST(req: NextRequest, config: any) {
       message: 'success',
     });
   } catch (error) {
+    console.log(error);
+
     return NextResponse.json(
       {
         message: 'error',
       },
-      { status: 500 }
+      { status: 200 }
     );
   }
 }

@@ -31,12 +31,18 @@ const config: Config = {
       },
       animation: {
         zoomIn: 'zoomIn 0.3s ease-out both',
+        loading: 'loading 1.5s infinite',
       },
       keyframes: {
         zoomIn: {
           '0%': { scale: '0.5', opacity: '0' },
           '90%': { scale: '1.05', opacity: '1' },
           '100%': { opacity: '1', scale: '1' },
+        },
+        loading: {
+          '0%': { opacity: '0.5' },
+          '50%': { opacity: '1' },
+          '100%': { opacity: '0.5' },
         },
       },
     },

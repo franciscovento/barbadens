@@ -2,6 +2,7 @@ import {
   Checkout,
   FormCheckoutSchema,
 } from '@/app/(store)/checkout/formSchema';
+import { STOCK_COST } from '../../constants';
 import { CartDetail } from './types/bsale/checkout.interface';
 import { CartProductWithFabricDesignProfile } from './types/cart.interface';
 
@@ -14,9 +15,9 @@ export function generateCheckout(
 
   cartProducts.forEach((product) => {
     cartDetails.push({
-      idVarianteProducto: product.fabric_id,
-      grossUnitValue: product.unit_price,
-      quantity: product.quantity,
+      idVarianteProducto: product.products.id_variant_default,
+      grossUnitValue: product.unit_price / STOCK_COST,
+      quantity: product.quantity * STOCK_COST,
     });
   });
 

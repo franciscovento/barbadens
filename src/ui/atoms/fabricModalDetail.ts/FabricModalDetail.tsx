@@ -5,38 +5,37 @@ import { routes } from '../../../../routes';
 import { Chip } from '../../materialComponents';
 
 interface Props {
-  id: string;
-  title: string;
-  image: string;
-  description: string;
-  price: number;
-  isNew?: boolean;
-  discount?: number;
-  fabricType: string;
+  productId: number;
+  name: string;
+  totalStock: number;
+  displayNotice: string;
+  urlImg: string;
+  finalPrice: number;
+  order: number;
 }
+
 const FabricModalDetail: FC<Props> = ({
-  title,
-  image,
-  description,
-  isNew,
-  discount,
-  price,
-  id,
-  fabricType,
+  displayNotice,
+  finalPrice,
+  name,
+  order,
+  productId,
+  totalStock,
+  urlImg,
 }) => {
   return (
     <div className="flex flex-col items-start">
-      <h4 className="font-semibold capitalize py-4 text-base">{title}</h4>
+      <h4 className="font-semibold capitalize py-4 text-base">{name}</h4>
       <div className="h-[391px] w-full relative">
         <Image
-          src={image}
+          src={urlImg}
           alt="fabric details"
           className="object-cover rounded-xl w-full h-[391px] "
           width={627}
           height={391}
         />
         <div className="flex items-center gap-1 absolute top-4 left-4">
-          {isNew && (
+          {order < 5 && (
             <Chip
               value="nuevo"
               variant="outlined"
@@ -44,21 +43,21 @@ const FabricModalDetail: FC<Props> = ({
               className="text-[11px] leading-none border-none bg-white"
             />
           )}
-          {discount && (
+          {/* {discount && (
             <Chip
               value={`-${discount}%`}
               size="sm"
               className="text-[11px] leading-none  "
             />
-          )}
+          )} */}
         </div>
       </div>
       <div className="py-4 gap-2 w-full flex flex-col sm:flex-row justify-between sm:items-center">
         <div>
           <span className="block text-xl font-semibold py-1">
-            s/. {price}.00
+            s/. {finalPrice}.00
           </span>
-          <p className="text-app-text text-xs">{description}</p>
+          <p className="text-app-text text-xs">stock: {totalStock}</p>
         </div>
         <div className="flex flex-col sm:flex-row items-center gap-4">
           <span className="text-app-text flex gap-1 items-center text-sm">
@@ -74,12 +73,15 @@ const FabricModalDetail: FC<Props> = ({
                 fill="#787878"
               />
             </svg>
-            {fabricType}
+            {displayNotice}
           </span>
           {/* <Link className="w-full flex-1" href={`/create/${id}/personaliza`}> */}
           <Link
             className="w-full flex-1"
-            href={routes.create.fabric.personalize.replace('[fabric_id]', id)}
+            href={routes.create.fabric.personalize.replace(
+              '[fabric_id]',
+              productId.toString()
+            )}
           >
             <button className="w-full sm:w-[221px] rounded-3xl p-2 duration-700 hover:bg-black hover:opacity-60 text-sm px-8 bg-black text-white">
               {' '}

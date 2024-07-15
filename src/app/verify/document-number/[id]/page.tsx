@@ -1,3 +1,5 @@
+import PaymentSection from '@/app/(store)/checkout/resume/[order_id]/PaymentSection';
+import SeeDetail from '@/app/(store)/checkout/resume/[order_id]/SeeDetail';
 import StepTitle from '@/ui/atoms/stepTitle/StepTitle';
 import { Button, Chip } from '@/ui/materialComponents';
 import { getStatusOrder } from '@/utils/getStatusOrder';
@@ -6,12 +8,10 @@ import { OrderWithProducts } from '@/utils/types/order.interface';
 import { colors } from '@material-tailwind/react/types/generic';
 import Link from 'next/link';
 import { FC } from 'react';
-import PaymentSection from './PaymentSection';
-import SeeDetail from './SeeDetail';
 
 interface Props {
   params: {
-    order_id: string;
+    id: string;
   };
 }
 const Page: FC<Props> = async ({ params }) => {
@@ -19,7 +19,7 @@ const Page: FC<Props> = async ({ params }) => {
   const { data: orders, error: ordersError } = await supabase
     .from('orders')
     .select('*, order_product(*, products(*), profiles(*))')
-    .eq('id', params.order_id)
+    .eq('checkout_info->documentNumber', params.id)
     .returns<OrderWithProducts[]>();
 
   if ((orders && orders?.length === 0) || ordersError) {
@@ -41,7 +41,7 @@ const Page: FC<Props> = async ({ params }) => {
           {order.status === 'pending' ? (
             order.checkout_info?.ptId && (
               <PaymentSection
-                order_id={Number(params.order_id)}
+                order_id={Number(params.id)}
                 orderProducts={order.order_product}
                 ptId={order.checkout_info?.ptId}
               />

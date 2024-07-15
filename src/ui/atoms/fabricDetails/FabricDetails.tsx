@@ -37,7 +37,10 @@ const Detail: FC<DetailProps> = ({ title, value }) => {
   return (
     <div className="grid grid-cols-2 text-xs font-normal gap-8 border-b py-1">
       <span>{title}</span>
-      <span>{value}</span>
+      <span
+        className="[&>p]:text-xs"
+        dangerouslySetInnerHTML={{ __html: value }}
+      />
     </div>
   );
 };

@@ -9,9 +9,10 @@ import makePayment, { MpProductItem } from './actions';
 interface Props {
   ptId: number;
   orderProducts: OrderProduct[];
+  order_id: number;
 }
 
-const PaymentSection: FC<Props> = ({ ptId, orderProducts }) => {
+const PaymentSection: FC<Props> = ({ ptId, orderProducts, order_id }) => {
   const paymentOptionSelected = paymentOptions.find((pt) => pt.id === ptId);
 
   if (paymentOptionSelected?.id === 2) {
@@ -29,6 +30,7 @@ const PaymentSection: FC<Props> = ({ ptId, orderProducts }) => {
   if (paymentOptionSelected?.id === 8) {
     return (
       <MercadoPago
+        order_id={order_id}
         orderProducts={orderProducts}
         image={paymentOptionSelected.icon}
       />
@@ -76,9 +78,11 @@ const Yape = ({ image, qr }: { image: string; qr: string }) => {
 };
 
 const MercadoPago = ({
+  order_id,
   image,
   orderProducts,
 }: {
+  order_id: number;
   image: string;
   orderProducts: OrderProduct[];
 }) => {
@@ -89,7 +93,7 @@ const MercadoPago = ({
       unit_price: item.unit_price,
       title: item.products.name,
     }));
-    makePayment(items);
+    makePayment(items, order_id);
   };
 
   return (

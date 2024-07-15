@@ -16,7 +16,7 @@ import { Profile } from '@/utils/types/profile.interface';
 import { valuesMeasuresMap } from '@/utils/valuesMeasuresMap';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Option, Select, Typography } from '@material-tailwind/react';
-import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { routes } from '../../../../../../routes';
@@ -81,15 +81,22 @@ const measures = [
 interface Props {
   profiles: Profile[];
   designs: Design[];
+  fabric_id: number;
+  shirt_design_id: number;
 }
 
-const MeasureForm: FC<Props> = ({ profiles, designs }) => {
+const MeasureForm: FC<Props> = ({
+  profiles,
+  designs,
+  fabric_id,
+  shirt_design_id,
+}) => {
   const { checkCart } = useCartStore();
   const { getMeasures, setMeasures, clearMeasures } = useMeasures();
   const router = useRouter();
-  const params = useSearchParams();
-  const { fabric_id } = useParams();
-  const shirt_design_id = params.get('shirt_design_id');
+  // const params = useSearchParams();
+  // const { fabric_id } = useParams();
+  // const shirt_design_id = params.get('shirt_design_id');
 
   const { isAuthenticated } = useUser();
 
@@ -120,8 +127,8 @@ const MeasureForm: FC<Props> = ({ profiles, designs }) => {
 
       if (profileData) {
         const { error } = await addProductToCart({
-          design_id: Number(shirt_design_id),
-          fabric_id: Number(fabric_id),
+          design_id: shirt_design_id,
+          fabric_id: fabric_id,
           profile_id: profileData.id,
         });
         if (error) throw new Error(error.message);

@@ -18,6 +18,7 @@ export interface CartProduct {
 export interface CartProductWithFabricDesignProfile extends CartProduct {
   products: {
     name: string;
+    id_variant_default: number;
     shirt_designs: {
       image: string;
     };
