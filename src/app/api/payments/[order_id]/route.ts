@@ -1,8 +1,4 @@
-import bsaleApi from '@/utils/axios/bsaleApi.utils';
-import { generateDocument } from '@/utils/generateDocument';
 import { createClient } from '@/utils/supabase/server';
-import { DocumentResponse } from '@/utils/types/bsale/document.interface';
-import { GetDocumentWithDetailsResponse } from '@/utils/types/document.interface';
 import { Order } from '@/utils/types/order.interface';
 import axios from 'axios';
 import { headers } from 'next/headers';
@@ -27,8 +23,9 @@ export async function POST(
     }
     const supabase = createClient();
     const { data: order, error } = await supabase
-      .rpc('set_order_to_confirmed', {
+      .rpc('changue_order_status', {
         order_id: params.order_id,
+        order_status: 'shipped',
       })
       .returns<Order>();
 
@@ -39,25 +36,30 @@ export async function POST(
       });
     }
 
-    if (order) {
-      const response = await bsaleApi.get<GetDocumentWithDetailsResponse>(
-        `/v1/documents/${order?.checkout_info.id_venta_documento_tributario}.json?expand=[details]`
-      );
-      const document = generateDocument(response.data, {
-        payment_type_id: order.payment_type_id || 14,
-      });
+    return NextResponse.json({
+      data: order,
+      error: error,
+    });
 
-      const { data } = await bsaleApi.post<DocumentResponse>(
-        '/v1/documents.json',
-        document
-      );
-      return NextResponse.json({
-        data,
-        error: error,
-      });
-    }
+    // if (order) {
+    //   const response = await bsaleApi.get<GetDocumentWithDetailsResponse>(
+    //     `/v1/documents/${order?.checkout_info.id_venta_documento_tributario}.json?expand=[details]`
+    //   );
+    //   const document = generateDocument(response.data, {
+    //     payment_type_id: order.payment_type_id || 14,
+    //   });
 
-    throw Error;
+    //   const { data } = await bsaleApi.post<DocumentResponse>(
+    //     '/v1/documents.json',
+    //     document
+    //   );
+    //   return NextResponse.json({
+    //     data,
+    //     error: error,
+    //   });
+    // }
+
+    // throw Error;
   } catch (error) {
     console.log(error);
 

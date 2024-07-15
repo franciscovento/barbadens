@@ -37,8 +37,9 @@ export async function POST(req: NextRequest) {
 
       if (payment.status === 'approved') {
         const { data: order, error } = await supabase
-          .rpc('set_order_to_confirmed', {
+          .rpc('changue_order_status', {
             order_id: order_id,
+            order_status: 'confirmed',
           })
           .returns<Order>();
 
