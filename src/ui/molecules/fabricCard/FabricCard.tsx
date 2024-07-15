@@ -27,6 +27,15 @@ const FabricCard: FC<Props> = ({
   totalStock,
   urlImg,
 }) => {
+  const getNumberFormat = (number: number) => {
+    let pen = new Intl.NumberFormat('es-PE', {
+      style: 'currency',
+      currency: 'PEN',
+    });
+
+    return pen.format(number);
+  };
+
   const showFabricModal = () => {
     appModal.fire({
       width: 900,
@@ -78,7 +87,7 @@ const FabricCard: FC<Props> = ({
       <div className="pt-4">
         <h4 className="font-semibold">{name}</h4>
         <span className="block text-xl font-semibold py-1 ">
-          s/. {finalPrice}.00
+          {getNumberFormat(finalPrice)}
         </span>
         <div className="flex items-center justify-between">
           <p className="text-app-text text-xs">stock: {totalStock}</p>

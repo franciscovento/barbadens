@@ -27,7 +27,7 @@ export async function POST(
     }
     const supabase = createClient();
     const { data: order, error } = await supabase
-      .rpc('read_order', {
+      .rpc('set_order_to_confirmed', {
         order_id: params.order_id,
       })
       .returns<Order>();
