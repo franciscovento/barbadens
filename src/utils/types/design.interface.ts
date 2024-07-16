@@ -6,6 +6,7 @@ export interface DesignItem {
   description: string;
   created_at: string;
   image: string | null;
+  component: string;
 }
 
 export interface Design {
