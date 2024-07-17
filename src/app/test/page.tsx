@@ -167,7 +167,7 @@ export default function TestPage() {
       </div> */}
 
       <StepTitle title="Diseña tu camisa" />
-      <Design />
+      <Design size={600} />
     </div>
   );
 }

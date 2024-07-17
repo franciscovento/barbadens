@@ -1,7 +1,7 @@
 import { getShirtDesigns } from '@/services/api/supabase/design.services';
 import StepTitle from '@/ui/atoms/stepTitle/StepTitle';
 import { Typography } from '@/ui/materialComponents';
-import CurrentDesign from '@/ui/templates/currentDesign/CurrentDesign';
+import Design from '@/ui/templates/design/Design';
 import { FC, Suspense } from 'react';
 import DesignItems from './DesignItems';
 import FabricInfo from './FabricInfo';
@@ -38,7 +38,7 @@ const Personaliza: FC<Props> = async ({ params }) => {
             Su camisa perfecta está casi lista. Por favor, compruebe todos los
             detalles y proceda a insertar sus medidas.
           </Typography>
-          <CurrentDesign designs={designs} />
+          <Design />
           <div className="flex gap-2 flex-col">
             <PersonalizeButton fabric_id={params.fabric_id} designs={designs} />
           </div>

@@ -10,7 +10,8 @@ import Tutorial from '@/ui/atoms/tutorial/Tutorial';
 import { Button } from '@/ui/materialComponents';
 import Cart from '@/ui/organisms/cart/Cart';
 import LoginRegisterCard from '@/ui/organisms/loginRegisterCard/LoginRegisterCard';
-import CurrentDesign from '@/ui/templates/currentDesign/CurrentDesign';
+
+import ClientDesign from '@/ui/templates/design/ClientDesign';
 import { Design } from '@/utils/types/design.interface';
 import { Profile } from '@/utils/types/profile.interface';
 import { valuesMeasuresMap } from '@/utils/valuesMeasuresMap';
@@ -320,7 +321,8 @@ const MeasureForm: FC<Props> = ({
             Su camisa perfecta está casi lista. Por favor, compruebe todos los
             detalles y proceda a insertar sus medidas.
           </Typography>
-          <CurrentDesign designs={designs} />
+          <ClientDesign shirt_design_id={shirt_design_id} />
+          {/* <CurrentDesign /> */}
           <div className="text-center">
             <label className="block pb-4 text-center">
               <span className="text-sm">

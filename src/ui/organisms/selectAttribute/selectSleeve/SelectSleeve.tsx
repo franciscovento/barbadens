@@ -20,7 +20,7 @@ const SelectSleeve = () => {
     <SelectAttribute
       title="Tipo de manga"
       name={currentSleeve?.label || '-'}
-      image={currentSleeve?.image || '/images/option-test.png'}
+      image={currentSleeve?.image || '/images/design/manga-larga.svg'}
       onClick={openModel}
     />
   );
