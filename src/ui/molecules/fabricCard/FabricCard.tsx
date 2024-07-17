@@ -1,5 +1,6 @@
 'use client';
 import { appModal } from '@/services/modals/appModal';
+import { getCurrencyFormat } from '@/utils/getCurrencyFormat';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FC } from 'react';
@@ -27,22 +28,13 @@ const FabricCard: FC<Props> = ({
   totalStock,
   urlImg,
 }) => {
-  const getNumberFormat = (number: number) => {
-    let pen = new Intl.NumberFormat('es-PE', {
-      style: 'currency',
-      currency: 'PEN',
-    });
-
-    return pen.format(number);
-  };
-
   const showFabricModal = () => {
     appModal.fire({
       width: 900,
       html: (
         <FabricModalDetail
           displayNotice={displayNotice}
-          finalPrice={finalPrice}
+          finalPrice={getCurrencyFormat(finalPrice)}
           name={name}
           order={order}
           productId={productId}
@@ -87,7 +79,7 @@ const FabricCard: FC<Props> = ({
       <div className="pt-4">
         <h4 className="font-semibold">{name}</h4>
         <span className="block text-xl font-semibold py-1 ">
-          {getNumberFormat(finalPrice)}
+          {getCurrencyFormat(finalPrice)}
         </span>
         <div className="flex items-center justify-between">
           <p className="text-app-text text-xs">stock: {totalStock}</p>

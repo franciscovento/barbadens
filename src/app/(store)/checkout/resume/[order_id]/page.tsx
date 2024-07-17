@@ -1,5 +1,6 @@
 import StepTitle from '@/ui/atoms/stepTitle/StepTitle';
 import { Button, Chip } from '@/ui/materialComponents';
+import { getCurrencyFormat } from '@/utils/getCurrencyFormat';
 import { getStatusOrder } from '@/utils/getStatusOrder';
 import { createClient } from '@/utils/supabase/server';
 import { OrderWithProducts } from '@/utils/types/order.interface';
@@ -55,12 +56,14 @@ const Page: FC<Props> = async ({ params }) => {
           <div className="sm:text-right order-1 sm:order-2 text-center">
             <span className="text-sm text-app-text ">Monto a Pagar</span>
             <p className="font-semibold text-4xl py-2">
-              S/.{' '}
-              {order?.total_products +
-                order.shipping_cost -
-                order.discount_cost}
+              {getCurrencyFormat(
+                order?.total_products +
+                  order.shipping_cost -
+                  order.discount_cost
+              )}
             </p>
             <Chip
+              className="text-center"
               value={orderStatus.text}
               color={orderStatus.color as colors}
               icon={orderStatus.icon}
@@ -89,13 +92,13 @@ const Page: FC<Props> = async ({ params }) => {
                   {cartItem?.quantity}
                 </div>
                 <div className="text-lg sm:text-2xl text-nowrap">
-                  s/. {cartItem?.unit_price * cartItem?.quantity}
+                  {getCurrencyFormat(cartItem?.unit_price * cartItem?.quantity)}
                 </div>
               </div>
             ))}
             <div className="text-right">
-              <span className="font-semibold">Costo de envío: </span>S/.
-              {order.shipping_cost}.00
+              <span className="font-semibold">Costo de envío: </span>
+              {getCurrencyFormat(order.shipping_cost)}
             </div>
           </div>
         </div>

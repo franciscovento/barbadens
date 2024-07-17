@@ -1,5 +1,6 @@
 import Counter from '@/ui/atoms/counter/Counter';
 import SvgTrash from '@/ui/atoms/svgs/SvgTrash';
+import { getCurrencyFormat } from '@/utils/getCurrencyFormat';
 import { CartProductWithFabricDesignProfile } from '@/utils/types/cart.interface';
 import Image from 'next/image';
 import { FC } from 'react';
@@ -50,7 +51,7 @@ const CartItem: FC<Props> = ({
           }
         />
         <span className="text-sm text-nowrap">
-          S/.{product.unit_price * product.quantity}
+          {getCurrencyFormat(product.unit_price * product.quantity)}
         </span>
         {allowDelete && (
           <SvgTrash

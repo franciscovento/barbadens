@@ -1,6 +1,7 @@
 'use client';
 import { useCartStore } from '@/stores/cart/cart.store';
 import CartItem from '@/ui/organisms/cart/CartItem';
+import { getCurrencyFormat } from '@/utils/getCurrencyFormat';
 import useCart from '@/utils/hooks/useCart.hooks';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import { FC } from 'react';
@@ -31,16 +32,18 @@ const CartResume: FC<Props> = ({ shippingCost }) => {
         <div className="py-4 flex flex-col gap-2">
           <div className="flex items-center justify-between">
             <div>Subtotal:</div>
-            <div className="text-center">${total}.00</div>
+            <div className="text-center">{getCurrencyFormat(total)}</div>
           </div>
           <div className="flex items-center justify-between">
             <div>Shipping</div>
-            <div className="text-center">${shippingCost}.00</div>
+            <div className="text-center">{getCurrencyFormat(shippingCost)}</div>
           </div>
           <hr className="col-span-full border border-b my-2 border-black/5 " />
           <div className="flex items-center justify-between">
             <div>Total</div>
-            <div className="text-center">${total + shippingCost}.00</div>
+            <div className="text-center">
+              {getCurrencyFormat(total + shippingCost)}
+            </div>
           </div>
         </div>
       </div>

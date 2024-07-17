@@ -10,7 +10,7 @@ interface Props {
   totalStock: number;
   displayNotice: string;
   urlImg: string;
-  finalPrice: number;
+  finalPrice: string;
   order: number;
 }
 
@@ -54,9 +54,7 @@ const FabricModalDetail: FC<Props> = ({
       </div>
       <div className="py-4 gap-2 w-full flex flex-col sm:flex-row justify-between sm:items-center">
         <div>
-          <span className="block text-xl font-semibold py-1">
-            s/. {finalPrice}.00
-          </span>
+          <span className="block text-xl font-semibold py-1">{finalPrice}</span>
           <p className="text-app-text text-xs">stock: {totalStock}</p>
         </div>
         <div className="flex flex-col sm:flex-row items-center gap-4">
