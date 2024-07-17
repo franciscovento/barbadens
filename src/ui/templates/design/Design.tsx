@@ -209,6 +209,23 @@ const Design: FC<Props> = async ({ size = 400 }) => {
       <SleeveItem />
       {/* CUFFS */}
       {cuffOptions && <CuffItem cuffOptions={cuffOptions} />}
+
+      {/* <defs>
+        <pattern
+          id="img1"
+          patternUnits="userSpaceOnUse"
+          width="100"
+          height="100"
+        >
+          <image
+            href="/images/fabric-test.jpg"
+            x="0"
+            y="0"
+            width="100"
+            height="100"
+          />
+        </pattern>
+      </defs> */}
     </svg>
   );
 };
