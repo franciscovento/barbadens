@@ -36,7 +36,6 @@ const Medidas: FC<Props> = async ({ searchParams, params }) => {
     <MeasureForm
       fabric_id={fabric_id}
       shirt_design_id={shirt_design_id}
-      designs={designs || []}
       profiles={profiles || []}
     />
   );

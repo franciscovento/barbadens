@@ -7,7 +7,7 @@ const montserrat = Montserrat({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Barbadens',
-  description: 'Camisas a medida para hombres',
+  description: 'Camisas a medida',
 };
 
 export default function RootLayout({

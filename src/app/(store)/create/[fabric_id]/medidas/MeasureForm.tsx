@@ -12,7 +12,6 @@ import Cart from '@/ui/organisms/cart/Cart';
 import LoginRegisterCard from '@/ui/organisms/loginRegisterCard/LoginRegisterCard';
 
 import ClientDesign from '@/ui/templates/design/ClientDesign';
-import { Design } from '@/utils/types/design.interface';
 import { Profile } from '@/utils/types/profile.interface';
 import { valuesMeasuresMap } from '@/utils/valuesMeasuresMap';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -81,23 +80,14 @@ const measures = [
 
 interface Props {
   profiles: Profile[];
-  designs: Design[];
   fabric_id: number;
   shirt_design_id: number;
 }
 
-const MeasureForm: FC<Props> = ({
-  profiles,
-  designs,
-  fabric_id,
-  shirt_design_id,
-}) => {
+const MeasureForm: FC<Props> = ({ profiles, fabric_id, shirt_design_id }) => {
   const { checkCart } = useCartStore();
   const { getMeasures, setMeasures, clearMeasures } = useMeasures();
   const router = useRouter();
-  // const params = useSearchParams();
-  // const { fabric_id } = useParams();
-  // const shirt_design_id = params.get('shirt_design_id');
 
   const { isAuthenticated } = useUser();
 
@@ -154,6 +144,11 @@ const MeasureForm: FC<Props> = ({
         allowOutsideClick: false,
       });
     } catch (error: any) {
+      if (error?.code === '23505') {
+        return errorToast(
+          'Ya tienes un perfil igual, selecciónalo en la lista o elige otro nombre.'
+        );
+      }
       errorToast(error?.message || 'Ocurrió un error, inténtalo más tarde.');
     }
   };
