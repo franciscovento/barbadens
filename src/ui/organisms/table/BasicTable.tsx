@@ -31,8 +31,9 @@ const BasicTable: FC<Props> = ({ orders, mutate }) => {
   const columns = useMemo(
     () => [
       {
-        header: 'Id',
-        accessorKey: 'id',
+        header: 'Document',
+        accessorFn: (info: OrderWithProducts) =>
+          info.checkout_info.documentNumber,
       },
       {
         header: 'Nombre',
