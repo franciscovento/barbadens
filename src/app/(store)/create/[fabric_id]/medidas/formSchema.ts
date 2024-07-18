@@ -1,18 +1,9 @@
+import { ShirtMeasures } from '@/utils/types/shirtMeasures.interface';
 import * as yup from 'yup';
 
-export interface FormMeasuresSchema {
+export interface FormMeasuresSchema extends ShirtMeasures {
   id?: string;
   profile_name: string;
-  back: number;
-  chest: number;
-  waist: number;
-  hip: number;
-  long: number;
-  shoulder: number;
-  sleeve_long: number;
-  sleeve_width: number;
-  fist: number;
-  collar: number;
 }
 
 export const formMeasuresSchema: yup.ObjectSchema<FormMeasuresSchema> = yup
