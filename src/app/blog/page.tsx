@@ -1,5 +1,13 @@
 import { UserIcon } from '@heroicons/react/24/solid';
+import { Metadata } from 'next';
 import Image from 'next/image';
+import Link from 'next/link';
+
+export const metadata: Metadata = {
+  title: 'Barbadens - Blog',
+  description: 'Contenido a la medida',
+  keywords: ['camisas', 'medida', 'blog', 'barbadens'],
+};
 
 const page = () => {
   return (
@@ -8,10 +16,24 @@ const page = () => {
         <div className=" rounded-2xl w-full h-[500px] relative">
           <Image
             src={'/images/model-test.jpg'}
-            className=" rounded-2xl object-cover"
+            className=" rounded-2xl object-cover "
             fill
             alt=""
           />
+          <div className="absolute bottom-8 left-4 text-white px-4 flex flex-col gap-2">
+            <span className="font-medium">Destacado</span>
+            <h3 className="text-3xl font-bold">
+              Como elegir tus medidas y sobrevivir en el intento
+            </h3>
+            <p className="max-w-[650px] text-balance">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae vel
+              ullam possimus corporis aut eveniet error est explicabo! Ab, id.
+              Ea nihil accusamus eius{' '}
+            </p>
+            <Link href={'/blog'} className="underline ">
+              Leer más
+            </Link>
+          </div>
         </div>
       </div>
       <div className="max-w-6xl mx-auto py-8 px-4">
