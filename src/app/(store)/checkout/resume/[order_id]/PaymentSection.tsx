@@ -59,6 +59,16 @@ const BankTransfer = ({ image }: { image: string }) => {
         <span>Barbadens</span>
         <span> DNI 04513050</span>
       </div>
+      <div className="pt-2 text-sm">
+        Envía imagen del comprobante al whatsapp:{' '}
+        <a
+          href="https://wa.me/+51962643584"
+          target="_blank"
+          className="text-app-accent underline"
+        >
+          +51962643584
+        </a>
+      </div>
     </div>
   );
 };
@@ -72,6 +82,16 @@ const Yape = ({ image, qr }: { image: string; qr: string }) => {
       <div className="flex flex-col gap-4 order-1 sm:order-2 items-center sm:items-start ">
         <span className="text-sm text-app-text ">Escanea para pagar por:</span>
         <Image src={image} alt="logo yape" width={120} height={25} />
+        <div className="pt-2 text-sm">
+          Envía imagen del comprobante al whatsapp:{' '}
+          <a
+            href="https://wa.me/+51962643584"
+            target="_blank"
+            className="text-app-accent underline"
+          >
+            +51962643584
+          </a>
+        </div>
       </div>
     </div>
   );

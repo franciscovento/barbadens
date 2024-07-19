@@ -12,7 +12,9 @@ import Cart from '@/ui/organisms/cart/Cart';
 import LoginRegisterCard from '@/ui/organisms/loginRegisterCard/LoginRegisterCard';
 
 import ClientDesign from '@/ui/templates/design/ClientDesign';
+import { standardMeasures } from '@/utils/data/standardMeasures';
 import { Profile } from '@/utils/types/profile.interface';
+import { ShirtMeasures } from '@/utils/types/shirtMeasures.interface';
 import { valuesMeasuresMap } from '@/utils/valuesMeasuresMap';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Option, Select, Typography } from '@material-tailwind/react';
@@ -230,6 +232,36 @@ const MeasureForm: FC<Props> = ({ profiles, fabric_id, shirt_design_id }) => {
     reset(getMeasures());
   }, [reset, getMeasures]);
 
+  const selectStandardMeasure = () => {
+    const pickStandardMeasure = (measure: ShirtMeasures) => {
+      reset({
+        ...measure,
+      });
+      appModal.close();
+    };
+
+    appModal.fire({
+      html: (
+        <div className="">
+          <h2 className="pb-4 text-xl font-semibold">Selecciona una medida:</h2>
+          <div className="flex flex-wrap gap-2 justify-center">
+            {standardMeasures.map((measure) => {
+              return (
+                <button
+                  onClick={() => pickStandardMeasure(measure.measures)}
+                  className="bg-app-primary text-white rounded-lg p-2 text-sm duration-300 hover:bg-app-primary/80"
+                  key={measure.name}
+                >
+                  {measure.name}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      ),
+    });
+  };
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -239,9 +271,16 @@ const MeasureForm: FC<Props> = ({ profiles, fabric_id, shirt_design_id }) => {
         <StepTitle title="Ingresa tus medidas" />
         <div className="flex flex-col gap-2 ">
           <p>
-            Ingresa tus medidas en centímetros. Si no sabes cómo tomar tus
-            medidas, haz clic en {' "Ver Tutorial" '} para obtener más
-            información.
+            Ingresa tus medidas en centímetros. Haz clic en {' "Ver Tutorial" '}{' '}
+            para obtener más información. O puedes{' '}
+            <button
+              onClick={selectStandardMeasure}
+              type="button"
+              className="text-app-accent underline"
+            >
+              elegir alguna medida estándar
+            </button>
+            .
           </p>
           {!isAuthenticated && (
             <p>
