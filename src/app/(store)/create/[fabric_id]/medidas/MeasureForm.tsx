@@ -24,6 +24,7 @@ import { useForm } from 'react-hook-form';
 import { routes } from '../../../../../../routes';
 import { FormMeasuresSchema, formMeasuresSchema } from './formSchema';
 
+import * as Sentry from '@sentry/nextjs';
 const tutorials = [
   {
     key: 'long',
@@ -146,6 +147,7 @@ const MeasureForm: FC<Props> = ({ profiles, fabric_id, shirt_design_id }) => {
         allowOutsideClick: false,
       });
     } catch (error: any) {
+      Sentry.captureException(error);
       if (error?.code === '23505') {
         return errorToast(
           'Ya tienes un perfil igual, selecciónalo en la lista o elige otro nombre.'
