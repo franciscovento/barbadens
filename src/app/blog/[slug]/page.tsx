@@ -1,17 +1,32 @@
+import { createClient } from '@/utils/supabase/server';
+import { Post } from '@/utils/types/post.interface';
 import {
   CalendarDaysIcon,
   ClockIcon,
   UserCircleIcon,
 } from '@heroicons/react/24/outline';
 import Image from 'next/image';
+import { FC } from 'react';
 
-const Page = () => {
+interface Props {
+  params: {
+    slug: string;
+  };
+}
+
+const Page: FC<Props> = async ({ params }) => {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from('posts')
+    .select('*')
+    .eq('slug', params.slug)
+    .single<Post>();
+  console.log(data);
+
   return (
     <main className="mt-16 max-w-3xl mx-auto">
       <article className="pt-12 flex flex-col gap-4">
-        <h3 className="text-app-primary text-4xl font-bold">
-          Como medir tu camisa
-        </h3>
+        <h3 className="text-app-primary text-4xl font-bold">{data?.title}</h3>
         <div className="border-y border-gray-500 flex items-center gap-4 py-4 text-app-text">
           <div className="flex items-center gap-1">
             <UserCircleIcon className="w-4" />
@@ -35,8 +50,9 @@ const Page = () => {
           />
         </div>
         <div
+          className="post"
           dangerouslySetInnerHTML={{
-            __html: content,
+            __html: data?.content || content,
           }}
         ></div>
       </article>

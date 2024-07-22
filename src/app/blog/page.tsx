@@ -1,3 +1,4 @@
+import { createClient } from '@/utils/supabase/server';
 import { UserIcon } from '@heroicons/react/24/solid';
 import { Metadata } from 'next';
 import Image from 'next/image';
@@ -9,7 +10,12 @@ export const metadata: Metadata = {
   keywords: ['camisas', 'medida', 'blog', 'barbadens'],
 };
 
-const page = () => {
+const Page = async () => {
+  const supabase = createClient();
+
+  const { data, error } = await supabase.from('posts').select('*');
+  console.log(data);
+
   return (
     <main className="mt-16">
       <div className="p-4">
@@ -114,4 +120,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
