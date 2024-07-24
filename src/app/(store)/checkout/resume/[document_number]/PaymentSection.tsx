@@ -4,6 +4,7 @@ import { paymentOptions } from '@/utils/data/paymentOptions';
 import { OrderProduct } from '@/utils/types/order.interface';
 import Image from 'next/image';
 import { FC } from 'react';
+import { WSP_NUMBER } from '../../../../../../constants';
 import makePayment, { MpProductItem } from './actions';
 
 interface Props {
@@ -62,11 +63,11 @@ const BankTransfer = ({ image }: { image: string }) => {
       <div className="pt-2 text-sm">
         Envía imagen del comprobante al whatsapp:{' '}
         <a
-          href="https://wa.me/+51962643584"
+          href={`https://wa.me/${WSP_NUMBER}`}
           target="_blank"
           className="text-app-accent underline"
         >
-          +51962643584
+          {WSP_NUMBER}
         </a>
       </div>
     </div>

@@ -1,12 +1,14 @@
 import StepTitle from '@/ui/atoms/stepTitle/StepTitle';
-import { Button, Chip } from '@/ui/materialComponents';
+import { Alert, Button, Chip } from '@/ui/materialComponents';
 import { getCurrencyFormat } from '@/utils/getCurrencyFormat';
 import { getStatusOrder } from '@/utils/getStatusOrder';
 import { createClient } from '@/utils/supabase/server';
 import { OrderWithProducts } from '@/utils/types/order.interface';
+import { CameraIcon } from '@heroicons/react/24/solid';
 import { colors } from '@material-tailwind/react/types/generic';
 import Link from 'next/link';
 import { FC } from 'react';
+import { WSP_NUMBER } from '../../../../../../constants';
 import PaymentSection from './PaymentSection';
 import SeeDetail from './SeeDetail';
 
@@ -101,6 +103,22 @@ const Page: FC<Props> = async ({ params }) => {
               <span className="font-semibold">Costo de envío: </span>
               {getCurrencyFormat(order.shipping_cost)}
             </div>
+            <Alert className="mt-4">
+              <div className="text-sm flex items-center gap-4">
+                <CameraIcon className="flex-shrink-0" width={24} height={24} />
+                <div>
+                  Envía una foto por cada perfil creado, vistiendo la camisa que
+                  se uso de referencia:{' '}
+                  <a
+                    href={`https://wa.me/${WSP_NUMBER}`}
+                    target="_blank"
+                    className="text-blue-400 underline"
+                  >
+                    Enviar aquí
+                  </a>
+                </div>
+              </div>
+            </Alert>
           </div>
         </div>
         <div className="border-4 border-app-background mt-12 p-12 flex sm:flex-row sm:justify-between gap-4 flex-col items-center justify-center">
