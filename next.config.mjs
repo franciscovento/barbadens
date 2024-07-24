@@ -18,6 +18,11 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: '*.supabase.co',
+        port: '',
+      },
+      {
+        protocol: 'https',
         hostname: 's3.amazonaws.com',
         port: '',
       },

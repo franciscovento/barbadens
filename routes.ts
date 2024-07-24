@@ -21,6 +21,10 @@ export const routes = {
     forgotPassword: '/auth/forgot-password',
     verifyEmail: '/auth/verify-email',
   },
+  blog: {
+    home: '/blog',
+    post: '/blog/[slug]',
+  },
   api: {
     cart: '/api/cart',
     checkout: '/api/checkout',

@@ -49,6 +49,12 @@
   unicode-bidi: isolate;
 }
 
+.post a {
+  color: #007bff;
+  text-decoration: underline;
+  background-color: transparent;
+}
+
 .post ul {
   list-style: disc;
   margin-left: 16px;

@@ -9,3 +9,13 @@ export interface Post {
   status: number;
   excerpt: string;
 }
+
+export interface PostWithAuthor extends Post {
+  company_users: {
+    id: string;
+    role: string;
+    first_name: string;
+    last_name: string;
+    created_at: string;
+  };
+}
