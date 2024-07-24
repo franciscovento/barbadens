@@ -1,17 +1,18 @@
-import PaymentSection from '@/app/(store)/checkout/resume/[order_id]/PaymentSection';
-import SeeDetail from '@/app/(store)/checkout/resume/[order_id]/SeeDetail';
 import StepTitle from '@/ui/atoms/stepTitle/StepTitle';
 import { Button, Chip } from '@/ui/materialComponents';
+import { getCurrencyFormat } from '@/utils/getCurrencyFormat';
 import { getStatusOrder } from '@/utils/getStatusOrder';
 import { createClient } from '@/utils/supabase/server';
 import { OrderWithProducts } from '@/utils/types/order.interface';
 import { colors } from '@material-tailwind/react/types/generic';
 import Link from 'next/link';
 import { FC } from 'react';
+import PaymentSection from './PaymentSection';
+import SeeDetail from './SeeDetail';
 
 interface Props {
   params: {
-    id: string;
+    document_number: string;
   };
 }
 const Page: FC<Props> = async ({ params }) => {
@@ -19,7 +20,7 @@ const Page: FC<Props> = async ({ params }) => {
   const { data: orders, error: ordersError } = await supabase
     .from('orders')
     .select('*, order_product(*, products(*), profiles(*))')
-    .eq('checkout_info->documentNumber', params.id)
+    .eq('checkout_info->documentNumber', params.document_number)
     .returns<OrderWithProducts[]>();
 
   if ((orders && orders?.length === 0) || ordersError) {
@@ -38,29 +39,32 @@ const Page: FC<Props> = async ({ params }) => {
       <StepTitle title="Resumen del pedido" ribbon="center" />
       <div className="py-12">
         <div className="bg-app-background px-12 py-8 flex justify-center items-center flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          {order.status === 'pending' ? (
-            order.checkout_info?.ptId && (
-              <PaymentSection
-                order_id={Number(params.id)}
-                orderProducts={order.order_product}
-                ptId={order.checkout_info?.ptId}
-              />
-            )
-          ) : (
-            <div className="text-xl font-semibold">
-              Pedido {orderStatus.text}
-            </div>
-          )}
-
+          <div>
+            {order.status === 'pending' ? (
+              order.checkout_info?.ptId && (
+                <PaymentSection
+                  order_id={Number(order.id)}
+                  orderProducts={order.order_product}
+                  ptId={order.checkout_info?.ptId}
+                />
+              )
+            ) : (
+              <div className="text-xl font-semibold">
+                Pedido {orderStatus.text}
+              </div>
+            )}
+          </div>
           <div className="sm:text-right order-1 sm:order-2 text-center">
             <span className="text-sm text-app-text ">Monto a Pagar</span>
             <p className="font-semibold text-4xl py-2">
-              S/.{' '}
-              {order?.total_products +
-                order.shipping_cost -
-                order.discount_cost}
+              {getCurrencyFormat(
+                order?.total_products +
+                  order.shipping_cost -
+                  order.discount_cost
+              )}
             </p>
             <Chip
+              className="text-center"
               value={orderStatus.text}
               color={orderStatus.color as colors}
               icon={orderStatus.icon}
@@ -89,13 +93,13 @@ const Page: FC<Props> = async ({ params }) => {
                   {cartItem?.quantity}
                 </div>
                 <div className="text-lg sm:text-2xl text-nowrap">
-                  s/. {cartItem?.unit_price * cartItem?.quantity}
+                  {getCurrencyFormat(cartItem?.unit_price * cartItem?.quantity)}
                 </div>
               </div>
             ))}
             <div className="text-right">
-              <span className="font-semibold">Costo de envío: </span>S/.
-              {order.shipping_cost}.00
+              <span className="font-semibold">Costo de envío: </span>
+              {getCurrencyFormat(order.shipping_cost)}
             </div>
           </div>
         </div>

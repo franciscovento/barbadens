@@ -9,7 +9,7 @@ export const routes = {
   },
   checkout: {
     home: '/checkout',
-    resume: '/checkout/resume/[order_id]',
+    resume: '/checkout/resume/[document_number]',
   },
   account: {
     home: '/account',

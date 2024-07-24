@@ -85,7 +85,7 @@ const BasicTable: FC<Props> = ({ orders, mutate }) => {
                   Ver checkout
                 </MenuItem>
                 <Link
-                  href={`/checkout/resume/${row.original.id}`}
+                  href={`/checkout/resume/${row.original.checkout_info.documentNumber}`}
                   target="_blank"
                 >
                   <MenuItem>Ver resumen</MenuItem>
