@@ -1,7 +1,7 @@
 import { createClient } from '@/utils/supabase/server';
 import { PostWithAuthor } from '@/utils/types/post.interface';
 import { getFormatPostDate } from '@/utils/utilities';
-import { UserIcon } from '@heroicons/react/24/solid';
+import { UserIcon } from '@heroicons/react/24/outline';
 import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -19,11 +19,14 @@ const Page = async () => {
   const { data, error } = await supabase
     .from('posts')
     .select('*, company_users(*)')
+    .eq('status', 1)
     .returns<PostWithAuthor[]>();
+
   if (error) {
     throw error;
   }
-  const featuredPost = data[0];
+  const posts = data;
+  const featuredPost = posts[0];
 
   return (
     <main className="mt-16">
@@ -53,8 +56,8 @@ const Page = async () => {
       </div>
       <div className="max-w-6xl mx-auto py-8 px-4">
         <h3 className="text-2xl font-semibold">Post más recientes</h3>
-        <div className="grid grid-cols-[repeat(auto-fit,_minmax(300px,_1fr))] gap-8 py-4">
-          {data.map((post) => (
+        <div className="grid grid-cols-[repeat(auto-fill,_minmax(300px,_1fr))] gap-8 py-4">
+          {posts.map((post) => (
             <article key={post?.id} className="flex flex-col gap-2">
               <div className="relative w-full h-48">
                 <Image
