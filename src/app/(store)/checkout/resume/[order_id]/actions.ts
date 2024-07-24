@@ -18,7 +18,7 @@ const makePayment = async (items: MpProductItem[], order_id: number) => {
       ? process.env.NEXT_PUBLIC_BASE_URL
       : 'http://localhost:3000';
   const preference = new Preference(client);
-  const { sandbox_init_point } = await preference.create({
+  const { init_point } = await preference.create({
     body: {
       items,
       payment_methods: {
@@ -33,7 +33,7 @@ const makePayment = async (items: MpProductItem[], order_id: number) => {
     },
   });
 
-  redirect(sandbox_init_point!);
+  redirect(init_point!);
 };
 
 export default makePayment;

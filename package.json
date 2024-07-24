@@ -21,6 +21,7 @@
     "@heroicons/react": "^2.1.4",
     "@hookform/resolvers": "^3.6.0",
     "@material-tailwind/react": "^2.1.9",
+    "@sentry/nextjs": "^8.18.0",
     "@supabase/ssr": "^0.3.0",
     "@supabase/supabase-js": "^2.43.4",
     "@tanstack/react-table": "^8.17.3",

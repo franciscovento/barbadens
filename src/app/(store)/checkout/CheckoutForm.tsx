@@ -17,10 +17,10 @@ import { useCartStore } from '@/stores/cart/cart.store';
 import { generateCheckout } from '@/utils/generateCheckout';
 import { getShippingCost } from '@/utils/getShippingCost';
 import { yupResolver } from '@hookform/resolvers/yup';
+import * as Sentry from '@sentry/nextjs';
 import { useRouter } from 'next/navigation';
 import { routes } from '../../../../routes';
 import { FormCheckoutSchema, formCheckoutSchema } from './formSchema';
-
 interface Props {
   defaultValues: {
     firstName: string;
@@ -86,6 +86,7 @@ const CheckoutForm: FC<Props> = ({ defaultValues }) => {
         )
       );
     } catch (error) {
+      Sentry.captureException(error);
       return errorToast(
         'Ocurrió un error creando el pedido, por favor inténtalo nuevamente'
       );
