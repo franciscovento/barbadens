@@ -78,11 +78,11 @@ const CheckoutForm: FC<Props> = ({ defaultValues }) => {
         throw checkoutError;
       }
       checkCart();
-      // return router.push(`/checkout/resume/${checkoutData?.id}`);
+
       return router.push(
         routes.checkout.resume.replace(
-          '[order_id]',
-          checkoutData!.id.toString()
+          '[document_number]',
+          checkoutData!.checkout_info.documentNumber.toString()
         )
       );
     } catch (error) {
