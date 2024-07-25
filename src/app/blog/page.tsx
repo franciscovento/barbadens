@@ -80,10 +80,7 @@ const Page = async () => {
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-1">
                   <UserIcon className="w-4" />
-                  <span>
-                    {post?.company_users?.first_name}{' '}
-                    {post?.company_users?.last_name}
-                  </span>
+                  <span>Barbadens</span>
                 </div>
                 <span>{getFormatPostDate(post?.created_at)}</span>
               </div>

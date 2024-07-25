@@ -1,3 +1,4 @@
+import ShareOnSocialMedia from '@/ui/molecules/shareOnSocialMedia/ShareOnSocialMedia';
 import { createClient } from '@/utils/supabase/server';
 import { PostWithAuthor } from '@/utils/types/post.interface';
 import { getFormatPostDate, getFormatPostTime } from '@/utils/utilities';
@@ -40,9 +41,7 @@ const Page: FC<Props> = async ({ params }) => {
         <div className="border-y border-gray-500 flex items-center gap-4 py-4 text-app-text">
           <div className="flex items-center gap-1">
             <UserCircleIcon className="w-4" />
-            <span className="text-sm">
-              {data.company_users?.first_name} {data.company_users?.last_name}
-            </span>
+            <span className="text-sm">Barbadens</span>
           </div>
           <div className="flex items-center gap-1">
             <CalendarDaysIcon className="w-4" />
@@ -74,8 +73,9 @@ const Page: FC<Props> = async ({ params }) => {
       </article>
       <div className="py-8">
         Compartir en:
-        <div className="flex items-center gap-2 ">
-          <button className="py-4 px-2 bg-blue-700 text-white flex items-center gap-2">
+        <ShareOnSocialMedia />
+        {/* <div className="flex items-center gap-2 "> */}
+        {/* <button className="py-4 px-2 bg-blue-700 text-white flex items-center gap-2">
             <svg
               className="w-6 h-6"
               fill="white"
@@ -110,8 +110,8 @@ const Page: FC<Props> = async ({ params }) => {
               />
             </svg>
             Whatsapp
-          </button>
-        </div>
+          </button> */}
+        {/* </div> */}
       </div>
     </main>
   );
