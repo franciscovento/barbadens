@@ -21,19 +21,19 @@ const ShareOnSocialMedia = () => {
   return (
     <div className="flex items-center gap-2 flex-wrap py-4">
       <FacebookShareButton url={url}>
-        <FacebookIcon />
+        <FacebookIcon size={40} />
       </FacebookShareButton>
       <WhatsappShareButton url={url}>
-        <WhatsappIcon />
+        <WhatsappIcon size={40} />
       </WhatsappShareButton>
       <LinkedinShareButton url={url}>
-        <LinkedinIcon />
+        <LinkedinIcon size={40} />
       </LinkedinShareButton>
       <TwitterShareButton url={url}>
-        <TwitterIcon />
+        <TwitterIcon size={40} />
       </TwitterShareButton>
       <TelegramShareButton url={url}>
-        <TelegramIcon />
+        <TelegramIcon size={40} />
       </TelegramShareButton>
     </div>
   );

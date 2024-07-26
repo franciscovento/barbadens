@@ -2,16 +2,9 @@ import { createClient } from '@/utils/supabase/server';
 import { PostWithAuthor } from '@/utils/types/post.interface';
 import { getFormatPostDate } from '@/utils/utilities';
 import { UserIcon } from '@heroicons/react/24/outline';
-import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { routes } from '../../../routes';
-
-export const metadata: Metadata = {
-  title: 'Barbadens - Blog',
-  description: 'Contenido a la medida',
-  keywords: ['camisas', 'medida', 'blog', 'barbadens'],
-};
 
 const Page = async () => {
   const supabase = createClient();
