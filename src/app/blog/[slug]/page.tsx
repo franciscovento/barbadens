@@ -49,15 +49,15 @@ export async function generateMetadata(
   };
 }
 
-export async function generateStaticParams() {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/posts`
-  ).then((res) => res.json());
-  const posts = response.posts as PostWithAuthor[];
-  return posts?.map((post) => ({
-    slug: post.slug,
-  }));
-}
+// export async function generateStaticParams() {
+//   const response = await fetch(
+//     `${process.env.NEXT_PUBLIC_BASE_URL}/api/posts`
+//   ).then((res) => res.json());
+//   const posts = response.posts as PostWithAuthor[];
+//   return posts?.map((post) => ({
+//     slug: post.slug,
+//   }));
+// }
 
 const Page: FC<Props> = async ({ params }) => {
   const supabase = createClient();
