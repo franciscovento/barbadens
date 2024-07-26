@@ -7,6 +7,7 @@ import {
   ClockIcon,
   UserCircleIcon,
 } from '@heroicons/react/24/outline';
+import { createClient as supabaseClient } from '@supabase/supabase-js';
 import { Metadata, ResolvingMetadata } from 'next';
 
 import Image from 'next/image';
@@ -49,15 +50,25 @@ export async function generateMetadata(
   };
 }
 
-// export async function generateStaticParams() {
-//   const response = await fetch(
-//     `${process.env.NEXT_PUBLIC_BASE_URL}/api/posts`
-//   ).then((res) => res.json());
-//   const posts = response.posts as PostWithAuthor[];
-//   return posts?.map((post) => ({
-//     slug: post.slug,
-//   }));
-// }
+export async function generateStaticParams() {
+  try {
+    const supabase = supabaseClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL || '',
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
+    );
+    const { data: posts, error } = await supabase
+      .from('posts')
+      .select('*, company_users(*)')
+      .eq('status', 1)
+      .returns<PostWithAuthor[]>();
+    if (error) throw error;
+    return posts?.map((post) => ({
+      slug: post.slug,
+    }));
+  } catch (error) {
+    return [];
+  }
+}
 
 const Page: FC<Props> = async ({ params }) => {
   const supabase = createClient();
