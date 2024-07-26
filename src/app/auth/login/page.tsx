@@ -10,7 +10,7 @@ const AuthPage = () => {
   };
   return (
     <>
-      <div className="w-full min-h-[calc(100vh-64px)] bg-black grid sm:grid-cols-2">
+      <div className="w-full min-h-screen bg-black grid sm:grid-cols-2">
         <div className="hidden sm:block bg-[url(/images/model-test.jpg)] bg-center bg-cover relative">
           <div className="w-full h-full absolute bg-black/20 top-0 left-0"></div>
         </div>

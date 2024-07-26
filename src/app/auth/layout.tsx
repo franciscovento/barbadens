@@ -6,7 +6,7 @@ interface Props {
 const layout: FC<Props> = ({ children }) => {
   return (
     <>
-      <main className=" mt-16">{children}</main>
+      <main>{children}</main>
     </>
   );
 };

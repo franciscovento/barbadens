@@ -1,3 +1,4 @@
+import StoreHeader from '@/ui/organisms/header/StoreHeader';
 import React, { FC } from 'react';
 
 interface Props {
@@ -5,7 +6,12 @@ interface Props {
 }
 
 const layout: FC<Props> = ({ children }) => {
-  return <>{children}</>;
+  return (
+    <>
+      <StoreHeader />
+      {children}
+    </>
+  );
 };
 
 export default layout;

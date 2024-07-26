@@ -1,3 +1,4 @@
+import BlogHeader from '@/ui/organisms/header/BlogHeader';
 import { Metadata } from 'next';
 import React, { FC } from 'react';
 
@@ -51,6 +52,11 @@ export const metadata: Metadata = {
 };
 
 const layout: FC<Props> = ({ children }) => {
-  return <>{children}</>;
+  return (
+    <>
+      <BlogHeader />
+      {children}
+    </>
+  );
 };
 export default layout;

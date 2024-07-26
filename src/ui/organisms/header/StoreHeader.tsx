@@ -2,7 +2,7 @@ import HeaderLogin from '@/ui/molecules/headerLogin/HeaderLogin';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const Header = () => {
+const StoreHeader = () => {
   return (
     <header className="bg-app-primary h-16 w-full px-8 flex items-center justify-between fixed top-0 left-0 z-40">
       <Link href={'/create'}>
@@ -18,4 +18,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default StoreHeader;

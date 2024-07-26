@@ -39,7 +39,7 @@ const Page = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-65px)] bg-app-primary flex items-center justify-center flex-col text-white">
+    <div className="min-h-screen bg-app-primary flex items-center justify-center flex-col text-white">
       <form
         onSubmit={handleSubmit(submit)}
         className="border border-white flex flex-col justify-center items-center gap-4 p-8 rounded-lg w-96 max-w-full"

@@ -1,7 +1,6 @@
 import { createClient } from '@/utils/supabase/server';
 import { PostWithAuthor } from '@/utils/types/post.interface';
-import { getFormatPostDate } from '@/utils/utilities';
-import { UserIcon } from '@heroicons/react/24/outline';
+import { ArrowLongRightIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Link from 'next/link';
 import { routes } from '../../../routes';
@@ -38,11 +37,12 @@ const Page = async () => {
             <p className="max-w-[650px] text-balance">
               {featuredPost?.excerpt}
             </p>
+
             <Link
-              href={routes.blog.post.replace('[slug]', featuredPost.slug)}
-              className="underline "
+              className="duration-300 hover:scale-95 flex items-center gap-1 w-fit"
+              href={routes.blog.post.replace('[slug]', featuredPost?.slug)}
             >
-              Leer más
+              Leer más <ArrowLongRightIcon className="w-4" />
             </Link>
           </div>
         </div>
@@ -57,7 +57,7 @@ const Page = async () => {
                   src={post?.featured_image}
                   className="rounded-2xl object-cover"
                   fill
-                  alt=""
+                  alt={post?.keywords?.join(', ') || 'camisas a la medida'}
                 />
               </div>
 
@@ -65,17 +65,19 @@ const Page = async () => {
                 href={routes.blog.post.replace('[slug]', post?.slug)}
                 className="group"
               >
-                <h3 className="text-lg font-semibold group-hover:underline ">
-                  {post?.title}
-                </h3>
+                <h3 className="text-lg font-semibold ">{post?.title}</h3>
               </Link>
-              <p>{post?.excerpt}</p>
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-1">
-                  <UserIcon className="w-4" />
-                  <span>Barbadens</span>
-                </div>
-                <span>{getFormatPostDate(post?.created_at)}</span>
+              <div className="h-[80px] overflow-hidden relative">
+                <p>{post?.excerpt}</p>
+                <div className="absolute h-full w-full top-0 left-0 bg-gradient-to-b from-transparent to-white"></div>
+              </div>
+              <div className="flex items-center gap-1 text-sm justify-end ">
+                <Link
+                  className="duration-300 hover:scale-95 flex items-center gap-1"
+                  href={routes.blog.post.replace('[slug]', post?.slug)}
+                >
+                  Leer más <ArrowLongRightIcon className="w-4" />
+                </Link>
               </div>
             </article>
           ))}
