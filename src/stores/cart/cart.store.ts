@@ -18,7 +18,7 @@ export interface CartStore {
 }
 
 export type CartActions = {
-  checkCart: () => void;
+  checkCart: () => Promise<void>;
   emptyCart: () => void;
   onChangueProductQuantity: (
     productId: CartProductId,

@@ -44,7 +44,7 @@ const Cart: FC<Props> = ({
           Total: <span className="font-bold">S/.{total} PEN</span>
         </div>
         <Button onClick={onContinueShoppingRedirect} variant="outlined">
-          Continuar comprando
+          Agregar más productos
         </Button>
         {cart_products && cart_products?.length > 0 && (
           <Button onClick={onCheckoutRedirect}>Ir al Checkout</Button>

@@ -127,7 +127,7 @@ const MeasureForm: FC<Props> = ({ profiles, fabric_id, shirt_design_id }) => {
         });
         if (error) throw new Error(error.message);
       }
-      checkCart();
+      await checkCart();
       router.refresh();
       return appModal.fire({
         html: (
@@ -145,6 +145,7 @@ const MeasureForm: FC<Props> = ({ profiles, fabric_id, shirt_design_id }) => {
         allowEnterKey: false,
         allowEscapeKey: false,
         allowOutsideClick: false,
+        showCloseButton: false,
       });
     } catch (error: any) {
       Sentry.captureException(error);

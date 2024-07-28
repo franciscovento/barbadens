@@ -13,7 +13,8 @@ interface AuthProps {
 }
 
 const useAuth = () => {
-  const checkCart = useCartStore((state) => state.checkCart);
+  // ! TODO: Check if this is necessary
+  // const checkCart = useCartStore((state) => state.checkCart);
   const emptyCart = useCartStore((state) => state.emptyCart);
   const { setUserData, clearUserData } = useUser();
 
@@ -35,7 +36,8 @@ const useAuth = () => {
       isAuthenticated: true,
     });
 
-    checkCart();
+    // ! TODO: Check if this is necessary
+    // checkCart();
 
     return {
       data: authData,

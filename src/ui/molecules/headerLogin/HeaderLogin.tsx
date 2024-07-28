@@ -30,6 +30,7 @@ const HeaderLogin = () => {
   const { cart_products } = useCart();
   const { logout } = useAuth();
   const router = useRouter();
+
   const handleLogout = async () => {
     const response = await logout();
     if (response.error) {
@@ -60,9 +61,12 @@ const HeaderLogin = () => {
     checkAuth();
   }, [checkAuth]);
 
+  // ! TODO: Check if this useEffect is necessary
   useEffect(() => {
-    checkCart();
-  }, [checkCart]);
+    if (isAuthenticated) {
+      checkCart();
+    }
+  }, [checkCart, isAuthenticated]);
 
   return (
     <div className="text-white text-right">
