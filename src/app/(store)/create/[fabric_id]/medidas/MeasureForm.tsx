@@ -1,7 +1,7 @@
 'use client';
 import { addProductToCart } from '@/services/api/supabase/cart.services';
 import { updateOrCreateProfile } from '@/services/api/supabase/profile.services';
-import { appModal, errorToast } from '@/services/modals/appModal';
+import { appModal, appToast } from '@/services/modals/appModal';
 import { useCartStore } from '@/stores/cart/cart.store';
 import { useMeasures } from '@/stores/measures/measures.store';
 import { useUser } from '@/stores/user/user.store';
@@ -150,12 +150,16 @@ const MeasureForm: FC<Props> = ({ profiles, fabric_id, shirt_design_id }) => {
       });
     } catch (error: any) {
       if (error?.code === '23505') {
-        return errorToast(
-          'Ya tienes un perfil igual, selecciónalo en la lista o elige otro nombre.'
-        );
+        return appToast({
+          text: 'Ya tienes un perfil con este nombre, selecciónalo en la lista',
+          icon: 'warning',
+        });
       }
       Sentry.captureException(error);
-      errorToast(error?.message || 'Ocurrió un error, inténtalo más tarde.');
+      appToast({
+        text: 'Ocurrió un error, inténtalo más tarde.',
+        icon: 'error',
+      });
     }
   };
 

@@ -1,5 +1,5 @@
 'use client';
-import { errorToast, successToast } from '@/services/modals/appModal';
+import { errorToast } from '@/services/modals/appModal';
 import { useCustomShirt } from '@/stores';
 import { createClient } from '@/utils/supabase/client';
 import { Design } from '@/utils/types/design.interface';
@@ -7,6 +7,7 @@ import { Button } from '@material-tailwind/react';
 import * as Sentry from '@sentry/nextjs';
 import { useRouter } from 'next/navigation';
 import { FC, useState } from 'react';
+import { routes } from '../../../../../../routes';
 
 interface Props {
   fabric_id: string;
@@ -32,11 +33,10 @@ const PersonalizeButton: FC<Props> = ({ fabric_id }) => {
 
       if (error) throw error;
 
-      successToast('Diseño creado correctamente, ahora inserta tus medidas');
-      // return router.push(
-      //   routes.create.fabric.measures.replace('[fabric_id]', fabric_id) +
-      //     `?shirt_design_id=${data?.id}`
-      // );
+      return router.push(
+        routes.create.fabric.measures.replace('[fabric_id]', fabric_id) +
+          `?shirt_design_id=${data?.id}`
+      );
     } catch (error: any) {
       Sentry.captureException(error);
       errorToast(

@@ -7,3 +7,53 @@ div:where(.swal2-container) button:where(.swal2-close):focus {
 .appModal .swal2-confirm {
   background-color: #016fd0 !important;
 }
+
+/* APP TOAST */
+.appToast {
+  .swal2-close {
+    color: white !important;
+    &:hover {
+      color: white !important;
+    }
+  }
+  .swal2-icon {
+    color: white !important;
+    border-color: white !important;
+  }
+  &.swal2-icon-success {
+    color: white !important;
+    font-weight: 600 !important;
+    background-color: #5fdd9d !important;
+    .swal2-success-line-tip {
+      background-color: white !important;
+    }
+    .swal2-success-line-long {
+      background-color: white !important;
+    }
+    .swal2-success-ring {
+      border-color: white !important;
+    }
+  }
+  &.swal2-icon-error {
+    color: white !important;
+    background-color: #ff5964 !important;
+    .swal2-x-mark-line-left {
+      background-color: white;
+    }
+    .swal2-x-mark-line-right {
+      background-color: white;
+    }
+  }
+  &.swal2-icon-warning {
+    color: white !important;
+    background-color: #f4a259 !important;
+  }
+  &.swal2-icon-info {
+    color: white !important;
+    background-color: #016fb9 !important;
+  }
+  &.swal2-icon-question {
+    color: white !important;
+    background-color: #53a2be !important;
+  }
+}

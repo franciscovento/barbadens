@@ -1,4 +1,3 @@
-import { AxiosResponse } from 'axios';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
@@ -20,12 +19,29 @@ const appModal = customModal.mixin({
   },
 });
 
+const appToast = (config: SweetAlertOptions) => {
+  return customModal.fire({
+    toast: true,
+    width: 400,
+    position: 'top-end',
+    showCloseButton: true,
+    timer: 5000,
+    showConfirmButton: false,
+    customClass: {
+      popup: 'appToast',
+    },
+    ...config,
+  });
+};
+
 const successToast = (message: string, config?: SweetAlertOptions) => {
   return customModal.fire({
     icon: 'success',
     toast: true,
-    title: message,
+    width: 400,
+    text: message,
     position: 'top-end',
+    showCloseButton: true,
     timer: 5000,
     showConfirmButton: false,
     customClass: {
@@ -39,43 +55,17 @@ const errorToast = (message: string, config?: SweetAlertOptions) => {
   return customModal.fire({
     icon: 'error',
     toast: true,
-    title: message,
+    width: 400,
+    text: message,
     position: 'top-end',
+    showCloseButton: true,
     timer: 5000,
+    customClass: {
+      popup: 'appToast',
+    },
     showConfirmButton: false,
     ...config,
   });
 };
 
-interface AsyncModalConfig<T> {
-  cb: () => Promise<AxiosResponse<T>>;
-}
-const appModalAsync = async <T>(config: AsyncModalConfig<T>) => {
-  return Swal.fire({
-    title: 'Confirmar Pago',
-    showCancelButton: true,
-    confirmButtonText: 'Generar documento',
-    reverseButtons: true,
-    showLoaderOnConfirm: true,
-    preConfirm: async () => {
-      try {
-        const response = await config.cb();
-        return response.data;
-      } catch (error) {
-        Swal.showValidationMessage(`
-          Request failed: ${error}
-        `);
-      }
-    },
-    allowOutsideClick: () => !Swal.isLoading(),
-  }).then((result) => {
-    if (result.isConfirmed) {
-      Swal.fire({
-        title: `${result}`,
-        html: JSON.stringify(result),
-      });
-    }
-  });
-};
-
-export { appModal, errorToast, successToast };
+export { appModal, appToast, errorToast, successToast };
