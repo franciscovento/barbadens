@@ -128,7 +128,8 @@ const MeasureForm: FC<Props> = ({ profiles, fabric_id, shirt_design_id }) => {
         if (error) throw new Error(error.message);
       }
       await checkCart();
-      router.refresh();
+      // ! TODO: Check if this is necessary
+      // router.refresh();
       return appModal.fire({
         html: (
           <Cart
@@ -148,12 +149,12 @@ const MeasureForm: FC<Props> = ({ profiles, fabric_id, shirt_design_id }) => {
         showCloseButton: false,
       });
     } catch (error: any) {
-      Sentry.captureException(error);
       if (error?.code === '23505') {
         return errorToast(
           'Ya tienes un perfil igual, selecciónalo en la lista o elige otro nombre.'
         );
       }
+      Sentry.captureException(error);
       errorToast(error?.message || 'Ocurrió un error, inténtalo más tarde.');
     }
   };
