@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import Swal from 'sweetalert2';
+import Swal, { SweetAlertOptions } from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
 const customModal = withReactContent(Swal);
@@ -20,18 +20,22 @@ const appModal = customModal.mixin({
   },
 });
 
-const successToast = (message: string) => {
+const successToast = (message: string, config?: SweetAlertOptions) => {
   return customModal.fire({
     icon: 'success',
     toast: true,
     title: message,
     position: 'top-end',
-    timer: 3000,
+    timer: 5000,
     showConfirmButton: false,
+    customClass: {
+      popup: 'appToast',
+    },
+    ...config,
   });
 };
 
-const errorToast = (message: string) => {
+const errorToast = (message: string, config?: SweetAlertOptions) => {
   return customModal.fire({
     icon: 'error',
     toast: true,
@@ -39,6 +43,7 @@ const errorToast = (message: string) => {
     position: 'top-end',
     timer: 5000,
     showConfirmButton: false,
+    ...config,
   });
 };
 

@@ -1,4 +1,3 @@
-import { getShirtDesigns } from '@/services/api/supabase/design.services';
 import StepTitle from '@/ui/atoms/stepTitle/StepTitle';
 import { Typography } from '@/ui/materialComponents';
 import Design from '@/ui/templates/design/Design';
@@ -16,7 +15,6 @@ interface Props {
 
 const Personaliza: FC<Props> = async ({ params }) => {
   const fabric_id = Number(params.fabric_id);
-  const { data: designs } = await getShirtDesigns();
 
   return (
     <div className="grid md:grid-cols-2 md:py-8 gap-8 ">
@@ -40,7 +38,7 @@ const Personaliza: FC<Props> = async ({ params }) => {
           </Typography>
           <Design />
           <div className="flex gap-2 flex-col">
-            <PersonalizeButton fabric_id={params.fabric_id} designs={designs} />
+            <PersonalizeButton fabric_id={params.fabric_id} />
           </div>
         </div>
       </div>

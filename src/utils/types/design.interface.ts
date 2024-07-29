@@ -17,7 +17,7 @@ export interface Design {
   shirt_cuff_id: number | null;
   created_at: string;
   fabric_consumption: number;
-  image: string | null;
+  // image: string | null;
 }
 
 export interface Cuff extends DesignItem {}
@@ -30,7 +30,7 @@ export interface GetDesignResponse {
   created_at: string;
   fabric_consumption: number;
   id: number;
-  image: string | null;
+  // image: string | null;
   shirt_collar_id: number;
   shirt_collars: Collar;
   shirt_cuff_id: number | null;
