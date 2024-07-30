@@ -7,7 +7,7 @@ export async function GET() {
   const { data, error } = await supabase
     .from('cart')
     .select(
-      '*, cart_product(*, products(name, id_variant_default, shirt_designs(image)), profiles(profile_name))'
+      '*, cart_product(*, products(name, id_variant_default), profiles(profile_name))'
     )
     .order('id', { ascending: false })
     .returns<CartProductWithProduct[]>();

@@ -104,6 +104,7 @@ const MeasureForm: FC<Props> = ({ profiles, fabric_id, shirt_design_id }) => {
     resolver: yupResolver(formMeasuresSchema),
     mode: 'all',
   });
+  // console.log(isDirty);
 
   const onSubmit = async (data: FormMeasuresSchema) => {
     setMeasures(data);
@@ -204,7 +205,10 @@ const MeasureForm: FC<Props> = ({ profiles, fabric_id, shirt_design_id }) => {
   const displayLoginModal = () => {
     const onLoginSuccess = () => {
       router.refresh();
-      appModal.close();
+      appToast({
+        text: 'Iniciaste sesión correctamente',
+        icon: 'success',
+      });
     };
 
     appModal.fire({
@@ -364,7 +368,7 @@ const MeasureForm: FC<Props> = ({ profiles, fabric_id, shirt_design_id }) => {
             detalles y proceda a insertar sus medidas.
           </Typography>
           <ClientDesign shirt_design_id={shirt_design_id} />
-          {/* <CurrentDesign /> */}
+
           <div className="text-center">
             <label className="block pb-4 text-center">
               <span className="text-sm">

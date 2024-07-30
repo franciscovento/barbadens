@@ -25,9 +25,6 @@ const LoginRegisterCard: FC<Props> = ({
   onLoginSuccess,
   defaultForm = 'register',
 }) => {
-  const SUCCESS_MESSAGE =
-    'Se creó la cuenta correctamente, confirma tu correo y vuelve para iniciar sesión';
-
   const { login } = useAuth();
   const [formType, setFormType] = useState<'login' | 'register'>(defaultForm);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -82,7 +79,9 @@ const LoginRegisterCard: FC<Props> = ({
 
       reset();
       setFormType('login');
-      setSuccessMessage(SUCCESS_MESSAGE);
+      setSuccessMessage(
+        `Te enviamos un correo a ${email}. Confirma tu correo y vuelve para iniciar sesión`
+      );
     } catch (error: any) {
       setError('root', {
         message: error?.message || 'Ocurrió un error inesperado',

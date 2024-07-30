@@ -5,10 +5,11 @@ import { Profile } from '@/utils/types/profile.interface';
 const supabase = createClient();
 
 async function updateProfileMeasures(profileData: FormMeasuresSchema) {
-  const { id, ...rest } = profileData;
+  const { id, profile_name, ...rest } = profileData;
+  const name = profile_name.toLocaleLowerCase().trim();
   const { data, error } = await supabase
     .from('profiles')
-    .update(rest)
+    .update({ ...rest, profile_name: name })
     .eq('id', id)
     .select()
     .returns<Profile[]>();
@@ -20,9 +21,11 @@ async function updateProfileMeasures(profileData: FormMeasuresSchema) {
 }
 
 async function createProfile(profileData: FormMeasuresSchema) {
+  const { profile_name, ...rest } = profileData;
+  const name = profile_name.toLocaleLowerCase().trim();
   const { data, error } = await supabase
     .from('profiles')
-    .insert([profileData])
+    .insert([{ ...rest, profile_name: name }])
     .select()
     .returns<Profile[]>();
 
