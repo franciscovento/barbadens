@@ -68,4 +68,15 @@ const errorToast = (message: string, config?: SweetAlertOptions) => {
   });
 };
 
-export { appModal, appToast, errorToast, successToast };
+const appConfirm = (config: SweetAlertOptions) => {
+  return appModal.fire({
+    showCancelButton: true,
+    showConfirmButton: true,
+    reverseButtons: true,
+    confirmButtonText: 'Continuar',
+    cancelButtonText: 'Cancelar',
+    ...config,
+  });
+};
+
+export { appConfirm, appModal, appToast, errorToast, successToast };

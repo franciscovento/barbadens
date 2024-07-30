@@ -4,6 +4,15 @@ div:where(.swal2-container) button:where(.swal2-close):focus {
   box-shadow: none !important;
 }
 
+.appModal {
+  .swal2-title {
+    font-size: 20px;
+  }
+  .swal2-html-container {
+    font-size: 16px;
+  }
+}
+
 .appModal .swal2-confirm {
   background-color: #016fd0 !important;
 }

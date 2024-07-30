@@ -28,7 +28,7 @@ import * as Sentry from '@sentry/nextjs';
 const tutorials = [
   {
     key: 'long',
-    tutorial: '2gxQ_d9MpGM',
+    tutorial: 'YCY_uQsDtCg',
   },
   {
     key: 'collar',
@@ -99,12 +99,11 @@ const MeasureForm: FC<Props> = ({ profiles, fabric_id, shirt_design_id }) => {
     reset,
 
     handleSubmit,
-    formState: { isValid, defaultValues, isSubmitting },
+    formState: { isValid, defaultValues, isSubmitting, isDirty },
   } = useForm({
     resolver: yupResolver(formMeasuresSchema),
     mode: 'all',
   });
-  // console.log(isDirty);
 
   const onSubmit = async (data: FormMeasuresSchema) => {
     setMeasures(data);
@@ -197,7 +196,7 @@ const MeasureForm: FC<Props> = ({ profiles, fabric_id, shirt_design_id }) => {
             tutorialId={tutorial.tutorial}
           />
         ),
-        width: 800,
+        // width: 800,
       });
     }
   };

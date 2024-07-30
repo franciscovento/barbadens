@@ -1,6 +1,3 @@
-import { FormMeasuresSchema } from '@/app/(store)/create/[fabric_id]/medidas/formSchema';
-
-import { valuesMeasuresMap } from '@/utils/valuesMeasuresMap';
 import { FC } from 'react';
 import YouTube from 'react-youtube';
 
@@ -13,12 +10,18 @@ interface Props {
 const Tutorial: FC<Props> = ({ description, title, tutorialId }) => {
   return (
     <div className="grid place-content-center">
-      <div>
-        <h2>{valuesMeasuresMap[title as keyof FormMeasuresSchema]}</h2>
-        <p>{description}</p>
-      </div>
       <div className="py-4">
-        <YouTube videoId={tutorialId} className="w-full" />
+        <YouTube
+          videoId={tutorialId}
+          className="w-full"
+          opts={{
+            height: '520',
+            width: '300',
+            playerVars: {
+              autoplay: 1,
+            },
+          }}
+        />
       </div>
     </div>
   );
