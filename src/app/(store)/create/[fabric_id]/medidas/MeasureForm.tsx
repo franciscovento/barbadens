@@ -25,59 +25,17 @@ import { routes } from '../../../../../../routes';
 import { FormMeasuresSchema, formMeasuresSchema } from './formSchema';
 
 import * as Sentry from '@sentry/nextjs';
-const tutorials = [
-  {
-    key: 'long',
-    tutorial: 'YCY_uQsDtCg',
-  },
-  {
-    key: 'collar',
-    tutorial: 'gxQ_d9MpGM',
-  },
-  {
-    key: 'chest',
-    tutorial: '2gxQ_d9MpGM',
-  },
-  {
-    key: 'waist',
-    tutorial: '2gxQ_d9MpGM',
-  },
-  {
-    key: 'hip',
-    tutorial: '2gxQ_d9MpGM',
-  },
-  {
-    key: 'back',
-    tutorial: '2gxQ_d9MpGM',
-  },
-  {
-    key: 'sleeve_long',
-    tutorial: '2gxQ_d9MpGM',
-  },
-  {
-    key: 'sleeve_width',
-    tutorial: '2gxQ_d9MpGM',
-  },
-  {
-    key: 'fist',
-    tutorial: '2gxQ_d9MpGM',
-  },
-  {
-    key: 'shoulder',
-    tutorial: '2gxQ_d9MpGM',
-  },
-];
+
+import tutorials from '@/utils/data/tutorials';
 
 const measures = [
   'long',
   'collar',
   'chest',
   'waist',
-  'hip',
   'back',
   'sleeve_long',
   'sleeve_width',
-  'fist',
   'shoulder',
 ];
 
@@ -182,10 +140,8 @@ const MeasureForm: FC<Props> = ({ profiles, fabric_id, shirt_design_id }) => {
         chest: profile.chest,
         collar: profile.collar,
         waist: profile.waist,
-        hip: profile.hip,
         sleeve_width: profile.sleeve_width,
         sleeve_long: profile.sleeve_long,
-        fist: profile.fist,
         shoulder: profile.shoulder,
         long: profile.long,
       });
@@ -238,10 +194,8 @@ const MeasureForm: FC<Props> = ({ profiles, fabric_id, shirt_design_id }) => {
       chest: undefined,
       collar: undefined,
       waist: undefined,
-      hip: undefined,
       sleeve_width: undefined,
       sleeve_long: undefined,
-      fist: undefined,
       shoulder: undefined,
       long: undefined,
     });
