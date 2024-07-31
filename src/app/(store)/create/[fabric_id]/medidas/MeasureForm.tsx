@@ -1,7 +1,7 @@
 'use client';
 import { addProductToCart } from '@/services/api/supabase/cart.services';
 import { updateOrCreateProfile } from '@/services/api/supabase/profile.services';
-import { appModal, appToast } from '@/services/modals/appModal';
+import { appConfirm, appModal, appToast } from '@/services/modals/appModal';
 import { useCartStore } from '@/stores/cart/cart.store';
 import { useMeasures } from '@/stores/measures/measures.store';
 import { useUser } from '@/stores/user/user.store';
@@ -110,6 +110,14 @@ const MeasureForm: FC<Props> = ({ profiles, fabric_id, shirt_design_id }) => {
     try {
       if (!isAuthenticated) {
         return displayLoginModal();
+      }
+
+      if (isDirty && data.id) {
+        const resp = await appConfirm({
+          title: 'Editar perfil',
+          text: 'Al editar este perfil afectará tus futuras compras y las que estén en proceso. Si quieres agregar otras medidas para la misma persona puedes crear otro perfil. Ejem: José XL',
+        });
+        if (resp.dismiss || resp.isDenied) return;
       }
 
       const { data: profileData, error: profileError } =
