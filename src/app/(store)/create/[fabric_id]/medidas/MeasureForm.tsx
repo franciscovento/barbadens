@@ -16,7 +16,7 @@ import { standardMeasures } from '@/utils/data/standardMeasures';
 import { Profile } from '@/utils/types/profile.interface';
 import { ShirtMeasures } from '@/utils/types/shirtMeasures.interface';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Option, Select, Typography } from '@material-tailwind/react';
+import { Input, Option, Select, Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/navigation';
 import { FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -26,17 +26,6 @@ import { FormMeasuresSchema, formMeasuresSchema } from './formSchema';
 import checkMeasures from '@/utils/checkMeasures';
 import measuresInfo from '@/utils/data/measures.data';
 import * as Sentry from '@sentry/nextjs';
-
-// const measures = [
-//   'collar',
-//   'chest',
-//   'waist',
-//   'long',
-//   'back',
-//   'sleeve_long',
-//   'sleeve_width',
-//   'shoulder',
-// ];
 
 interface Props {
   profiles: Profile[];
@@ -322,13 +311,15 @@ const MeasureForm: FC<Props> = ({ profiles, fabric_id, shirt_design_id }) => {
                   <span>{measure.longDisplayName}</span>
 
                   <div>
-                    <input
-                      className="border border-gray-500 rounded-xl w-20 h-8 px-2"
+                    <Input
+                      label="cm"
+                      className="border border-gray-500"
+                      containerProps={{ className: '!w-20 !min-w-0' }}
                       {...register(key as keyof FormMeasuresSchema)}
                       type="number"
                       step="0.1"
                     />{' '}
-                    cm
+                    {/* cm */}
                   </div>
                 </label>
                 <span
