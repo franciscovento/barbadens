@@ -1,3 +1,4 @@
+import { DOCUMENT_TYPE_ID } from '../../constants';
 import { Details, Document } from './types/bsale/document.interface';
 import { GetDocumentWithDetailsResponse } from './types/document.interface';
 
@@ -18,7 +19,7 @@ const generateDocument = (
   let ms = Math.floor(mls / 1000);
 
   return {
-    documentTypeId: 22,
+    documentTypeId: DOCUMENT_TYPE_ID,
     emissionDate: ms,
     expirationDate: ms,
     payments: [
@@ -33,7 +34,7 @@ const generateDocument = (
     details,
     dispatch: 0,
     sendEmail: 1,
-    // officeId: 1,
+    // officeId: OFFICE_ID,
     // priceListId: 1,
   };
 };

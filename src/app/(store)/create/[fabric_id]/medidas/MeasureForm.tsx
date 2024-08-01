@@ -316,7 +316,7 @@ const MeasureForm: FC<Props> = ({ profiles, fabric_id, shirt_design_id }) => {
                       containerProps={{ className: '!w-20 !min-w-0' }}
                       {...register(key as keyof FormMeasuresSchema)}
                       type="number"
-                      step="0.1"
+                      step="0.5"
                     />{' '}
                     {/* cm */}
                   </div>

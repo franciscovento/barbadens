@@ -71,11 +71,11 @@ const ProductDetail: FC<ProductDetailProps> = ({ profile, design }) => {
     chest: 'Pecho',
     back: 'Espalda',
     waist: 'Cintura',
-    hip: 'Cadera',
+
     sleeve_long: 'Largo de manga',
     sleeve_width: 'Ancho de manga',
     collar: 'Cuello',
-    fist: 'Puño',
+
     shoulder: 'Hombro',
   };
 

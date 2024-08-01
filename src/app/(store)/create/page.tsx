@@ -2,6 +2,7 @@ import StepTitle from '@/ui/atoms/stepTitle/StepTitle';
 import InfiniteScrollFabrics from '@/ui/organisms/infiniteScrollFabrics/InfiniteScrollFabrics';
 import { fetchFabrics } from './actions';
 
+export const dynamic = 'force-dynamic';
 const CreatePage = async () => {
   const data = await fetchFabrics({});
 

@@ -3,14 +3,14 @@ import { createClient } from '@/utils/supabase/server';
 import { Product } from '@/utils/types/products.interface';
 import { WebDescriptionResponse } from '@/utils/types/webDescription.interface';
 import { NextRequest, NextResponse } from 'next/server';
-import { STOCK_COST } from '../../../../constants';
+import { PRICE_LIST_ID, STOCK_COST } from '../../../../constants';
 
 export async function POST(request: NextRequest) {
   try {
     const supabase = createClient();
     const { design_id, fabric_id } = await request.json();
     const { data } = await bsaleApi.get<WebDescriptionResponse>(
-      `/v2/products/list/market_info.json?&expand=[variantsInfo,variant.salePrice]&priceListId=3&product_id=${fabric_id}`
+      `/v2/products/list/market_info.json?&expand=[variantsInfo,variant.salePrice]&priceListId=${PRICE_LIST_ID}&product_id=${fabric_id}`
     );
     if (data.data.length === 0) {
       throw new Error('No data found');

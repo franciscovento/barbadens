@@ -12,7 +12,7 @@ import CartResume from './CartResume';
 import OptionsPayments from './OptionsPayments';
 
 import { createCheckout } from '@/services/api/bsale/checkout.services';
-import { errorToast } from '@/services/modals/appModal';
+import { appModal, errorToast } from '@/services/modals/appModal';
 import { useCartStore } from '@/stores/cart/cart.store';
 import { generateCheckout } from '@/utils/generateCheckout';
 import { getShippingCost } from '@/utils/getShippingCost';
@@ -67,6 +67,14 @@ const CheckoutForm: FC<Props> = ({ defaultValues }) => {
 
   const onSubmit = async (data: FormCheckoutSchema) => {
     try {
+      if (process.env.NODE_ENV === 'production') {
+        return await appModal.fire({
+          title: '¡Atención!',
+          icon: 'warning',
+          text: 'La tienda está inactiva, no se podrá realizar la compra',
+        });
+      }
+
       const checkout = generateCheckout(
         data,
         cart_products,
