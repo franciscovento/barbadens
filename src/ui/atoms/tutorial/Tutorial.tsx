@@ -2,17 +2,15 @@ import { FC } from 'react';
 import YouTube from 'react-youtube';
 
 interface Props {
-  tutorialId: string;
-  title: string;
-  description: string;
+  videoKey: string;
 }
 
-const Tutorial: FC<Props> = ({ description, title, tutorialId }) => {
+const Tutorial: FC<Props> = ({ videoKey }) => {
   return (
     <div className="grid place-content-center">
       <div className="py-4">
         <YouTube
-          videoId={tutorialId}
+          videoId={videoKey}
           className="w-full"
           opts={{
             height: '520',

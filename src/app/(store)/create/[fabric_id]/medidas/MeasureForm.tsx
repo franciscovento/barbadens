@@ -15,7 +15,6 @@ import ClientDesign from '@/ui/templates/design/ClientDesign';
 import { standardMeasures } from '@/utils/data/standardMeasures';
 import { Profile } from '@/utils/types/profile.interface';
 import { ShirtMeasures } from '@/utils/types/shirtMeasures.interface';
-import { valuesMeasuresMap } from '@/utils/valuesMeasuresMap';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Option, Select, Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/navigation';
@@ -24,20 +23,20 @@ import { useForm } from 'react-hook-form';
 import { routes } from '../../../../../../routes';
 import { FormMeasuresSchema, formMeasuresSchema } from './formSchema';
 
+import checkMeasures from '@/utils/checkMeasures';
+import measuresInfo from '@/utils/data/measures.data';
 import * as Sentry from '@sentry/nextjs';
 
-import tutorials from '@/utils/data/tutorials';
-
-const measures = [
-  'long',
-  'collar',
-  'chest',
-  'waist',
-  'back',
-  'sleeve_long',
-  'sleeve_width',
-  'shoulder',
-];
+// const measures = [
+//   'collar',
+//   'chest',
+//   'waist',
+//   'long',
+//   'back',
+//   'sleeve_long',
+//   'sleeve_width',
+//   'shoulder',
+// ];
 
 interface Props {
   profiles: Profile[];
@@ -69,11 +68,40 @@ const MeasureForm: FC<Props> = ({ profiles, fabric_id, shirt_design_id }) => {
       if (!isAuthenticated) {
         return displayLoginModal();
       }
+      const { id, profile_name, ...rest } = data;
+      const errors = checkMeasures(rest);
+
+      if (errors.length > 0) {
+        const resp = await appConfirm({
+          title: 'Medidas fuera de rango',
+          cancelButtonText: 'Corregir medidas',
+          confirmButtonText: 'Continuar',
+          html: (
+            <div className="text-left">
+              <p>Las siguientes medidas están fuera de rango:</p>
+              <ul className="flex flex-col gap-1 py-4">
+                {errors.map((error, index) => (
+                  <li key={error}>
+                    {index + 1}. {error}
+                  </li>
+                ))}
+              </ul>
+              <p>
+                Las medidas indicadas presentan desviaciones respecto a
+                referencias estándares. ¿Deseas continuar?
+              </p>
+            </div>
+          ),
+        });
+        if (resp.dismiss || resp.isDenied) return;
+      }
 
       if (isDirty && data.id) {
         const resp = await appConfirm({
           title: 'Editar perfil',
-          text: 'Al editar este perfil afectará tus futuras compras y las que estén en proceso. Si quieres agregar otras medidas para la misma persona puedes crear otro perfil. Ejem: José XL',
+          text: 'Estás editando este perfil. Esto afectará tus futuras compras y las que estén en proceso. Si quieres agregar otras medidas para la misma persona puedes crear otro perfil. Ejem: José XL',
+          confirmButtonText: 'Continuar',
+          cancelButtonText: 'Crear otro perfil',
         });
         if (resp.dismiss || resp.isDenied) return;
       }
@@ -121,6 +149,7 @@ const MeasureForm: FC<Props> = ({ profiles, fabric_id, shirt_design_id }) => {
           icon: 'warning',
         });
       }
+
       Sentry.captureException(error);
       appToast({
         text: 'Ocurrió un error, inténtalo más tarde.',
@@ -149,20 +178,14 @@ const MeasureForm: FC<Props> = ({ profiles, fabric_id, shirt_design_id }) => {
   };
 
   const displayTutorial = (key: string) => {
-    const tutorial = tutorials.find((t) => t.key === key);
-    if (tutorial) {
-      appModal.fire({
-        title: valuesMeasuresMap[tutorial.key as keyof FormMeasuresSchema],
-        html: (
-          <Tutorial
-            title={tutorial.key}
-            description={tutorial.key}
-            tutorialId={tutorial.tutorial}
-          />
-        ),
-        // width: 800,
-      });
-    }
+    appModal.fire({
+      title: measuresInfo[key as keyof typeof measuresInfo].longDisplayName,
+      html: (
+        <Tutorial
+          videoKey={measuresInfo[key as keyof typeof measuresInfo].videoKey}
+        />
+      ),
+    });
   };
 
   const displayLoginModal = () => {
@@ -190,20 +213,16 @@ const MeasureForm: FC<Props> = ({ profiles, fabric_id, shirt_design_id }) => {
     reset({
       profile_name: '',
       id: '',
-      back: undefined,
-      chest: undefined,
       collar: undefined,
+      chest: undefined,
       waist: undefined,
-      sleeve_width: undefined,
-      sleeve_long: undefined,
-      shoulder: undefined,
       long: undefined,
+      back: undefined,
+      sleeve_long: undefined,
+      sleeve_width: undefined,
+      shoulder: undefined,
     });
   };
-
-  useEffect(() => {
-    reset(getMeasures());
-  }, [reset, getMeasures]);
 
   const selectStandardMeasure = () => {
     const pickStandardMeasure = (measure: ShirtMeasures) => {
@@ -234,6 +253,10 @@ const MeasureForm: FC<Props> = ({ profiles, fabric_id, shirt_design_id }) => {
       ),
     });
   };
+
+  useEffect(() => {
+    reset(getMeasures());
+  }, [reset, getMeasures]);
 
   return (
     <form
@@ -290,35 +313,62 @@ const MeasureForm: FC<Props> = ({ profiles, fabric_id, shirt_design_id }) => {
             </div>
           )}
         </div>
-        <div className="flex flex-col gap-2">
-          {measures.map((value, index) => {
+        <div className="flex flex-col gap-6">
+          {Object.keys(measuresInfo).map((key) => {
+            const measure = measuresInfo[key as keyof typeof measuresInfo];
             return (
-              <label key={index} className="flex justify-between">
-                <div className="flex flex-col">
+              <div key={key} className="relative">
+                <label className="flex justify-between items-end">
+                  <span>{measure.longDisplayName}</span>
+
+                  <div>
+                    <input
+                      className="border border-gray-500 rounded-xl w-20 h-8 px-2"
+                      {...register(key as keyof FormMeasuresSchema)}
+                      type="number"
+                      step="0.1"
+                    />{' '}
+                    cm
+                  </div>
+                </label>
+                <span
+                  onClick={() => displayTutorial(key)}
+                  className="text-app-text text-sm hover:text-blue-600 cursor-pointer absolute"
+                >
+                  Ver tutorial
+                </span>
+              </div>
+            );
+          })}
+          {/* {measures.map((value, index) => {
+            return (
+              <div key={index} className="relative">
+                <label className="flex justify-between items-end">
                   <span>
                     {valuesMeasuresMap[value as keyof FormMeasuresSchema]}
                   </span>
-                  <span
-                    onClick={() => displayTutorial(value)}
-                    className="text-app-text text-sm hover:text-blue-600 cursor-pointer"
-                  >
-                    Ver tutorial
-                  </span>
-                </div>
-                <div>
-                  <input
-                    className="border border-gray-500 rounded-xl w-20 h-8 px-2"
-                    {...register(value as keyof FormMeasuresSchema, {
-                      required: true,
-                    })}
-                    type="number"
-                    step="0.1"
-                  />{' '}
-                  cm
-                </div>
-              </label>
+
+                  <div>
+                    <input
+                      className="border border-gray-500 rounded-xl w-20 h-8 px-2"
+                      {...register(value as keyof FormMeasuresSchema, {
+                        required: true,
+                      })}
+                      type="number"
+                      step="0.1"
+                    />{' '}
+                    cm
+                  </div>
+                </label>
+                <span
+                  onClick={() => displayTutorial(value)}
+                  className="text-app-text text-sm hover:text-blue-600 cursor-pointer absolute"
+                >
+                  Ver tutorial
+                </span>
+              </div>
             );
-          })}
+          })} */}
         </div>
       </div>
       <div className=" bg-app-background flex items-center justify-center">

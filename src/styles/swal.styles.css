@@ -13,6 +13,10 @@ div:where(.swal2-container) button:where(.swal2-close):focus {
   }
   .swal2-confirm {
     background-color: #016fd0 !important;
+    outline: none !important;
+    &:focus {
+      box-shadow: none;
+    }
   }
 }
 
