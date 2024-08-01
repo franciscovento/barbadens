@@ -307,9 +307,8 @@ const MeasureForm: FC<Props> = ({ profiles, fabric_id, shirt_design_id }) => {
             const measure = measuresInfo[key as keyof typeof measuresInfo];
             return (
               <div key={key} className="relative">
-                <label className="flex justify-between items-end">
+                <label className="flex justify-between items-start">
                   <span>{measure.longDisplayName}</span>
-
                   <div>
                     <Input
                       label="cm"
@@ -324,7 +323,7 @@ const MeasureForm: FC<Props> = ({ profiles, fabric_id, shirt_design_id }) => {
                 </label>
                 <span
                   onClick={() => displayTutorial(key)}
-                  className="text-app-text text-sm hover:text-blue-600 cursor-pointer absolute"
+                  className="text-app-text text-sm hover:text-blue-600 cursor-pointer absolute top-6"
                 >
                   Ver tutorial
                 </span>
