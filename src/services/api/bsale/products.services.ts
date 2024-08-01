@@ -7,7 +7,6 @@ const getFabrics = async (queries?: string) => {
   const response = await bsaleApi.get<FabricsResponse>(
     `/v2/markets/1/products/market_info.json?collId=${COLLECTION_FABRIC_ID}&${queries || ''}`
   );
-  console.log(response.data);
 
   return response.data;
 };

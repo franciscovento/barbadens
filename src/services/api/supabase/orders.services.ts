@@ -1,13 +1,13 @@
 import { createClient } from '@/utils/supabase/client';
 import { OrderStatus, OrderWithProducts } from '@/utils/types/order.interface';
 
-const supabase = createClient();
-
 const getOrders = async (
   offset: number,
   limit: number,
   status?: OrderStatus | null
 ) => {
+  const supabase = createClient();
+
   const query = supabase
     .from('orders')
     .select('*, products(*)')

@@ -24,11 +24,11 @@ const makePayment = async (items: MpProductItem[], order_id: number) => {
       payment_methods: {
         default_installments: 1,
       },
-      back_urls: {
-        success: `${BASE_URL}/checkout/resume/${order_id}?status=success`,
-        failure: `${BASE_URL}/checkout/resume/${order_id}?status=failure`,
-        pending: `${BASE_URL}/checkout/resume/${order_id}?status=pending`,
-      },
+      // back_urls: {
+      //   success: `${BASE_URL}/checkout/resume/${order_id}?status=success`,
+      //   failure: `${BASE_URL}/checkout/resume/${order_id}?status=failure`,
+      //   pending: `${BASE_URL}/checkout/resume/${order_id}?status=pending`,
+      // },
       notification_url: `${BASE_URL}/api/payments?source_news=webhooks&order=${order_id}`,
     },
   });

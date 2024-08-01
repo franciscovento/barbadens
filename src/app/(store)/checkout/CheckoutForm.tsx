@@ -116,11 +116,11 @@ const CheckoutForm: FC<Props> = ({ defaultValues }) => {
       unregister('pickCode');
       unregister('pickName');
     }
-  }, [watchWithdrawStore, unregister]);
+  }, [watchWithdrawStore, unregister, setValue, total]);
 
   useEffect(() => {
     setValue('shippingCost', getShippingCost(total));
-  }, [total]);
+  }, [total, setValue]);
 
   return (
     <form
