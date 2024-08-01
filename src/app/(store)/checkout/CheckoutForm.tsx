@@ -67,7 +67,7 @@ const CheckoutForm: FC<Props> = ({ defaultValues }) => {
 
   const onSubmit = async (data: FormCheckoutSchema) => {
     try {
-      if (process.env.NODE_ENV === 'production') {
+      if (process.env.APP_ENV === 'production') {
         return await appModal.fire({
           title: '¡Atención!',
           icon: 'warning',
@@ -116,11 +116,11 @@ const CheckoutForm: FC<Props> = ({ defaultValues }) => {
       unregister('pickCode');
       unregister('pickName');
     }
-  }, [watchWithdrawStore, unregister, setValue, total]);
+  }, [watchWithdrawStore, unregister]);
 
   useEffect(() => {
     setValue('shippingCost', getShippingCost(total));
-  }, [total, setValue]);
+  }, [total]);
 
   return (
     <form

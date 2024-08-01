@@ -2,6 +2,7 @@
 import mpClient from '@/utils/mercadopago/server';
 import { Preference } from 'mercadopago';
 import { redirect } from 'next/navigation';
+import { PRODUCTION_URL, STAGING_URL } from '../../../../../../constants';
 
 export interface MpProductItem {
   id: string;
@@ -14,9 +15,7 @@ const client = mpClient();
 const makePayment = async (items: MpProductItem[], order_id: number) => {
   'use server';
   const BASE_URL =
-    process.env.NODE_ENV === 'production'
-      ? process.env.NEXT_PUBLIC_BASE_URL
-      : 'http://localhost:3000';
+    process.env.APP_ENV === 'production' ? PRODUCTION_URL : STAGING_URL;
   const preference = new Preference(client);
   const { init_point } = await preference.create({
     body: {
