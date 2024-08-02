@@ -6,10 +6,10 @@ import { createClient } from '@/utils/supabase/server';
 import { DocumentResponse } from '@/utils/types/bsale/document.interface';
 import { GetDocumentWithDetailsResponse } from '@/utils/types/document.interface';
 import { Order } from '@/utils/types/order.interface';
+import * as Sentry from '@sentry/nextjs';
 import { Payment } from 'mercadopago';
 import { headers } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
-
 interface MpHookResponse {
   action: string;
   api_version: string;
@@ -68,6 +68,7 @@ export async function POST(req: NextRequest) {
       message: 'success',
     });
   } catch (error) {
+    Sentry.captureException(error);
     return NextResponse.json(
       {
         message: 'error',

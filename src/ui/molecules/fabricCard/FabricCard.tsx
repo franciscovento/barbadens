@@ -101,6 +101,7 @@ const FabricCard: FC<Props> = ({
         </div>
         {/* <Link href={`/create/${id}/personaliza`}> */}
         <Link
+          prefetch={false}
           href={routes.create.fabric.personalize.replace(
             '[fabric_id]',
             productId.toString()

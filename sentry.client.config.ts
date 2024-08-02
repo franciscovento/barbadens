@@ -9,13 +9,13 @@ Sentry.init({
 
   // Adjust this value in production, or use tracesSampler for greater control
   tracesSampleRate: 0.1,
-  enabled: process.env.APP_ENV === 'production',
+  enabled: process.env.NEXT_PUBLIC_APP_ENV === 'production',
 
   // Setting this option to true will print useful information to the console while you're setting up Sentry.
   debug: false,
 
   replaysOnErrorSampleRate: 0.0,
-
+  autoSessionTracking: false,
   // This sets the sample rate to be 10%. You may want this to be 100% while
   // in development and sample at a lower rate in production
   replaysSessionSampleRate: 0.0,

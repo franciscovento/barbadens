@@ -2,9 +2,9 @@ import bsaleApi from '@/utils/axios/bsaleApi.utils';
 import { createClient } from '@/utils/supabase/server';
 import { Product } from '@/utils/types/products.interface';
 import { WebDescriptionResponse } from '@/utils/types/webDescription.interface';
+import * as Sentry from '@sentry/nextjs';
 import { NextRequest, NextResponse } from 'next/server';
 import { PRICE_LIST_ID, STOCK_COST } from '../../../../constants';
-
 export async function POST(request: NextRequest) {
   try {
     const supabase = createClient();
@@ -39,6 +39,7 @@ export async function POST(request: NextRequest) {
       error: null,
     });
   } catch (error: any) {
+    Sentry.captureException(error);
     return NextResponse.json({ error: error.message, data: null });
   }
 }

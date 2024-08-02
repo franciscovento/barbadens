@@ -67,7 +67,8 @@ const CheckoutForm: FC<Props> = ({ defaultValues }) => {
 
   const onSubmit = async (data: FormCheckoutSchema) => {
     try {
-      if (process.env.APP_ENV === 'production') {
+      console.log(process.env.NEXT_PUBLIC_APP_ENV);
+      if (process.env.NEXT_PUBLIC_APP_ENV === 'production') {
         return await appModal.fire({
           title: '¡Atención!',
           icon: 'warning',

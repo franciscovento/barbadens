@@ -4,6 +4,7 @@ import { Checkout } from '@/app/(store)/checkout/formSchema';
 import bsaleApi from '@/utils/axios/bsaleApi.utils';
 import { createClient } from '@/utils/supabase/server';
 import { CreateCheckoutResponse } from '@/utils/types/bsale/checkout.interface';
+import * as Sentry from '@sentry/nextjs';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
@@ -24,6 +25,7 @@ export async function POST(request: NextRequest) {
       error,
     });
   } catch (error) {
+    Sentry.captureException(error);
     return NextResponse.json(
       {
         error: {
