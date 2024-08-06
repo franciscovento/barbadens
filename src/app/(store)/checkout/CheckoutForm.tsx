@@ -43,6 +43,7 @@ const CheckoutForm: FC<Props> = ({ defaultValues }) => {
     formState: { isValid, isSubmitSuccessful, isSubmitting },
   } = useForm({
     defaultValues: {
+      storeId: 1,
       clientEmail: defaultValues.email,
       clientName: defaultValues.firstName,
       clientLastName: defaultValues.lastName,

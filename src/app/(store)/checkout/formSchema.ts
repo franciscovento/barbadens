@@ -6,6 +6,7 @@ import { CartDetail } from '@/utils/types/order.interface';
 import * as yup from 'yup';
 
 export interface FormCheckoutSchema {
+  storeId: number;
   clientName: string;
   clientLastName: string;
   clientEmail: string;
@@ -42,6 +43,7 @@ export interface Checkout extends FormCheckoutSchema {
 
 export const formCheckoutSchema = yup
   .object({
+    storeId: yup.number().default(1).required(),
     clientName: yup.string().required('Nombre es requerido'),
     clientLastName: yup.string().required('Apellido es requerido'),
     clientEmail: yup.string().email().required('Necesitas un email'),

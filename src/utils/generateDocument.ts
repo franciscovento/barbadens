@@ -1,4 +1,4 @@
-import { DOCUMENT_TYPE_ID } from '../../constants';
+import { DOCUMENT_TYPE_ID, OFFICE_ID } from '../../constants';
 import { Details, Document } from './types/bsale/document.interface';
 import { GetDocumentWithDetailsResponse } from './types/document.interface';
 
@@ -34,9 +34,10 @@ const generateDocument = (
     details,
     dispatch: 0,
     sendEmail: 1,
-    // officeId: OFFICE_ID,
+    officeId: OFFICE_ID,
     // priceListId: 1,
   };
 };
 
 export { generateDocument };
+

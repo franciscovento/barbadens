@@ -16,7 +16,7 @@ export function generateCheckout(
   cartProducts.forEach((product) => {
     cartDetails.push({
       idVarianteProducto: product.products.id_variant_default,
-      grossUnitValue: product.unit_price / STOCK_COST,
+      grossUnitValue: parseFloat((product.unit_price / STOCK_COST).toFixed(2)),
       quantity: product.quantity * STOCK_COST,
     });
   });
